@@ -2,11 +2,7 @@
 
 ## Vision Statement
 
-All your student needs - in a more convenient, streamlined and accessible package.
-
-For *students* who *don't want to waste their time*, the *2LEIC09T3 uni* is an app that *puts your needs first*. Unlike *SIGARRA*, our product *is more convenient, streamlined and accessible*.
-
-For *UP students* who *want to have university's services within reach*, the *2LEIC09T3 uni* is an app that *gives you what you're looking for*. Unlike *SIGARRA*, our product is *concise, pocket-size and streamlined*.
+For U.Porto students who want an enjoyable university experience, the 2LEIC09T3 uni is the app that gives you accessible student card usage, library and printing services from within a single device. Unlike *SIGARRA*, our product is concise, pocket-sized and streamlined.
 
 ## Main Features
 
