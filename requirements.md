@@ -83,9 +83,9 @@
 |||
 | --- | --- |
 | *Name* | Curricular Unit page |
-| *Actor* |  Student | 
-| *Description* | The student can see useful links, contacts and information about the Curricular Unit of their choice |
-| *Preconditions* | - The student is enrolled in the Curricular Unit |
-| *Postconditions* | - The information about the Curricular Unit the student chose is displayed in a user-friendly manner |
-| *Normal flow* | 1. The student accesses the Curricular Units page. <br> 2. The system shows the list of Curricular Units the student is enrolled in. <br> 3. The student selects the Curricular Unit they want to see information of. <br> 4. The system displays the a clicakble link that redirects the user to the SIGARRA's page, the Curricular Unit information available on SIGARRA and the professors' contacts. <br> 5. On link click, the system redirects the user to the correspondent SIGARRA page. |
-| *Alternative flows and exceptions* | 1. The student can also access the Curricular Unit's page by clicking on the respective period when seeing the timetable through the app. |
+| *Actor* | Student |
+| *Description* | Use the app to see information about a given Curricular Unit and its professors. |
+| *Preconditions* | - The user is logged in on the uni app. <br> - The student is enrolled in at least one Curricular Unit. |
+| *Postconditions* | - The information about the Curricular Unit and its professors is displayed. |
+| *Normal flow* | 1. The student opens the timetable page on the app. <br> 2. The student taps on the desired Curricular Unit and selects the option to view that Curricular Unit's page. <br> 4. The Curricular Unit page is displayed to the user. <br> If the user clicks a link on the page, they are redirected to the corresponding SIGARRA web page. |
+| *Alternative flows and exceptions* | |
