@@ -87,5 +87,5 @@
 | *Description* | Use the app to see information about a given Curricular Unit and its professors. |
 | *Preconditions* | - The user is logged in on the uni app. <br> - The student is enrolled in at least one Curricular Unit. |
 | *Postconditions* | - The information about the Curricular Unit and its professors is displayed. |
-| *Normal flow* | 1. The student opens the timetable page on the app. <br> 2. The student taps on the desired Curricular Unit and selects the option to view that Curricular Unit's page. <br> 4. The Curricular Unit page is displayed to the user. <br> If the user clicks a link on the page, they are redirected to the corresponding SIGARRA web page. |
+| *Normal flow* | 1. The student opens the timetable page on the app. <br> 2. The student taps on the desired Curricular Unit and selects the option to view that Curricular Unit's page. <br> 3. The Curricular Unit page is displayed to the user. <br> 4. If the user clicks a link on the page, they are redirected to the corresponding SIGARRA web page. |
 | *Alternative flows and exceptions* | |
