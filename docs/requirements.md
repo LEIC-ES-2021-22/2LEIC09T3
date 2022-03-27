@@ -1,6 +1,8 @@
 # Requirements
 
-## In-app university card
+## Use case model
+
+### In-app university card
 
 |||
 | --- | --- |
@@ -14,7 +16,7 @@
 
 <br>
 
-## University map
+### University map
 
 |||
 | --- | --- |
@@ -28,7 +30,7 @@
 
 <br>
 
-## University notifications
+### University notifications
 
 |||
 | --- | --- |
@@ -42,7 +44,7 @@
 
 <br>
 
-## Sticky notes
+### Sticky notes
 
 |||
 | --- | --- |
@@ -56,7 +58,7 @@
 
 <br>
 
-## Booking library rooms
+### Booking library rooms
 
 |||
 | --- | --- |
@@ -70,7 +72,7 @@
 
 <br>
 
-## Printing
+### Printing
 
 |||
 | --- | --- |
@@ -84,7 +86,7 @@
 
 <br>
 
-## Curricular Unit page
+### Curricular Unit page
 
 |||
 | --- | --- |
