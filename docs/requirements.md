@@ -2,6 +2,12 @@
 
 ## Use case model
 
+<br>
+<p align="center" justify="center">
+    <img src="diagrams/svg/use-case.svg" width="75%" />
+</p>
+<br>
+
 ### In-app university card
 
 |||
