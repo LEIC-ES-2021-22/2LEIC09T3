@@ -4,9 +4,7 @@
 
 <br>
 <p align="center" justify="center">
-    <img src="diagrams/svg/use-case.svg" width="30%" />
-    <img src="diagrams/svg/use-case.svg" width="30%" />
-    <img src="diagrams/svg/use-case.svg" width="30%" />
+    <img src="diagrams/svg/use-case.svg" width="100%" />
 </p>
 <br>
 
