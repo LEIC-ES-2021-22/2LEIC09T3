@@ -50,20 +50,6 @@
 
 <br>
 
-### Sticky notes
-
-|||
-| --- | --- |
-| *Name* | Sticky notes |
-| *Actor* |  Student | 
-| *Description* | Use the app to add and manage sticky notes associated with a given Curricular Unit.|
-| *Preconditions* | - The user is logged in on the uni app. <br> - The student is enrolled in at least one Curricular Unit.
-| *Postconditions* | - The student is able to add sticky notes to a Curricular Unit. <br> - The student is able to manage existing sticky notes. |
-| *Normal flow* | 1. The student opens the timetable page on the app. <br> 2. The student taps on the desired Curricular Unit and selects the option to view that Curricular Unit's sticky notes. <br> 3. All sticky notes of the selected Curricular Unit are displayed. |
-| *Alternative flows and exceptions* | 1. [Managing sticky notes] The student may select an existing sticky note to remove or edit. <br> 2. [View content of a given sticky note] The student can tap a given sticky note, in order to view its content in full detail. <br> 3. [Adding a new sticky note] The student may tap on a button to add a new sticky note. Trying to go back while adding a new sticky note will prompt the user asking if they wish to keep or discard it. |
-
-<br>
-
 ### Booking library rooms
 
 |||
@@ -89,17 +75,3 @@
 | *Postconditions* | - The student is able to view their printing queue. <br> - The user can manage their printing queue. |
 | *Normal flow* | 1. The student opens the printing page  on the app. <br> 2. A list of all pending printing jobs along with their printing balance is displayed to the user. |
 | *Alternative flows and exceptions* | 1. [Scheduling new print jobs] If the user wants to print a document, a file picker is opened and the user can select the file they want to upload. After that, a menu asking for the print job options (B/W vs Color, A3 vs A4, ...) pops up. After the student submits the printing job, the document is pushed onto their printing queue. <br> 2. [Removing documents] If the student wants to remove pending documents from their printing queue, the user can do so. <br> 3. [Printing failure] If a failure occurrs (i.e. the user doesn't have enough money to schedule the printing job), the reason why the failure occurred is shown to the user and the student is taken back to the listing page. |
-
-<br>
-
-### Curricular Unit page
-
-|||
-| --- | --- |
-| *Name* | Curricular Unit page |
-| *Actor* | Student |
-| *Description* | Use the app to see information about a given Curricular Unit and its professors. |
-| *Preconditions* | - The user is logged in on the uni app. <br> - The student is enrolled in at least one Curricular Unit. |
-| *Postconditions* | - The information about the Curricular Unit and its professors is displayed. |
-| *Normal flow* | 1. The student opens the timetable page on the app. <br> 2. The student taps on the desired Curricular Unit and selects the option to view that Curricular Unit's page. <br> 3. The Curricular Unit page is displayed to the user. <br> 4. If the user clicks a link on the page, they are redirected to the corresponding SIGARRA web page. |
-| *Alternative flows and exceptions* | |
