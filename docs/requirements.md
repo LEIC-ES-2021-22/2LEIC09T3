@@ -75,3 +75,13 @@
 | *Postconditions* | - The student is able to view their printing queue. <br> - The user can manage their printing queue. |
 | *Normal flow* | 1. The student opens the printing page  on the app. <br> 2. A list of all pending printing jobs along with their printing balance is displayed to the user. |
 | *Alternative flows and exceptions* | 1. [Scheduling new print jobs] If the user wants to print a document, a file picker is opened and the user can select the file they want to upload. After that, a menu asking for the print job options (B/W vs Color, A3 vs A4, ...) pops up. After the student submits the printing job, the document is pushed onto their printing queue. <br> 2. [Removing documents] If the student wants to remove pending documents from their printing queue, the user can do so. <br> 3. [Printing failure] If a failure occurrs (i.e. the user doesn't have enough money to schedule the printing job), the reason why the failure occurred is shown to the user and the student is taken back to the listing page. |
+
+<br>
+
+## Domain Model
+
+<br>
+<p align="center" justify="center">
+    <img src="diagrams/svg/domain-model.svg" width="100%" />
+</p>
+<br>
