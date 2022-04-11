@@ -12,3 +12,4 @@
 
 - [Business Modeling](docs/business-modeling.md)
 - [Requirements](docs/requirements.md)
+- [Architecture and Design](docs/architectureanddesign.md)
