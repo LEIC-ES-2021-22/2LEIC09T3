@@ -1,88 +1,118 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-void main() {
-  runApp(const App());
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:sentry/sentry.dart';
+import 'package:redux/redux.dart';
+import 'package:uni/controller/middleware.dart';
+import 'package:uni/model/app_state.dart';
+import 'package:uni/redux/actions.dart';
+import 'package:uni/redux/reducers.dart';
+import 'package:uni/utils/constants.dart' as Constants;
+import 'package:uni/view/Pages/about_page_view.dart';
+import 'package:uni/view/Pages/bug_report_page_view.dart';
+import 'package:uni/view/Pages/bus_stop_next_arrivals_page.dart';
+import 'package:uni/view/Pages/exams_page_view.dart';
+import 'package:uni/view/Pages/home_page_view.dart';
+import 'package:uni/view/Pages/logout_route.dart';
+import 'package:uni/view/Pages/splash_page_view.dart';
+import 'package:uni/view/Widgets/page_transition.dart';
+import 'package:uni/view/navigation_service.dart';
+import 'package:uni/view/theme.dart';
+
+import 'controller/on_start_up.dart';
+import 'model/schedule_page_model.dart';
+
+/// Stores the state of the app
+final Store<AppState> state = Store<AppState>(appReducers,
+    /* Function defined in the reducers file */
+    initialState: AppState(null),
+    middleware: [generalMiddleware]);
+
+SentryEvent beforeSend(SentryEvent event) {
+  return event.level == SentryLevel.info ? event : null;
 }
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+Future<void> main() async {
+  OnStartUp.onStart(state);
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://a2661645df1c4992b24161010c5e0ecb@o553498.ingest.sentry.io/5680848';
+    },
+    appRunner: () => {runApp(MyApp())},
+  );
+}
 
+/// Manages the state of the app
+/// 
+/// This class is necessary to track the app's state for
+/// the current execution
+class MyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'uni',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        textTheme: const TextTheme(
-          headlineLarge: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontFamily: 'Raleway'
-          ),
-          bodySmall: TextStyle(
-            color: Colors.black87,
-            fontSize: 13,
-            fontFamily: 'Roboto',
-            height: 1.5
-          )
-        )
-      ),
-      home: const HomePage(title: 'uni - 2LEIC09T3'),
-    );
+  State<StatefulWidget> createState() {
+    return MyAppState(
+        state: Store<AppState>(appReducers,
+            /* Function defined in the reducers file */
+            initialState: AppState(null),
+            middleware: [generalMiddleware]));
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
+/// Manages the app depending on its current state
+class MyAppState extends State<MyApp> {
+  MyAppState({@required this.state}) {}
 
-  final String title;
+  final Store<AppState> state;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(width: 1, color: Colors.black),
-                color: Colors.white,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black,
-                    offset: Offset(4.0, 4.0))
-                ],
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    child: Text(
-                      'Credits',
-                      style: Theme.of(context).textTheme.headlineLarge,
-                    ),
-                    margin: const EdgeInsets.only(bottom: 16),
-                  ),
-                  Text(
-                    'Project made by:\n'
-                    '  André Lima - up202008169\n'
-                    '  Guilherme Almeida - up202006137\n'
-                    '  Guilherme Sequeira - up202004648\n'
-                    '  Mariana Lobão - up202004260\n'
-                    '  Pedro Ramalho - up202004715',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
-              ),
-              padding: const EdgeInsets.all(16),
-            ),
-          ],
-        ),
-      ),
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    return StoreProvider(
+      store: state,
+      child: MaterialApp(
+          title: 'uni',
+          theme: applicationLightTheme,
+          home: SplashScreen(),
+          navigatorKey: NavigationService.navigatorKey,
+          // ignore: missing_return
+          onGenerateRoute: (RouteSettings settings) {
+            switch (settings.name) {
+              case '/' + Constants.navPersonalArea:
+                return PageTransition.makePageTransition(
+                    page: HomePageView(), settings: settings);
+              case '/' + Constants.navSchedule:
+                return PageTransition.makePageTransition(
+                    page: SchedulePage(), settings: settings);
+              case '/' + Constants.navExams:
+                return PageTransition.makePageTransition(
+                    page: ExamsPageView(), settings: settings);
+              case '/' + Constants.navStops:
+                return PageTransition.makePageTransition(
+                    page: BusStopNextArrivalsPage(), settings: settings);
+              case '/' + Constants.navAbout:
+                return PageTransition.makePageTransition(
+                    page: AboutPageView(), settings: settings);
+              case '/' + Constants.navBugReport:
+                return PageTransition.makePageTransition(
+                    page: BugReportPageView(),
+                    settings: settings,
+                    maintainState: false);
+              case '/' + Constants.navLogOut:
+                return LogoutRoute.buildLogoutRoute();
+            }
+          }),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(Duration(seconds: 60),
+        (Timer t) => state.dispatch(SetCurrentTimeAction(DateTime.now())));
   }
 }
