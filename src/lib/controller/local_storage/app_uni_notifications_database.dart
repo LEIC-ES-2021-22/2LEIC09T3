@@ -4,11 +4,11 @@ import 'package:uni/model/entities/uni_notification.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// Manages the app's Notifications Data database.
-/// f
+///
 /// This database stores information about SIGARRA notifications.
 class AppNotificationsDatabase extends AppDatabase {
   AppNotificationsDatabase()
-      : super('notifications.db', ['CREATE TABLE notifications(title TEXT, content TEXT, status TEXT, day TEXT, month TEXT, year TEXT)']); 
+      : super('notifications.db', ['CREATE TABLE notifications(sigarraId INTEGER, title TEXT, content TEXT, read INTEGER, date TEXT)']); 
 
   /// Replaces all of the data in this database with [notifications].
   void saveNewNotifications(List<UniNotification> notifications) async { 
@@ -41,12 +41,11 @@ class AppNotificationsDatabase extends AppDatabase {
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
       return UniNotification(
+          maps[i]['sigarraId'],
           maps[i]['title'],
           maps[i]['content'],
-          maps[i]['status'],
-          maps[i]['day'],
-          maps[i]['month'],
-          maps[i]['year']);
+          maps[i]['read'],
+          maps[i]['date']);
     });
   }
   /// Deletes all of the data stored in this database.

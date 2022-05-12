@@ -1,50 +1,37 @@
-var months = {
-  'Janeiro': '01',
-  'Fevereiro': '02',
-  'Março': '03',
-  'Abril': '04',
-  'Maio': '05',
-  'Junho': '06',
-  'Julho': '07',
-  'Agosto': '08',
-  'Setembro': '09',
-  'Outubro': '10',
-  'Novembro': '11',
-  'Dezembro': '12'
-};
-
 /// Manages a UniNotification.
 ///
 /// The information stored is:
 /// - The `title`, `content` and `status` of the UniNotification
 /// - The UniNotification's `day`, `month` and `year`
 class UniNotification {
+  int sigarraId;
   String title;
   String content;
-  String status;
+  bool read;
 
-  String day;
-  String month;
-  String year;
+  DateTime date;
 
-  /// might be used (?)
-  // DateTime date;
 
-  UniNotification(String this.title, String this.content, String this.status, 
-                  String this.day, String this.month, String this.year) {
-    // final monthKey = months[this.month] (?) ;
-    // this.date = DateTime.parse(year + '-' + monthKey + '-' + day) (?) ;
+  UniNotification(int this.sigarraId, String this.title, String this.content,
+      int read, String date) {
+    this.read = (read == 1);
+    this.date = DateTime.parse(date);
   }
 
   /// Converts this UniNotification to a map.
   Map<String, dynamic> toMap() {
     return {
+      'sigarraId': sigarraId,
       'title': title,
       'content': content,
-      'status': status,
-      'day': day,
-      'month': month,
-      'year': year
+      'read': read ? 1 : 0,
+      'date': date.year.toString() +
+          '-' +
+          (date.month < 10 ? '0' : '') +
+          date.month.toString() +
+          '-' +
+          (date.day < 10 ? '0' : '') +
+          date.day.toString()
     };
   }
 
@@ -53,19 +40,17 @@ class UniNotification {
       identical(this, other) ||
       other is UniNotification &&
           runtimeType == other.runtimeType &&
+          sigarraId == other.sigarraId &&
           title == other.title &&
           content == other.content &&
-          status == other.status &&
-          day == other.day &&
-          month == other.month &&
-          year == other.year;
+          read == other.read &&
+          date == other.date;
 
   @override
   int get hashCode =>
+      sigarraId.hashCode ^
       title.hashCode ^
       content.hashCode ^
-      status.hashCode ^
-      day.hashCode ^
-      month.hashCode ^
-      year.hashCode;
+      read.hashCode ^
+      date.hashCode;
 }
