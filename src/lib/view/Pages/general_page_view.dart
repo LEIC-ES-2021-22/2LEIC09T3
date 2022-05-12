@@ -7,6 +7,7 @@ import 'dart:io';
 
 import 'package:uni/controller/load_info.dart';
 import 'package:uni/model/app_state.dart';
+import 'package:uni/model/notifications_page_model.dart';
 import 'package:uni/model/profile_page_model.dart';
 import 'package:uni/view/Widgets/navigation_drawer.dart';
 import 'package:uni/utils/constants.dart' as Constants;
@@ -108,6 +109,7 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
             ),
           )),
       actions: <Widget>[
+        getNotificationsIcon(context),  // alterar if pending
         getTopRightButton(context),
       ],
     );
@@ -132,4 +134,28 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
           );
         });
   }
+
+  Widget getNotificationsIcon(context) {
+    return IconButton(
+            iconSize: 30,
+            icon: Icon(Icons.notifications),
+            tooltip: 'Notificações',
+            onPressed: () => {
+              Navigator.push(
+                context, MaterialPageRoute(builder: (__) => NotificationsPage()))
+            },
+          );
+    }
+
+    Widget getPendingNotificationsIcon(context) {
+      return IconButton(
+              iconSize: 30,
+              icon: Icon(Icons.notifications_active),
+              tooltip: 'Notificações',
+              onPressed: () => {
+                Navigator.push(
+                  context, MaterialPageRoute(builder: (__) => NotificationsPage()))
+              },
+            );
+    }
 }

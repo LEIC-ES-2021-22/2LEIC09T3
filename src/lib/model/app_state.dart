@@ -7,6 +7,7 @@ import 'package:uni/utils/constants.dart' as Constants;
 import 'entities/exam.dart';
 import 'entities/lecture.dart';
 import 'entities/restaurant.dart';
+import 'entities/uni_notification.dart';
 
 enum RequestStatus { none, busy, failed, successful }
 
@@ -34,7 +35,21 @@ class AppState {
       'printBalanceStatus': RequestStatus.none,
       'feesStatus': RequestStatus.none,
       'coursesStateStatus': RequestStatus.none,
-      'lastUserInfoUpdateTime': null
+      'lastUserInfoUpdateTime': null,
+      'notifications': <UniNotification>[
+        UniNotification(
+          'cartão pronto',
+          'o cartão está pronto :)',
+          false,
+          '22 fev 2022',
+        ),
+        UniNotification(
+          'título',
+          'conteúdo',
+          true,
+          '1 abril 2020',
+        )
+      ],
     };
   }
 

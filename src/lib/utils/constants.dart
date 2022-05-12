@@ -6,6 +6,7 @@ const navExams = 'Mapa de Exames';
 const navStops = 'Autocarros';
 const navAbout = 'Sobre';
 const navBugReport = 'Bugs e Sugestões';
+const notifications = 'Notificações';
 const navLogOut = 'Terminar sessão';
 
 const faculties = ['faup', 'fbaup', 'fcup', 'fcnaup', 'fadeup',
