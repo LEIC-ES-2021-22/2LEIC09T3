@@ -7,6 +7,7 @@ import 'dart:io';
 
 import 'package:uni/controller/load_info.dart';
 import 'package:uni/model/app_state.dart';
+import 'package:uni/model/entities/uni_notification.dart';
 import 'package:uni/model/notifications_page_model.dart';
 import 'package:uni/model/profile_page_model.dart';
 import 'package:uni/view/Widgets/navigation_drawer.dart';
@@ -77,7 +78,6 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
   /// an option button and a button with the user's picture.
   AppBar buildAppBar(BuildContext context) {
     final MediaQueryData queryData = MediaQuery.of(context);
-
     return AppBar(
       bottom: PreferredSize(
         preferredSize: Size.zero,
@@ -109,7 +109,7 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
             ),
           )),
       actions: <Widget>[
-        getNotificationsIcon(context),  // alterar if pending
+        getNotificationsIcon(context),
         getTopRightButton(context),
       ],
     );
@@ -124,7 +124,7 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
           return TextButton(
             onPressed: () => {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (__) => ProfilePage()))
+                  context, MaterialPageRoute(builder: (__) => NotificationsPage()))
             },
             child: Container(
                 width: 40.0,
@@ -135,27 +135,28 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
         });
   }
 
-  Widget getNotificationsIcon(context) {
+  Widget getNotificationsIcon(BuildContext context) {
+        return StoreConnector<AppState, List<UniNotification>>(
+      converter: (store) => store.state.content['notifications'],
+      builder: (context, notifications) {
+
+        bool hasPendingNotifications = false;
+        for (final UniNotification notif in notifications) {
+          if (!notif.read) {
+            hasPendingNotifications = true;
+            break;
+          }
+        }
+
     return IconButton(
             iconSize: 30,
-            icon: Icon(Icons.notifications),
+            icon: Icon(hasPendingNotifications ? Icons.notifications_active : Icons.notifications),
             tooltip: 'Notificações',
             onPressed: () => {
               Navigator.push(
                 context, MaterialPageRoute(builder: (__) => NotificationsPage()))
             },
           );
-    }
-
-    Widget getPendingNotificationsIcon(context) {
-      return IconButton(
-              iconSize: 30,
-              icon: Icon(Icons.notifications_active),
-              tooltip: 'Notificações',
-              onPressed: () => {
-                Navigator.push(
-                  context, MaterialPageRoute(builder: (__) => NotificationsPage()))
-              },
-            );
+      });
     }
 }

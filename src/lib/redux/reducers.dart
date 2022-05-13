@@ -64,6 +64,8 @@ AppState appReducers(AppState state, dynamic action) {
     return setUserFaculties(state, action);
   } else if(action is SetRestaurantsAction){
     return setRestaurantsAction(state, action);
+  } else if(action is SetNotifications) {
+    return setNotifications(state, action);
   }
   return state;
 }
@@ -217,4 +219,9 @@ AppState setExamFilter(AppState state, SetExamFilter action) {
 AppState setUserFaculties(AppState state, SetUserFaculties action) {
   Logger().i('setting user faculty(ies) ' + action.faculties.toString());
   return state.cloneAndUpdateValue('userFaculties', action.faculties);
+}
+
+AppState  setNotifications(AppState state, SetNotifications action) {
+  Logger().i('setting notifications' + action.notifications.toString());
+  return state.cloneAndUpdateValue('notifications', action.notifications);
 }

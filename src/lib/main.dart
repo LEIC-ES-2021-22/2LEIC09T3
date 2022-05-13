@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:sentry/sentry.dart';
 import 'package:redux/redux.dart';
 import 'package:uni/controller/middleware.dart';
 import 'package:uni/model/app_state.dart';
-import 'package:uni/model/notifications_page_model.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/reducers.dart';
 import 'package:uni/utils/constants.dart' as Constants;
@@ -18,9 +16,7 @@ import 'package:uni/view/Pages/bus_stop_next_arrivals_page.dart';
 import 'package:uni/view/Pages/exams_page_view.dart';
 import 'package:uni/view/Pages/home_page_view.dart';
 import 'package:uni/view/Pages/logout_route.dart';
-import 'package:uni/view/Pages/notifications_page_view.dart';
 import 'package:uni/view/Pages/splash_page_view.dart';
-import 'package:uni/view/Pages/notifications_page_view.dart';
 import 'package:uni/view/Widgets/page_transition.dart';
 import 'package:uni/view/navigation_service.dart';
 import 'package:uni/view/theme.dart';
@@ -50,7 +46,7 @@ Future<void> main() async {
 }
 
 /// Manages the state of the app
-/// 
+///
 /// This class is necessary to track the app's state for
 /// the current execution
 class MyApp extends StatefulWidget {

@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/uni_notification.dart';
+import 'package:uni/model/single_notification_page_model.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/slidable_widget.dart';
-import 'package:uni/view/Pages/secondary_page_view.dart';
 
 class NotificationsPageView extends StatelessWidget {
   final List<UniNotification> notifications;
-  final void Function(UniNotification) removeNotification;
+  final bool Function(BuildContext, int) removeNotification;
+  final bool Function(BuildContext, int) changeNotificationState;
 
   NotificationsPageView({
     Key key,
     @required this.notifications,
     @required this.removeNotification,
+    @required this.changeNotificationState,
   });
 
   @override
@@ -28,39 +29,71 @@ class NotificationsPageView extends StatelessWidget {
       ),
       Expanded(
           child: ListView.builder(
-        itemCount: 2,
+        itemCount: notifications.length,
         itemBuilder: (context, index) {
           final item = notifications[index];
 
           return SlidableWidget(
-            child: buildListTile(item),
+            child: Card(
+              elevation: 3,
+              child: buildListTile(context, item)
+            ),
+            onDelete: (context) => removeNotification(context, index),
+            changeState: changeNotifState(context, index),
           );
         },
       ))
     ]);
   }
 
-  Widget buildListTile(UniNotification item) => ListTile(
+  SlidableAction changeNotifState(BuildContext context, int index) {
+    return SlidableAction(
+      onPressed: (context) => changeNotificationState(context, index),
+      //(context) => changeNotificationState(context, index),
+      backgroundColor: Color.fromARGB(255, 215, 215, 215),
+      label: 'Marcar como${notifications[index].read ? ' não' : ''} lida',
+    );
+  }
+
+  Widget buildListTile(BuildContext context, UniNotification item) => ListTile(
+    leading: Icon(Icons.clear_all),
       contentPadding: EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 16,
       ),
+      onTap: () => {
+            if (!item.read)
+              changeNotificationState(
+                context,
+                notifications.indexWhere((element) => element == item),
+              ),
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (__) =>
+                        SingleNotificationPage(notification: item)))
+          },
+      /*
       shape: ContinuousRectangleBorder(
           side: BorderSide(
-        color: Color.fromARGB(255, 128, 128, 128),
-        width: 1.2,
-      )),
+          color: Color.fromARGB(255, 128, 128, 128),
+            width: 1.2,
+      )),*/
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             item.date,
-            style: TextStyle(fontWeight: FontWeight.w300),
+            style: item.read
+                ? Theme.of(context).textTheme.bodyText2
+                : Theme.of(context).textTheme.bodyText1,
           ),
           const SizedBox(height: 4),
           Text(
             item.title,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: item.read
+                ? Theme.of(context).textTheme.bodyText2
+                : Theme.of(context).textTheme.bodyText1,
           ),
         ],
       ));

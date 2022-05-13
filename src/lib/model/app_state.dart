@@ -38,16 +38,28 @@ class AppState {
       'lastUserInfoUpdateTime': null,
       'notifications': <UniNotification>[
         UniNotification(
-          'cartão pronto',
+          'Cartão pronto',
           'o cartão está pronto :)',
           false,
           '22 fev 2022',
         ),
         UniNotification(
-          'título',
+          'Titulo',
           'conteúdo',
           true,
           '1 abril 2020',
+        ),
+        UniNotification(
+          'Lorem ipsum dolor sit amet',
+          '''Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim 
+          ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
+          aliquip ex ea commodo consequat. Duis aute irure dolor in 
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat 
+          nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+          sunt in culpa qui officia deserunt mollit anim id est laborum.''',
+          true,
+          '16 dezembro 2021',
         )
       ],
     };
