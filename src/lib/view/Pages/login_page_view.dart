@@ -259,6 +259,7 @@ class _LoginPageViewState extends State<LoginPageView> {
             _login(context);
           },
           child: Text('Entrar',
+              key: const ValueKey('login_button'),
               style: TextStyle(
                   color: Theme.of(context).accentColor,
                   fontWeight: FontWeight.w400,

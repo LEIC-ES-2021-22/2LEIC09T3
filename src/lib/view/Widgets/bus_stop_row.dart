@@ -1,5 +1,4 @@
 import 'package:uni/model/entities/trip.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uni/view/Widgets/trip_row.dart';
 

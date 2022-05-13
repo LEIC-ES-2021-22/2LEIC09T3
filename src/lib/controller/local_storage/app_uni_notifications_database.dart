@@ -44,8 +44,8 @@ class AppNotificationsDatabase extends AppDatabase {
           maps[i]['sigarraId'],
           maps[i]['title'],
           maps[i]['content'],
-          maps[i]['read'],
-          maps[i]['date']);
+          maps[i]['read'] == 1,
+          DateTime.parse(maps[i]['date']));
     });
   }
   /// Deletes all of the data stored in this database.

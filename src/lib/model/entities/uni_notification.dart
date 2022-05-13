@@ -4,19 +4,32 @@
 /// - The `title`, `content` and `status` of the UniNotification
 /// - The UniNotification's `day`, `month` and `year`
 class UniNotification {
+
+  static final _months = [
+    'jan',
+    'fev',
+    'mar',
+    'abr',
+    'mai',
+    'jun',
+    'jul',
+    'ago',
+    'set',
+    'out',
+    'nov',
+    'dez'
+  ];
+
   int sigarraId;
   String title;
   String content;
   bool read;
-
   DateTime date;
 
+  String get readableDate => '${date.day} ${_months[date.month - 1]} ${date.year}';
 
-  UniNotification(int this.sigarraId, String this.title, String this.content,
-      int read, String date) {
-    this.read = (read == 1);
-    this.date = DateTime.parse(date);
-  }
+  UniNotification(this.sigarraId, this.title, this.content,
+      this.read, this.date);
 
   /// Converts this UniNotification to a map.
   Map<String, dynamic> toMap() {
@@ -24,15 +37,19 @@ class UniNotification {
       'sigarraId': sigarraId,
       'title': title,
       'content': content,
-      'read': read ? 1 : 0,
-      'date': date.year.toString() +
-          '-' +
-          (date.month < 10 ? '0' : '') +
-          date.month.toString() +
-          '-' +
-          (date.day < 10 ? '0' : '') +
-          date.day.toString()
+      'read': read,
+      'date': date.toString(),
     };
+  }
+
+  UniNotification copyWith({ int sigarraId, String title, String content, bool read, DateTime date }) {
+    return UniNotification(
+      sigarraId ?? this.sigarraId,
+      title ?? this.title,
+      content ?? this.content,
+      read ?? this.read,
+      date ?? this.date
+    );
   }
 
   @override
