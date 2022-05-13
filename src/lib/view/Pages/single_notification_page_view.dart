@@ -56,6 +56,8 @@ class SingleNotificationPageViewState extends UnnamedPageView {
                     textAlign: TextAlign.left,
                     style: Theme.of(context).textTheme.displayMedium,
             ),
+    );
+  }
 
   Widget notificationDate(BuildContext context) {
     return Container(
