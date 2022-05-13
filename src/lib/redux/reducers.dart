@@ -68,6 +68,8 @@ AppState appReducers(AppState state, dynamic action) {
     return setVirtualCard(state, action);
   } else if (action is SetVirtualCardStatus) {
     return setVirtualCardStatus(state, action);
+  } else if(action is SetNotifications) {
+    return setNotifications(state, action);
   }
 
   return state;
@@ -232,4 +234,9 @@ AppState setVirtualCard(AppState state, SetVirtualCard action) {
 AppState setVirtualCardStatus(AppState state, SetVirtualCardStatus action) {
   Logger().i('setting user virtual card status to ' + action.status.name);
   return state.cloneAndUpdateValue('virtualCardStatus', action.status);
+}
+
+AppState  setNotifications(AppState state, SetNotifications action) {
+  Logger().i('setting notifications' + action.notifications.toString());
+  return state.cloneAndUpdateValue('notifications', action.notifications);
 }
