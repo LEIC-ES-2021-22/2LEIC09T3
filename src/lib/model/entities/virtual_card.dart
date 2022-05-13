@@ -8,7 +8,7 @@ class VirtualCard {
 
   VirtualCard(int this.cardId, String this.privateKey) {}
 
-  /// Converts this UniNotification to a map.
+  /// Converts this VirtualCard to a map.
   Map<String, dynamic> toMap() {
     return {'cardId': cardId, 'privateKey': privateKey};
   }
