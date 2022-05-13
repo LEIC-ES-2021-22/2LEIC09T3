@@ -124,7 +124,7 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
           return TextButton(
             onPressed: () => {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (__) => NotificationsPage()))
+                  context, MaterialPageRoute(builder: (__) => ProfilePage()))
             },
             child: Container(
                 width: 40.0,

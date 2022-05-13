@@ -45,6 +45,8 @@ class SingleNotificationPageViewState extends UnnamedPageView {
     list.add(Padding(padding: const EdgeInsets.all(5.0)));
     list.add(notificationTitle(context));
     list.add(Padding(padding: const EdgeInsets.all(5.0)));
+    list.add(notificationDate(context));
+    list.add(Padding(padding: const EdgeInsets.all(5.0)));
     list.add(notificationIntro(context));
     return list;
   }
@@ -56,38 +58,55 @@ class SingleNotificationPageViewState extends UnnamedPageView {
 
   Widget notificationTitle(BuildContext context) {
     return Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-        child: Row(
-          children: <Widget>[
-            Icon(Icons.article_rounded,
-                color: Theme.of(context).accentColor, size: 50.0),
-            Expanded(
-                child: Text(
-              notification.title,
-              textScaleFactor: 1.6,
-              textAlign: TextAlign.center,
-            )),
-            Text(
-              notification.date,
-              style: Theme.of(context).textTheme.bodyText1,
+        alignment: Alignment.centerLeft,
+        margin: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+        child: Text(
+                    notification.title,
+                    textScaleFactor: 1.6,
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.displayMedium,
             ),
-          ],
-        ));
+        // child: Row(
+        //   children: <Widget>[
+
+        //     Container(
+        //       alignment: Alignment.center,
+        //       width: 80.0,
+        //       child:
+        //         Text(
+        //           notification.date,
+        //           textAlign: TextAlign.center,
+        //           style: Theme.of(context).textTheme.headlineSmall,
+        //         ),
+        //       )
+        //   ],
+      );
+  }
+
+  Widget notificationDate(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.only(bottom: 10.0, left: 20.0, right: 20.0),
+      child: Text(
+          notification.date,
+          textAlign: TextAlign.left,
+          style: Theme.of(context).textTheme.bodySmall,
+        )
+    );
   }
 
   Widget notificationIntro(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(color: Theme.of(context).dividerColor))),
-      padding: EdgeInsets.only(bottom: 20, left: 20),
-      child: Center(
-        child: Text(
-          notification.content,
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
+      // decoration: BoxDecoration(
+      //     border: Border(
+      //         bottom: BorderSide(color: Theme.of(context).dividerColor))),
+      padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+      child: Text(
+        notification.content,
+        style: Theme.of(context).primaryTextTheme.bodyMedium.copyWith(
+        color: Colors.black, 
+        fontWeight: FontWeight.w400,
       ),
-    );
+    ));
   }
 }

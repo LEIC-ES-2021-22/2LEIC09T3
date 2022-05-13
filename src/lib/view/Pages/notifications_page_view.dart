@@ -28,21 +28,27 @@ class NotificationsPageView extends StatelessWidget {
         ],
       ),
       Expanded(
-          child: ListView.builder(
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          final item = notifications[index];
+          child: notifications.isEmpty ? 
+            Text(
+              "Não há notificações para mostrar.",
+              style: Theme.of(context).textTheme.bodyMedium,
+              )
+            : ListView.builder(
+              itemCount: notifications.length,
+              itemBuilder: (context, index) {
+                final item = notifications[index];
 
-          return SlidableWidget(
-            child: Card(
-              elevation: 3,
-              child: buildListTile(context, item)
-            ),
-            onDelete: (context) => removeNotification(context, index),
-            changeState: changeNotifState(context, index),
-          );
-        },
-      ))
+                return SlidableWidget(
+                  child: Card(
+                    elevation: 3,
+                    child: buildListTile(context, item)
+                  ),
+                  onDelete: (context) => removeNotification(context, index),
+                  changeState: changeNotifState(context, index),
+                );
+              },
+            )
+        )
     ]);
   }
 
@@ -61,17 +67,19 @@ class NotificationsPageView extends StatelessWidget {
         horizontal: 16,
         vertical: 16,
       ),
-      onTap: () => {
-            if (!item.read)
+      onTap: () {
+            if (!item.read) {
               changeNotificationState(
                 context,
                 notifications.indexWhere((element) => element == item),
-              ),
+              );
+            }
+
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (__) =>
-                        SingleNotificationPage(notification: item)))
+                        SingleNotificationPage(notification: item)));
           },
       /*
       shape: ContinuousRectangleBorder(

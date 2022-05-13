@@ -17,7 +17,6 @@ class SlidableWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Slidable(
-        key: const ValueKey(0),
         child: child,
         startActionPane: ActionPane(
           motion: BehindMotion(),
@@ -34,7 +33,7 @@ class SlidableWidget<T> extends StatelessWidget {
         ),
         endActionPane: ActionPane(
           motion: BehindMotion(),
-          extentRatio: 0.4,
+          extentRatio: 0.25,
           children: [
             SlidableAction(
               backgroundColor: Color.fromARGB(255, 0x75, 0x17, 0x1e),
