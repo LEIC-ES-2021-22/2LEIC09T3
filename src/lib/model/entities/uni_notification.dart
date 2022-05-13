@@ -1,47 +1,55 @@
-var months = {
-  'Janeiro': '01',
-  'Fevereiro': '02',
-  'Março': '03',
-  'Abril': '04',
-  'Maio': '05',
-  'Junho': '06',
-  'Julho': '07',
-  'Agosto': '08',
-  'Setembro': '09',
-  'Outubro': '10',
-  'Novembro': '11',
-  'Dezembro': '12'
-};
-
 /// Manages a UniNotification.
 ///
 /// The information stored is:
 /// - The `title`, `content` and `status` of the UniNotification
 /// - The UniNotification's `day`, `month` and `year`
 class UniNotification {
+
+  static final _months = [
+    'jan',
+    'fev',
+    'mar',
+    'abr',
+    'mai',
+    'jun',
+    'jul',
+    'ago',
+    'set',
+    'out',
+    'nov',
+    'dez'
+  ];
+
+  int sigarraId;
   String title;
   String content;
   bool read;
+  DateTime date;
 
-  String date;
+  String get readableDate => '${date.day} ${_months[date.month - 1]} ${date.year}';
 
-  /// might be used (?)
-  // DateTime date;
-
-  UniNotification(String this.title, String this.content, bool this.read,
-      String this.date) {
-    // final monthKey = months[this.month] (?) ;
-    // this.date = DateTime.parse(year + '-' + monthKey + '-' + day) (?) ;
-  }
+  UniNotification(this.sigarraId, this.title, this.content,
+      this.read, this.date);
 
   /// Converts this UniNotification to a map.
   Map<String, dynamic> toMap() {
     return {
+      'sigarraId': sigarraId,
       'title': title,
       'content': content,
       'read': read,
-      'date': date,
+      'date': date.toString(),
     };
+  }
+
+  UniNotification copyWith({ int sigarraId, String title, String content, bool read, DateTime date }) {
+    return UniNotification(
+      sigarraId ?? this.sigarraId,
+      title ?? this.title,
+      content ?? this.content,
+      read ?? this.read,
+      date ?? this.date
+    );
   }
 
   @override
@@ -49,6 +57,7 @@ class UniNotification {
       identical(this, other) ||
       other is UniNotification &&
           runtimeType == other.runtimeType &&
+          sigarraId == other.sigarraId &&
           title == other.title &&
           content == other.content &&
           read == other.read &&
@@ -56,5 +65,9 @@ class UniNotification {
 
   @override
   int get hashCode =>
-      title.hashCode ^ content.hashCode ^ read.hashCode ^ date.hashCode;
+      sigarraId.hashCode ^
+      title.hashCode ^
+      content.hashCode ^
+      read.hashCode ^
+      date.hashCode;
 }

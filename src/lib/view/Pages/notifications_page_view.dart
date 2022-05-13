@@ -91,7 +91,7 @@ class NotificationsPageView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            item.date,
+            item.readableDate,
             style: item.read
                 ? Theme.of(context).textTheme.bodyText2
                 : Theme.of(context).textTheme.bodyText1,

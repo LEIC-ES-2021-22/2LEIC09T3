@@ -88,7 +88,7 @@ class SingleNotificationPageViewState extends UnnamedPageView {
       alignment: Alignment.centerLeft,
       margin: EdgeInsets.only(bottom: 10.0, left: 20.0, right: 20.0),
       child: Text(
-          notification.date,
+          notification.readableDate,
           textAlign: TextAlign.left,
           style: Theme.of(context).textTheme.bodySmall,
         )

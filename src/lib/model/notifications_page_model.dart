@@ -36,8 +36,7 @@ class _NotificationsPageState extends SecondaryPageViewState {
 
     final newNotifications = notifications.map((notification) {
       return notification == notifications[index]
-          ? UniNotification(notification.title, notification.content, 
-          !notification.read, notification.date)
+          ? notification.copyWith(read: !notification.read)
           : notification;
     }).toList();
 
