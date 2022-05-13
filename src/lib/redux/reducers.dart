@@ -64,7 +64,12 @@ AppState appReducers(AppState state, dynamic action) {
     return setUserFaculties(state, action);
   } else if(action is SetRestaurantsAction){
     return setRestaurantsAction(state, action);
+  } else if (action is SetVirtualCard) {
+    return setVirtualCard(state, action);
+  } else if (action is SetVirtualCardStatus) {
+    return setVirtualCardStatus(state, action);
   }
+
   return state;
 }
 
@@ -217,4 +222,14 @@ AppState setExamFilter(AppState state, SetExamFilter action) {
 AppState setUserFaculties(AppState state, SetUserFaculties action) {
   Logger().i('setting user faculty(ies) ' + action.faculties.toString());
   return state.cloneAndUpdateValue('userFaculties', action.faculties);
+}
+
+AppState setVirtualCard(AppState state, SetVirtualCard action) {
+  Logger().i('setting user virtual card to ' + action.virtualCard.cardId.toString());
+  return state.cloneAndUpdateValue('virtualCard', action.virtualCard);
+}
+
+AppState setVirtualCardStatus(AppState state, SetVirtualCardStatus action) {
+  Logger().i('setting user virtual card status to ' + action.status.name);
+  return state.cloneAndUpdateValue('virtualCardStatus', action.status);
 }

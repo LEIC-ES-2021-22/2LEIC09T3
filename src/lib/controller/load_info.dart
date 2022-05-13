@@ -7,6 +7,7 @@ import 'package:redux/redux.dart';
 import 'package:uni/controller/local_storage/image_offline_storage.dart';
 import 'package:uni/controller/parsers/parser_exams.dart';
 import 'package:uni/model/app_state.dart';
+import 'package:uni/model/entities/virtual_card.dart';
 import 'package:uni/redux/action_creators.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/refresh_items_action.dart';
@@ -107,6 +108,13 @@ void loadLocalUserInfoToState(store) async {
     store.dispatch(SetPrintBalanceStatusAction(RequestStatus.successful));
     store.dispatch(SetFeesStatusAction(RequestStatus.successful));
     store.dispatch(SetCoursesStatesStatusAction(RequestStatus.successful));
+
+    // TODO: Make this work
+    store.dispatch(SetVirtualCardStatus(RequestStatus.busy));
+    await Future.delayed(Duration(seconds: 2), () {
+      store.dispatch(SetVirtualCardStatus(RequestStatus.successful));
+      store.dispatch(SetVirtualCard(VirtualCard(123, "12312312")));
+    });
   }
 }
 

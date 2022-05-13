@@ -9,7 +9,7 @@ import 'package:uni/view/Widgets/account_info_card.dart';
 import 'package:uni/view/Widgets/back_button_exit_wrapper.dart';
 import 'package:uni/view/Widgets/bus_stop_card.dart';
 import 'package:uni/view/Widgets/exam_card.dart';
-import 'package:uni/view/Widgets/in_app_card.dart';
+import 'package:uni/view/Widgets/virtual_card_card.dart';
 import 'package:uni/view/Widgets/print_info_card.dart';
 import 'package:uni/view/Widgets/schedule_card.dart';
 
@@ -26,7 +26,7 @@ class MainCardsList extends StatelessWidget {
     FAVORITE_WIDGET_TYPE.busStops: (k, em, od) =>
         BusStopCard.fromEditingInformation(k, em, od),
     FAVORITE_WIDGET_TYPE.inAppCard: (k, em, od) =>
-        InAppCardCard.fromEditingInformation(k, em, od)
+        VirtualCardCard.fromEditingInformation(k, em, od)
   };
 
   @override
