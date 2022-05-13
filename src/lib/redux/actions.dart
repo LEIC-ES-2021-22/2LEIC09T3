@@ -6,6 +6,7 @@ import 'package:uni/model/entities/profile.dart';
 import 'package:uni/model/entities/restaurant.dart';
 import 'package:uni/model/entities/session.dart';
 import 'package:uni/model/entities/trip.dart';
+import 'package:uni/model/entities/virtual_card.dart';
 import 'package:uni/model/entities/uni_notification.dart';
 import 'package:uni/model/home_page_model.dart';
 
@@ -164,6 +165,16 @@ class SetExamFilter {
 class SetUserFaculties {
   List<String> faculties;
   SetUserFaculties(this.faculties);
+}
+
+class SetVirtualCard {
+  VirtualCard virtualCard;
+  SetVirtualCard(this.virtualCard);
+}
+
+class SetVirtualCardStatus {
+  RequestStatus status;
+  SetVirtualCardStatus(this.status);
 }
 
 class SetNotifications {
