@@ -5,7 +5,6 @@ import 'package:uni/view/Widgets/form_text_field.dart';
 import 'package:uni/view/Widgets/toast_message.dart';
 import 'package:email_validator/email_validator.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tuple/tuple.dart';
