@@ -20,6 +20,6 @@
 
 <br>
 <p align="center" justify="center">
-    <img src="images/vertical-prototype.png" width="50%" />
+    <img src="images/v0/vertical-prototype.png" width="50%" />
 </p>
 <br>
