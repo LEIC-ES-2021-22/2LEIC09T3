@@ -22,13 +22,6 @@ class SlidableWidget<T> extends StatelessWidget {
           motion: BehindMotion(),
           children: [
             changeState,
-            /*
-            SlidableAction(
-              onPressed: changeState,
-              backgroundColor: Color.fromARGB(255, 215, 215, 215),
-              label: 'Marcar como lida',
-            ),
-            */
           ],
         ),
         endActionPane: ActionPane(

@@ -3,16 +3,6 @@ import 'package:uni/model/entities/uni_notification.dart';
 import 'package:uni/model/profile_page_model.dart';
 import 'package:uni/view/Pages/unnamed_page_view.dart';
 
-/*
-class SingleNotificationPageView extends StatelessWidget {
-  final UniNotification notification;
-
-  SingleNotificationPageView({
-    Key key,
-    @required this.notification,
-  });
-}
-*/
 class SingleNotificationPageView extends StatefulWidget {
   
   final UniNotification notification;
@@ -66,22 +56,6 @@ class SingleNotificationPageViewState extends UnnamedPageView {
                     textAlign: TextAlign.left,
                     style: Theme.of(context).textTheme.displayMedium,
             ),
-        // child: Row(
-        //   children: <Widget>[
-
-        //     Container(
-        //       alignment: Alignment.center,
-        //       width: 80.0,
-        //       child:
-        //         Text(
-        //           notification.date,
-        //           textAlign: TextAlign.center,
-        //           style: Theme.of(context).textTheme.headlineSmall,
-        //         ),
-        //       )
-        //   ],
-      );
-  }
 
   Widget notificationDate(BuildContext context) {
     return Container(
@@ -97,9 +71,6 @@ class SingleNotificationPageViewState extends UnnamedPageView {
 
   Widget notificationIntro(BuildContext context) {
     return Container(
-      // decoration: BoxDecoration(
-      //     border: Border(
-      //         bottom: BorderSide(color: Theme.of(context).dividerColor))),
       padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
       child: Text(
         notification.content,
