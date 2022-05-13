@@ -24,18 +24,11 @@ import 'package:uni/view/theme.dart';
 import 'controller/on_start_up.dart';
 import 'model/schedule_page_model.dart';
 
-/// Stores the state of the app
-final Store<AppState> state = Store<AppState>(appReducers,
-    /* Function defined in the reducers file */
-    initialState: AppState(null),
-    middleware: [generalMiddleware]);
-
 SentryEvent beforeSend(SentryEvent event) {
   return event.level == SentryLevel.info ? event : null;
 }
 
 Future<void> main() async {
-  OnStartUp.onStart(state);
   await SentryFlutter.init(
     (options) {
       options.dsn =
