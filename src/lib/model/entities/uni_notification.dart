@@ -37,7 +37,7 @@ class UniNotification {
       'sigarraId': sigarraId,
       'title': title,
       'content': content,
-      'read': read,
+      'read': read ? 1 : 0,
       'date': date.toString(),
     };
   }
@@ -60,7 +60,6 @@ class UniNotification {
           sigarraId == other.sigarraId &&
           title == other.title &&
           content == other.content &&
-          read == other.read &&
           date == other.date;
 
   @override

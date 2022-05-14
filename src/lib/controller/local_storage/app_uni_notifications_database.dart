@@ -8,24 +8,23 @@ import 'package:sqflite/sqflite.dart';
 /// This database stores information about SIGARRA notifications.
 class AppNotificationsDatabase extends AppDatabase {
   AppNotificationsDatabase()
-      : super('notifications.db', ['CREATE TABLE notifications(sigarraId INTEGER, title TEXT, content TEXT, read INTEGER, date TEXT)']); 
+      : super('notifications.db', ['CREATE TABLE notifications(sigarraId INTEGER PRIMARY KEY, title TEXT, content TEXT, read INTEGER, date TEXT)']); 
 
   /// Replaces all of the data in this database with [notifications].
   void saveNewNotifications(List<UniNotification> notifications) async { 
     await deleteNotifications();
-    await _insertNotifications(notifications);
+    await insertNotifications(notifications);
   }
 
   /// Adds all items from [notifications] to this database.
   /// 
-  /// If a row with the same data is present, it will be replaced.
-
-  Future<void> _insertNotifications(List<UniNotification> notifications) async {
+  /// If a row with the same data is present, nothing is done.
+  Future<void> insertNotifications(List<UniNotification> notifications) async {
     for (UniNotification notification in notifications) {
       await insertInDatabase(
         'notifications',
         notification.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
+        conflictAlgorithm: ConflictAlgorithm.abort,
       );
     }
   }

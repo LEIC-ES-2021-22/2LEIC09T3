@@ -11,6 +11,7 @@ import 'package:uni/model/entities/virtual_card.dart';
 import 'package:uni/redux/action_creators.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/refresh_items_action.dart';
+import 'package:uni/utils/constants.dart';
 
 import 'local_storage/app_shared_preferences.dart';
 
@@ -57,7 +58,8 @@ Future loadRemoteUserInfoToState(Store<AppState> store) async {
       coursesStates = Completer(),
       trips = Completer(),
       lastUpdate = Completer(),
-      restaurants = Completer();
+      restaurants = Completer(),
+      notifications = Completer();
 
   store.dispatch(getUserInfo(userInfo));
   store.dispatch(getUserPrintBalance(printBalance));
@@ -71,6 +73,7 @@ Future loadRemoteUserInfoToState(Store<AppState> store) async {
   userInfo.future.then((value) {
     store.dispatch(getUserExams(exams, ParserExams(), userPersistentInfo));
     store.dispatch(getUserSchedule(schedule, userPersistentInfo));
+    store.dispatch(getUserNotifications(notifications, userPersistentInfo));
   });
 
   final allRequests = Future.wait([
@@ -104,10 +107,12 @@ void loadLocalUserInfoToState(store) async {
     store.dispatch(updateStateBasedOnLocalUserBusStops());
     store.dispatch(updateStateBasedOnLocalRefreshTimes());
     store.dispatch(updateStateBasedOnLocalTime());
+    store.dispatch(updateStateBasedOnLocalNotifications());
     store.dispatch(SaveProfileStatusAction(RequestStatus.successful));
     store.dispatch(SetPrintBalanceStatusAction(RequestStatus.successful));
     store.dispatch(SetFeesStatusAction(RequestStatus.successful));
     store.dispatch(SetCoursesStatesStatusAction(RequestStatus.successful));
+    store.dispatch(SetNotificationStatusAction(RequestStatus.successful));
 
     // TODO: Make this work
     store.dispatch(SetVirtualCardStatus(RequestStatus.busy));

@@ -28,7 +28,7 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
   }
 
   /// Returns the current user image.
-  /// 
+  ///
   /// If the image is not found / doesn't exist returns a generic placeholder.
   DecorationImage getDecorageImage(File x) {
     final fallbackImage = decorageImage == null
@@ -73,7 +73,7 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
   }
 
   /// Builds the upper bar of the app.
-  /// 
+  ///
   /// This method returns an instance of `AppBar` containing the app's logo,
   /// an option button and a button with the user's picture.
   AppBar buildAppBar(BuildContext context) {
@@ -136,27 +136,28 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
   }
 
   Widget getNotificationsIcon(BuildContext context) {
-        return StoreConnector<AppState, List<UniNotification>>(
-      converter: (store) => store.state.content['notifications'],
-      builder: (context, notifications) {
-
-        bool hasPendingNotifications = false;
-        for (final UniNotification notif in notifications) {
-          if (!notif.read) {
-            hasPendingNotifications = true;
-            break;
+    return StoreConnector<AppState, List<UniNotification>>(
+        converter: (store) => store.state.content['notifications'],
+        builder: (context, notifications) {
+          bool hasPendingNotifications = false;
+          for (final UniNotification notif in notifications) {
+            if (!notif.read) {
+              hasPendingNotifications = true;
+              break;
+            }
           }
-        }
 
-    return IconButton(
+          return IconButton(
             iconSize: 30,
-            icon: Icon(hasPendingNotifications ? Icons.notifications_active : Icons.notifications),
+            icon: Icon(hasPendingNotifications
+                ? Icons.notifications_active
+                : Icons.notifications),
             tooltip: 'Notificações',
             onPressed: () => {
-              Navigator.push(
-                context, MaterialPageRoute(builder: (__) => NotificationsPage()))
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (__) => NotificationsPage()))
             },
           );
-      });
-    }
+        });
+  }
 }
