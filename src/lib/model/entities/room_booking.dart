@@ -2,32 +2,31 @@
 ///
 /// The information stored is:
 /// - The `bookingId`, `accepted` and `room` of the RoomBooking
-/// - The RoomBooking's `day`, `month`, `year`, `hours` and `minutes`
+/// - The RoomBooking's `duration`, `day`, `month`, `year`, `hours` and `minutes`
 class RoomBooking {
   int bookingId;
   bool accepted;
+  double duration;
   String room;
   DateTime date;
 
-  RoomBooking(this.bookingId, this.accepted, this.room, this.date) {}
+  RoomBooking(this.bookingId, this.accepted, this.room, this.duration, this.date) {}
 
-  /// Converts this RoomBOoking to a map.
+  /// Converts this RoomBooking to a map.
   Map<String, dynamic> toMap() {
     return {
       'bookingId': bookingId,
       'accepted': accepted,
       'room': room,
+      'duration': duration,
       'date': date.toString()
     };
   }
 
-  RoomBooking copyWith({ int bookingId, bool accepted, String room, DateTime date }) {
-    return RoomBooking(
-      bookingId ?? this.bookingId,
-      accepted ?? this.accepted,
-      room ?? this.room,
-      date ?? this.date
-    );
+  RoomBooking copyWith(
+      {int bookingId, bool accepted, String room, DateTime date}) {
+    return RoomBooking(bookingId ?? this.bookingId, accepted ?? this.accepted,
+        room ?? this.room, duration ?? this.duration, date ?? this.date);
   }
 
   @override
@@ -38,12 +37,14 @@ class RoomBooking {
           bookingId == other.bookingId &&
           accepted == other.accepted &&
           room == other.room &&
+          duration == other.duration &&
           date == other.date;
 
   @override
   int get hashCode =>
-      bookingId.hashCode ^
-      accepted.hashCode ^
-      room.hashCode ^
+      bookingId.hashCode ^ 
+      accepted.hashCode ^ 
+      room.hashCode ^ 
+      duration.hashCode ^ 
       date.hashCode;
 }

@@ -6,9 +6,9 @@ import 'package:sqflite/sqflite.dart';
 /// Manages the app's Room Bookings Data database.
 ///
 /// This database stores information about Room Bookings.
-class AppNotificationsDatabase extends AppDatabase {
-  AppNotificationsDatabase()
-      : super('room_bookings.db', ['CREATE TABLE room_bookings(bookingId INTEGER, accepted INTEGER, room TEXT, date TEXT)']); 
+class AppBookingsDatabase extends AppDatabase {
+  AppBookingsDatabase()
+      : super('room_bookings.db', ['CREATE TABLE room_bookings(bookingId INTEGER, accepted INTEGER, room TEXT, duration REAL, date TEXT)']); 
 
   /// Replaces all of the data in this database with [room_bookings].
   void saveNewBookings(List<RoomBooking> bookings) async { 
@@ -44,6 +44,7 @@ class AppNotificationsDatabase extends AppDatabase {
           maps[i]['bookingId'],
           maps[i]['accepted'] == 1,
           maps[i]['room'],
+          maps[i]['duration'],
           DateTime.parse(maps[i]['date']));
     });
   }
