@@ -58,8 +58,6 @@ class UniNotification {
       other is UniNotification &&
           runtimeType == other.runtimeType &&
           sigarraId == other.sigarraId &&
-          title == other.title &&
-          content == other.content &&
           date == other.date;
 
   @override
