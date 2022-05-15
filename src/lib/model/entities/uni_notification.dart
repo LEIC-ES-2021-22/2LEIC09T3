@@ -57,8 +57,7 @@ class UniNotification {
       identical(this, other) ||
       other is UniNotification &&
           runtimeType == other.runtimeType &&
-          sigarraId == other.sigarraId &&
-          date == other.date;
+          sigarraId == other.sigarraId;
 
   @override
   int get hashCode =>
