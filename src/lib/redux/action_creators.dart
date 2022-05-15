@@ -202,6 +202,7 @@ ThunkAction<AppState> updateStateBasedOnLocalRefreshTimes() {
 
     store.dispatch(SetPrintRefreshTimeAction(refreshTimes['print']));
     store.dispatch(SetFeesRefreshTimeAction(refreshTimes['fees']));
+    store.dispatch(SetBookingsRefreshTimeAction(refreshTimes['bookings']));
   };
 }
 
