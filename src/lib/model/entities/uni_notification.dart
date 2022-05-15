@@ -60,10 +60,5 @@ class UniNotification {
           sigarraId == other.sigarraId;
 
   @override
-  int get hashCode =>
-      sigarraId.hashCode ^
-      title.hashCode ^
-      content.hashCode ^
-      read.hashCode ^
-      date.hashCode;
+  int get hashCode => sigarraId.hashCode;
 }
