@@ -15,9 +15,10 @@ import '../../../testable_widget.dart';
 
 void main() {
   group('NotificationsPage', () {
+    final firstNotificationSigarraId = 123;
     final firstNotificationTitle = 'título1';
     final firstNotificationContent = 'conteudo1';
-    final firstNotificationDate = '1 abril 2022';
+    final firstNotificationDate = DateTime(2017, 9, 7, 17, 30);
 
     final Store<AppState> store = Store<AppState>(appReducers,
       initialState: AppState(null),
@@ -42,6 +43,7 @@ void main() {
 
     testWidgets('When given a single notification', (WidgetTester tester) async {
       final firstNotification = UniNotification(
+        firstNotificationSigarraId,
         firstNotificationTitle, 
         firstNotificationContent, 
         false, 

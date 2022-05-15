@@ -32,6 +32,11 @@ class SetExamsStatusAction {
   SetExamsStatusAction(this.status);
 }
 
+class SetNotificationStatusAction {
+  RequestStatus status;
+  SetNotificationStatusAction(this.status);
+}
+
 class SetRestaurantsAction {
   List<Restaurant> restaurants;
   SetRestaurantsAction(this.restaurants);
@@ -51,7 +56,6 @@ class SetScheduleStatusAction {
   RequestStatus status;
   SetScheduleStatusAction(this.status);
 }
-
 
 class SetInitialStoreStateAction {
   SetInitialStoreStateAction();
@@ -177,7 +181,7 @@ class SetVirtualCardStatus {
   SetVirtualCardStatus(this.status);
 }
 
-class SetNotifications {
+class SetNotificationsAction {
   List<UniNotification> notifications;
-  SetNotifications(this.notifications);
+  SetNotificationsAction(this.notifications);
 }

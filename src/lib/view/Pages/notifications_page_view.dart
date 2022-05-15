@@ -7,8 +7,8 @@ import 'package:uni/view/Widgets/slidable_widget.dart';
 
 class NotificationsPageView extends StatelessWidget {
   final List<UniNotification> notifications;
-  final bool Function(BuildContext, int) removeNotification;
-  final bool Function(BuildContext, int) changeNotificationState;
+  final void Function(BuildContext, int) removeNotification;
+  final void Function(BuildContext, int) changeNotificationState;
 
   NotificationsPageView({
     Key key,
@@ -81,12 +81,6 @@ class NotificationsPageView extends StatelessWidget {
                     builder: (__) =>
                         SingleNotificationPage(notification: item)));
           },
-      /*
-      shape: ContinuousRectangleBorder(
-          side: BorderSide(
-          color: Color.fromARGB(255, 128, 128, 128),
-            width: 1.2,
-      )),*/
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

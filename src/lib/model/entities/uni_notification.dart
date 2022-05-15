@@ -37,7 +37,7 @@ class UniNotification {
       'sigarraId': sigarraId,
       'title': title,
       'content': content,
-      'read': read,
+      'read': read ? 1 : 0,
       'date': date.toString(),
     };
   }
@@ -57,17 +57,8 @@ class UniNotification {
       identical(this, other) ||
       other is UniNotification &&
           runtimeType == other.runtimeType &&
-          sigarraId == other.sigarraId &&
-          title == other.title &&
-          content == other.content &&
-          read == other.read &&
-          date == other.date;
+          sigarraId == other.sigarraId;
 
   @override
-  int get hashCode =>
-      sigarraId.hashCode ^
-      title.hashCode ^
-      content.hashCode ^
-      read.hashCode ^
-      date.hashCode;
+  int get hashCode => sigarraId.hashCode;
 }

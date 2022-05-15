@@ -6,8 +6,8 @@ import 'package:sqflite/sqflite.dart';
 /// Manages the app's Virtual Card database.
 ///
 /// This database stores information about VirtualCards.
-class AppNotificationsDatabase extends AppDatabase {
-  AppNotificationsDatabase()
+class AppVirtualCardDatabase extends AppDatabase {
+  AppVirtualCardDatabase()
       : super('virtual_cards.db',
             ['CREATE TABLE virtual_cards(cardId TEXT, privateKey TEXT)']);
 

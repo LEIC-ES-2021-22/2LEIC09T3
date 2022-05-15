@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
 import 'package:tuple/tuple.dart';
+import 'package:uni/model/entities/uni_notification.dart';
 
 import 'course.dart';
 
@@ -13,13 +15,13 @@ class Profile {
   final String feesBalance;
   final String feesLimit;
 
-  Profile({
-    this.name = '',
-    this.email = '',
-    this.courses,
-    this.printBalance = '',
-    this.feesBalance = '',
-    this.feesLimit = ''});
+  Profile(
+      {this.name = '',
+      this.email = '',
+      this.courses,
+      this.printBalance = '',
+      this.feesBalance = '',
+      this.feesLimit = ''});
 
   /// Creates a new instance from a JSON object.
   static Profile fromResponse(dynamic response) {
@@ -37,9 +39,6 @@ class Profile {
   /// Returns a list with two tuples: the first tuple contains the user's name
   /// and the other one contains the user's email.
   List<Tuple2<String, String>> keymapValues() {
-    return [
-      Tuple2('name', this.name),
-      Tuple2('email', this.email)
-    ];
+    return [Tuple2('name', this.name), Tuple2('email', this.email)];
   }
 }

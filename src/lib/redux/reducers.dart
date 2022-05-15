@@ -62,13 +62,13 @@ AppState appReducers(AppState state, dynamic action) {
     return setExamFilter(state, action);
   } else if (action is SetUserFaculties) {
     return setUserFaculties(state, action);
-  } else if(action is SetRestaurantsAction){
+  } else if (action is SetRestaurantsAction) {
     return setRestaurantsAction(state, action);
   } else if (action is SetVirtualCard) {
     return setVirtualCard(state, action);
   } else if (action is SetVirtualCardStatus) {
     return setVirtualCardStatus(state, action);
-  } else if(action is SetNotifications) {
+  } else if (action is SetNotificationsAction) {
     return setNotifications(state, action);
   }
 
@@ -227,16 +227,17 @@ AppState setUserFaculties(AppState state, SetUserFaculties action) {
 }
 
 AppState setVirtualCard(AppState state, SetVirtualCard action) {
-  Logger().i('setting user virtual card to ' + action.virtualCard.cardId.toString());
+  Logger().i(
+      'setting user virtual card to ' + action.virtualCard.cardId.toString());
   return state.cloneAndUpdateValue('virtualCard', action.virtualCard);
 }
 
 AppState setVirtualCardStatus(AppState state, SetVirtualCardStatus action) {
-  Logger().i('setting user virtual card status to ' + action.status.name);
+  Logger().i('setting user virtual card status to ' + action.status.toString());
   return state.cloneAndUpdateValue('virtualCardStatus', action.status);
 }
 
-AppState  setNotifications(AppState state, SetNotifications action) {
-  Logger().i('setting notifications' + action.notifications.toString());
+AppState setNotifications(AppState state, SetNotificationsAction action) {
+  Logger().i('setting notifications ' + action.notifications.toString());
   return state.cloneAndUpdateValue('notifications', action.notifications);
 }
