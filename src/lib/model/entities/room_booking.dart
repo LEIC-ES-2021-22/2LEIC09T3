@@ -6,8 +6,8 @@
 class RoomBooking {
   int bookingId;
   bool accepted;
-  double duration;
   String room;
+  int duration;
   DateTime date;
 
   RoomBooking(this.bookingId, this.accepted, this.room, this.duration, this.date) {}
