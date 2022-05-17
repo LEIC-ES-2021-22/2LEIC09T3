@@ -28,14 +28,14 @@ class _RoomBookingsPageState extends SecondaryPageViewState {
     return true;
   }
 
-  bool changeBookingStatus(BuildContext context, int index) {
+  bool changeBookingState(BuildContext context, int index, BookingState state) {
     final store = StoreProvider.of<AppState>(context);
     final List<RoomBooking> bookings =
         store.state.content['bookings'];
 
     final newBookings = bookings.map((booking) {
       return booking == bookings[index]
-          ? booking.copyWith(accepted: !booking.accepted)
+          ? booking.copyWith(state: state)
           : booking;
     }).toList();
 
@@ -51,7 +51,7 @@ class _RoomBookingsPageState extends SecondaryPageViewState {
           return RoomBookingsPageView(
             bookings: bookings,
             cancelBooking: cancelBooking,
-            changeBookingStatus: changeBookingStatus,
+            changeBookingState: changeBookingState,
           );
         });
   }

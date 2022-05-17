@@ -4,12 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/room_booking.dart';
 import 'package:uni/redux/actions.dart';
+import 'package:uni/utils/datetime.dart';
 import 'package:uni/view/Widgets/row_container.dart';
 
+import '../../utils/constants.dart' as Constants;
 import 'generic_card.dart';
 
-/// Manages the 'Current account' section inside the user's page (accessible
-/// through the top-right widget with the user picture)
 class RoomBookingCard extends GenericCard {
   RoomBookingCard({Key key}) : super(key: key);
 
@@ -26,86 +26,82 @@ class RoomBookingCard extends GenericCard {
                 RoomBooking nextBooking = null;
                 for (final booking in bookings) {
                   if (nextBooking == null || booking.date.isBefore(nextBooking.date)) {
-                    nextBooking = booking;
+                    if (booking.state == BookingState.accepted) {
+                      nextBooking = booking;
+                    }
                   }
                 }
                 return nextBooking;
               },
               builder: (context, booking) => (
-        Table(
-     //       columnWidths: {1: FractionColumnWidth(.4)},
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children:getBookingInfo(context, booking))
-      )),
-      StoreConnector<AppState, String>(
-          converter: (store) => store.state.content['bookingsRefreshTime'],
-          builder: (context, bookingsRefreshTime) =>
-              this.showLastRefreshedTime(bookingsRefreshTime, context))
-    ]);
-  }
+                booking == null ? 
+                Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: 
+                    Text(
+                      'Clica para adicionares uma reserva',
+                      style: Theme.of(context).textTheme.titleMedium
+                      .apply(color: Theme.of(context).accentColor),
+                  )) 
+                : Container( 
+                  padding: EdgeInsets.only(left: 10.0),
+                  child:
+                  Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10.0),
+                        child: 
+                          Row(children: [
+                            Icon(Icons.calendar_month_outlined),
+                            SizedBox(width: 3.0,),
+                            Text(
+                              DateFormat('dd-MM-yyyy').format(booking.date),
+                              style: Theme.of(context).textTheme.displayMedium
+                              .copyWith(fontSize: 16.0),)
+                          ],),
+                      ),
 
-  List<TableRow> getBookingInfo(BuildContext context, RoomBooking booking) {
-    final List<TableRow> rows = <TableRow>[];
+                    Container(
+                      margin: EdgeInsets.only(bottom: 10.0),
+                      child:
+                        Row(children: [
+                          Icon(Icons.schedule_outlined),
+                          SizedBox(width: 3.0,),
+                          Text(
+                            booking.date.readableTime + ' - ' + booking.date.add(Duration(minutes: booking.duration)).readableTime,
+                            style: Theme.of(context).textTheme.displayMedium
+                            .copyWith(fontSize: 16.0),
+                          )
+                        ],),
+                    ),
 
-    rows.add(
-      TableRow(children: [
-        Icon(Icons.calendar_month_outlined),
-        Text(DateFormat('dd-MM-yyyy').format(booking.date),
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  .apply(fontSizeDelta: -4)),
-        /*
-        Container(
-          margin:
-              const EdgeInsets.only(top: 8.0, bottom: 20.0, left: 20.0),
-          child: Text(DateFormat('dd-MM-yyyy').format(booking.date),
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  .apply(fontSizeDelta: -4)),
-        ),*/
-      ]));
-
-    var endDate = new DateTime(booking.date.year, booking.date.month, 
-      booking.date.day, booking.date.hour, booking.date.minute + booking.duration);
-
-
-    rows.add(
-      TableRow(children: [
-        Icon(Icons.access_time),
-        Container(
-          margin:
-              const EdgeInsets.only(top: 8.0, bottom: 20.0, left: 20.0),
-          child: Text("${DateFormat('HH').format(booking.date)}H${DateFormat('mm').format(booking.date)} - ${DateFormat('HH').format(endDate)}H${DateFormat('mm').format(endDate)}",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  .apply(fontSizeDelta: -4)),
-        ),
-    ]));
-
-
-    rows.add(
-      TableRow(children: [
-        Icon(Icons.location_on_outlined),
-        Container(
-          margin:
-              const EdgeInsets.only(top: 8.0, bottom: 20.0, left: 20.0),
-          child: Text("Sala ${booking.room}",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline4
-                  .apply(fontSizeDelta: -4)),
-        ),
-    ]));
-
-    return rows;
+                    Row(children: [
+                      Icon(Icons.location_on_outlined),
+                      SizedBox(width: 3.0,),
+                      Text(
+                        'Sala ${booking.room}',
+                        style: Theme.of(context).textTheme.displayMedium
+                        .copyWith(fontSize: 16.0),
+                      )
+                    ],)
+                  ],)
+                ))
+      //   Table(
+      //     columnWidths: {1: FractionColumnWidth(.4)},
+      //     defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      //     children:getBookingInfo(context, booking))
+      // )),
+      // StoreConnector<AppState, String>(
+      //     converter: (store) => store.state.content['bookingsRefreshTime'],
+      //     builder: (context, bookingsRefreshTime) =>
+      //         this.showLastRefreshedTime(bookingsRefreshTime, context))
+    )]);
   }
 
   @override
   String getTitle() => 'Próxima reserva';
 
   @override
-  onClick(BuildContext context) {}
+  onClick(BuildContext context) =>
+    Navigator.pushNamed(context, '/' + Constants.navBookings);
 }

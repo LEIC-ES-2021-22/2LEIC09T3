@@ -1,24 +1,20 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 import 'package:uni/model/entities/room_booking.dart';
-import 'package:uni/model/entities/uni_notification.dart';
-import 'package:uni/model/single_notification_page_model.dart';
-import 'package:uni/utils/constants.dart';
+import 'package:uni/view/Pages/bus_stop_selection_page.dart';
 import 'package:uni/view/Widgets/page_title.dart';
-import 'package:uni/view/Widgets/slidable_widget.dart';
+import 'package:uni/utils/datetime.dart';
 
 class RoomBookingsPageView extends StatefulWidget {
   final List<RoomBooking> bookings;
   final bool Function(BuildContext, int) cancelBooking;
-  final bool Function(BuildContext, int) changeBookingStatus;
+  final bool Function(BuildContext, int, BookingState) changeBookingState;
 
   RoomBookingsPageView({
     Key key,
     @required this.bookings,
     @required this.cancelBooking,
-    @required this.changeBookingStatus,
+    @required this.changeBookingState,
   });
 
   @override
@@ -37,53 +33,138 @@ class _RoomBookingsPageViewState extends State<RoomBookingsPageView> {
   @override
   Widget build(BuildContext context) {
     return Card(
-        child: Column(children: <Widget>[
-      ListView(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        children: <Widget>[
-          PageTitle(name: 'Reservas'),
-        ],
-      ),
-      Expanded(
-          child: widget.bookings.isEmpty
-              ? Text(
-                  "Não há reservas para mostrar.",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                )
-              : ListView.builder(
-                  itemCount: widget.bookings.length,
-                  itemBuilder: (context, index) {
-                    final item = widget.bookings[index];
+        child: Column(
+          children: <Widget>[
+            ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children: <Widget>[
+                PageTitle(name: 'Reservas'),
+              ],
+            ),
+            SingleChildScrollView(
+              child: widget.bookings.isEmpty
+                ? Text(
+                    'Não há reservas para mostrar.',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  )
+                : ExpansionPanelList(
+                    expansionCallback: (int index, bool isExpanded) {
+                      setState(() => _isExpanded[index] = !isExpanded);
+                    },
+                    animationDuration: Duration(milliseconds: 250),
+                    children: List.generate(
+                      widget.bookings.length,
+                      (index) {
+                        final item = widget.bookings[index];
 
-                    return ExpansionPanelList(
-                      expansionCallback: (int index, bool isExpanded) {
-                        setState(() => _isExpanded[index] = !isExpanded);
-                      },
-                      children: [
-                        ExpansionPanel(
+                        return ExpansionPanel(
                           headerBuilder:
                               (BuildContext context, bool isExpanded) {
                             return ListTile(
-                              title: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(text: "Pedido: ${widget.bookings[index].bookingId.toString()}"),
-                                      WidgetSpan(child: Icon(Icons.calendar_month_outlined))
-                                    ]
-                                  )
-                            ));
+                              title: Row(children: [
+                                item.state == BookingState.accepted ?
+                                Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 18.0,
+                                ) : item.state == BookingState.cancelled ?
+                                Icon(
+                                  Icons.error,
+                                  color: Colors.red,
+                                  size: 18.0,
+                                ) :
+                                Icon(
+                                  Icons.radio_button_checked,
+                                  color: Colors.amber,
+                                  size: 18.0,
+                                ),
+
+                                SizedBox(width: 10.0,),
+
+                                Text(
+                                  'Pedido: ',
+                                  style: Theme.of(context).textTheme.bodyLarge
+                                  .copyWith(
+                                    color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
+                                    fontSize: 20.0),
+                                ),
+                                Text(
+                                  '${item.bookingId}',
+                                  style: Theme.of(context).textTheme.displayMedium
+                                  .copyWith(
+                                    color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
+                                    fontSize: 18.0),
+                                ),
+                                SizedBox(width: 20.0),
+                                Icon(Icons.calendar_month_outlined),
+                                SizedBox(width: 2.0,),
+                                Text(
+                                  DateFormat('dd-MM-yyyy').format(item.date),
+                                  style: Theme.of(context).textTheme.displayMedium
+                                  .copyWith(fontSize: 16.0),
+                                ),
+                                ],)
+                            );
                           },
                           body: ListTile(
-                            title: Text('TODO'),
-                            subtitle: Text('TODO'),
+                            title: Column(children: [
+                              Row(children: [
+                                Icon(
+                                  Icons.schedule_outlined,
+                                  size: 30.0,
+                                ),
+                                SizedBox(width: 20.0,),
+                                Text(
+                                  item.date.readableTime,
+                                  style: Theme.of(context).textTheme.displayMedium,
+                                ),
+                              ]),
+
+                              Row(children: [
+                                Icon(
+                                  Icons.location_on_outlined,
+                                  size: 30.0,
+                                ),
+                                SizedBox(width: 20.0,),
+                                Text(
+                                  'Sala ${item.room}',
+                                  style: Theme.of(context).textTheme.displayMedium,
+                                ),
+                              ]),
+
+                              SizedBox(height: 10.0,),
+
+                              item.state == BookingState.cancelled ? Row() : Row(children: [
+                                Icon(
+                                  Icons.delete,
+                                  size: 30.0,
+                                  color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
+                                ),
+                                SizedBox(width: 20.0,),
+                                GestureDetector(
+                                  onTap: ()  => widget.changeBookingState(context, index, BookingState.cancelled),
+                                  child: 
+                                    Text(
+                                      'Cancelar reserva',
+                                      style: Theme.of(context).textTheme.bodyMedium
+                                      .copyWith(
+                                      color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
+                                      fontSize: 18.0),
+                                    ),
+                                )
+                              ],),
+                              item.state == BookingState.cancelled ? SizedBox() : SizedBox(height: 20.0,)
+                            ],)
                           ),
                           isExpanded: _isExpanded[index],
-                        ),
-                      ],
-                    );
-                  },
-                ))
-    ]));
+                        );
+                    }
+                  )
+                )
+              ),
+          ],
+        )
+    );
   }
 }

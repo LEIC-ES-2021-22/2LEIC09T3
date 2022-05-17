@@ -43,18 +43,25 @@ class AppState {
       'notifications': <UniNotification>[],
       'bookings': <RoomBooking>[
           RoomBooking(
-            123, 
-            true, 
+            159246, 
+            BookingState.accepted, 
             'B002', 
             60,
-            DateTime(2021, 12, 16),
+            DateTime(2021, 12, 16, 15, 10),
           ),
           RoomBooking(
-            456, 
-            false, 
+            168321, 
+            BookingState.cancelled, 
             'B202', 
             180,
-            DateTime(2022, 12, 11),
+            DateTime(2021, 12, 11, 13, 0),
+          ),
+          RoomBooking(
+            171832,
+            BookingState.pending,
+            'I003',
+            140,
+            DateTime(2022, 5, 17, 14, 30),
           )
       ]
     };
