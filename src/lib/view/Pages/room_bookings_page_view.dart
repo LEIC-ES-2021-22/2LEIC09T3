@@ -32,9 +32,9 @@ class _RoomBookingsPageViewState extends State<RoomBookingsPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Column(
-          children: <Widget>[
+    return SingleChildScrollView(
+        child: Column (
+          children: [
             ListView(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
@@ -42,129 +42,142 @@ class _RoomBookingsPageViewState extends State<RoomBookingsPageView> {
                 PageTitle(name: 'Reservas'),
               ],
             ),
-            SingleChildScrollView(
-              child: widget.bookings.isEmpty
-                ? Text(
-                    'Não há reservas para mostrar.',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  )
-                : ExpansionPanelList(
-                    expansionCallback: (int index, bool isExpanded) {
-                      setState(() => _isExpanded[index] = !isExpanded);
-                    },
-                    animationDuration: Duration(milliseconds: 250),
-                    children: List.generate(
-                      widget.bookings.length,
-                      (index) {
-                        final item = widget.bookings[index];
+            widget.bookings.isEmpty
+              ? Text(
+                  'Não há reservas para mostrar.',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                )
+              : ExpansionPanelList(
+                  expansionCallback: (int index, bool isExpanded) {
+                    setState(() => _isExpanded[index] = !isExpanded);
+                  },
+                  animationDuration: Duration(milliseconds: 250),
+                  children: List.generate(
+                    widget.bookings.length,
+                    (index) {
+                      final item = widget.bookings[index];
 
-                        return ExpansionPanel(
-                          headerBuilder:
-                              (BuildContext context, bool isExpanded) {
-                            return ListTile(
-                              title: Row(children: [
-                                item.state == BookingState.accepted ?
-                                Icon(
-                                  Icons.check_circle,
-                                  color: Colors.green,
-                                  size: 18.0,
-                                ) : item.state == BookingState.cancelled ?
-                                Icon(
-                                  Icons.error,
-                                  color: Colors.red,
-                                  size: 18.0,
-                                ) :
-                                Icon(
-                                  Icons.radio_button_checked,
-                                  color: Colors.amber,
-                                  size: 18.0,
-                                ),
+                      return ExpansionPanel(
+                        headerBuilder:
+                            (BuildContext context, bool isExpanded) {
+                          return ListTile(
+                            title: Container(
+                              padding: EdgeInsets.all(4.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      item.state == BookingState.accepted ?
+                                      Icon(
+                                        Icons.check_circle,
+                                        color: Colors.green,
+                                        size: 18.0,
+                                      ) : item.state == BookingState.cancelled ?
+                                      Icon(
+                                        Icons.error,
+                                        color: Colors.red,
+                                        size: 18.0,
+                                      ) :
+                                      Icon(
+                                        Icons.radio_button_checked,
+                                        color: Colors.amber,
+                                        size: 18.0,
+                                      ),
 
-                                SizedBox(width: 10.0,),
+                                      SizedBox(width: 8.0,),
 
-                                Text(
-                                  'Pedido: ',
-                                  style: Theme.of(context).textTheme.bodyLarge
-                                  .copyWith(
-                                    color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
-                                    fontSize: 20.0),
-                                ),
-                                Text(
-                                  '${item.bookingId}',
-                                  style: Theme.of(context).textTheme.displayMedium
-                                  .copyWith(
+                                      Text(
+                                        'Pedido: ',
+                                        style: Theme.of(context).textTheme.bodyLarge
+                                        .copyWith(
+                                          color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
+                                          fontSize: 20.0),
+                                      ),
+                                      Text(
+                                        '${item.bookingId}',
+                                        style: Theme.of(context).textTheme.displayMedium
+                                        .copyWith(
+                                          color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
+                                          fontSize: 18.0),
+                                      ),
+                                    ],
+                                  ),
+                                  
+                                  SizedBox(height: 4.0),
+
+                                  Row(
+                                    children: [
+                                      Icon(Icons.calendar_month_outlined),
+                                      SizedBox(width: 2.0,),
+                                      Text(
+                                        DateFormat('dd-MM-yyyy').format(item.date),
+                                        style: Theme.of(context).textTheme.displayMedium
+                                        .copyWith(fontSize: 16.0),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            )
+                          );
+                        },
+                        body: ListTile(
+                          title: Column(children: [
+                            Row(children: [
+                              Icon(
+                                Icons.schedule_outlined,
+                                size: 30.0,
+                              ),
+                              SizedBox(width: 20.0,),
+                              Text(
+                                item.date.readableTime,
+                                style: Theme.of(context).textTheme.displayMedium,
+                              ),
+                            ]),
+
+                            Row(children: [
+                              Icon(
+                                Icons.location_on_outlined,
+                                size: 30.0,
+                              ),
+                              SizedBox(width: 20.0,),
+                              Text(
+                                'Sala ${item.room}',
+                                style: Theme.of(context).textTheme.displayMedium,
+                              ),
+                            ]),
+
+                            SizedBox(height: 10.0,),
+
+                            item.state == BookingState.cancelled ? Row() : Row(children: [
+                              Icon(
+                                Icons.delete,
+                                size: 30.0,
+                                color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
+                              ),
+                              SizedBox(width: 20.0,),
+                              GestureDetector(
+                                onTap: ()  => widget.changeBookingState(context, index, BookingState.cancelled),
+                                child: 
+                                  Text(
+                                    'Cancelar reserva',
+                                    style: Theme.of(context).textTheme.bodyMedium
+                                    .copyWith(
                                     color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
                                     fontSize: 18.0),
-                                ),
-                                SizedBox(width: 20.0),
-                                Icon(Icons.calendar_month_outlined),
-                                SizedBox(width: 2.0,),
-                                Text(
-                                  DateFormat('dd-MM-yyyy').format(item.date),
-                                  style: Theme.of(context).textTheme.displayMedium
-                                  .copyWith(fontSize: 16.0),
-                                ),
-                                ],)
-                            );
-                          },
-                          body: ListTile(
-                            title: Column(children: [
-                              Row(children: [
-                                Icon(
-                                  Icons.schedule_outlined,
-                                  size: 30.0,
-                                ),
-                                SizedBox(width: 20.0,),
-                                Text(
-                                  item.date.readableTime,
-                                  style: Theme.of(context).textTheme.displayMedium,
-                                ),
-                              ]),
-
-                              Row(children: [
-                                Icon(
-                                  Icons.location_on_outlined,
-                                  size: 30.0,
-                                ),
-                                SizedBox(width: 20.0,),
-                                Text(
-                                  'Sala ${item.room}',
-                                  style: Theme.of(context).textTheme.displayMedium,
-                                ),
-                              ]),
-
-                              SizedBox(height: 10.0,),
-
-                              item.state == BookingState.cancelled ? Row() : Row(children: [
-                                Icon(
-                                  Icons.delete,
-                                  size: 30.0,
-                                  color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
-                                ),
-                                SizedBox(width: 20.0,),
-                                GestureDetector(
-                                  onTap: ()  => widget.changeBookingState(context, index, BookingState.cancelled),
-                                  child: 
-                                    Text(
-                                      'Cancelar reserva',
-                                      style: Theme.of(context).textTheme.bodyMedium
-                                      .copyWith(
-                                      color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
-                                      fontSize: 18.0),
-                                    ),
-                                )
-                              ],),
-                              item.state == BookingState.cancelled ? SizedBox() : SizedBox(height: 20.0,)
-                            ],)
-                          ),
-                          isExpanded: _isExpanded[index],
-                        );
-                    }
-                  )
+                                  ),
+                              )
+                            ],),
+                            item.state == BookingState.cancelled ? SizedBox() : SizedBox(height: 20.0,)
+                          ],)
+                        ),
+                        isExpanded: _isExpanded[index],
+                      );
+                  }
                 )
-              ),
-          ],
-        )
-    );
+              )
+          ]
+        ),
+      );
   }
 }

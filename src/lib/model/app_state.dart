@@ -62,7 +62,14 @@ class AppState {
             'I003',
             140,
             DateTime(2022, 5, 17, 14, 30),
-          )
+          ),
+          RoomBooking(
+            1718232,
+            BookingState.pending,
+            'I003',
+            140,
+            DateTime(2022, 5, 17, 14, 30),
+          ),
       ]
     };
   }
