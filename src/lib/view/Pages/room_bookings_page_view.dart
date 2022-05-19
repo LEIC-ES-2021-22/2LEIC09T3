@@ -61,30 +61,33 @@ class _RoomBookingsPageViewState extends State<RoomBookingsPageView> {
                         headerBuilder:
                             (BuildContext context, bool isExpanded) {
                           return ListTile(
-                            title: Container(
-                              padding: EdgeInsets.all(4.0),
-                              child: Column(
+                            title: Wrap(
+                              direction: Axis.horizontal,
+                              runSpacing: 7.0,
+                              spacing: 12.0,
                                 children: [
                                   Row(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
+                                      SizedBox(width: 1.5,),
                                       item.state == BookingState.accepted ?
                                       Icon(
                                         Icons.check_circle,
                                         color: Colors.green,
-                                        size: 18.0,
+                                        size: 20.0,
                                       ) : item.state == BookingState.cancelled ?
                                       Icon(
                                         Icons.error,
                                         color: Colors.red,
-                                        size: 18.0,
+                                        size: 20.0,
                                       ) :
                                       Icon(
                                         Icons.radio_button_checked,
                                         color: Colors.amber,
-                                        size: 18.0,
+                                        size: 20.0,
                                       ),
 
-                                      SizedBox(width: 8.0,),
+                                      SizedBox(width: 6.0,),
 
                                       Text(
                                         'Pedido: ',
@@ -103,44 +106,36 @@ class _RoomBookingsPageViewState extends State<RoomBookingsPageView> {
                                     ],
                                   ),
                                   
-                                  SizedBox(height: 4.0),
-
                                   Row(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Icon(Icons.calendar_month_outlined),
-                                      SizedBox(width: 2.0,),
+                                      Icon(Icons.calendar_month_outlined, size: 24.0),
+                                      SizedBox(width: 6.0,),
                                       Text(
                                         DateFormat('dd-MM-yyyy').format(item.date),
                                         style: Theme.of(context).textTheme.displayMedium
-                                        .copyWith(fontSize: 16.0),
+                                        .copyWith(fontSize: 18.0),
                                       ),
                                     ],
-                                  )
-                                ],
-                              ),
+                                  ),
+                                ],                              
                             )
                           );
                         },
                         body: ListTile(
                           title: Column(children: [
                             Row(children: [
-                              Icon(
-                                Icons.schedule_outlined,
-                                size: 30.0,
-                              ),
-                              SizedBox(width: 20.0,),
+                              Icon(Icons.schedule_outlined,),
+                              SizedBox(width: 8.0,),
                               Text(
-                                item.date.readableTime,
+                                item.date.readableTime + ' - ' + item.date.add(Duration(minutes: item.duration)).readableTime,
                                 style: Theme.of(context).textTheme.displayMedium,
                               ),
                             ]),
 
                             Row(children: [
-                              Icon(
-                                Icons.location_on_outlined,
-                                size: 30.0,
-                              ),
-                              SizedBox(width: 20.0,),
+                              Icon(Icons.location_on_outlined,),
+                              SizedBox(width: 8.0,),
                               Text(
                                 'Sala ${item.room}',
                                 style: Theme.of(context).textTheme.displayMedium,
@@ -149,26 +144,29 @@ class _RoomBookingsPageViewState extends State<RoomBookingsPageView> {
 
                             SizedBox(height: 10.0,),
 
-                            item.state == BookingState.cancelled ? Row() : Row(children: [
-                              Icon(
-                                Icons.delete,
-                                size: 30.0,
-                                color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
-                              ),
-                              SizedBox(width: 20.0,),
-                              GestureDetector(
-                                onTap: ()  => widget.changeBookingState(context, index, BookingState.cancelled),
-                                child: 
-                                  Text(
-                                    'Cancelar reserva',
-                                    style: Theme.of(context).textTheme.bodyMedium
-                                    .copyWith(
-                                    color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
-                                    fontSize: 18.0),
-                                  ),
-                              )
+                            item.state == BookingState.cancelled ? 
+                            Row() 
+                            : Row(children: [
+                                Icon(
+                                  Icons.delete,
+                                  color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
+                                ),
+                                SizedBox(width: 8.0,),
+                                GestureDetector(
+                                  onTap: ()  => widget.changeBookingState(context, index, BookingState.cancelled),
+                                  child: 
+                                    Text(
+                                      'Cancelar reserva',
+                                      style: Theme.of(context).textTheme.bodyMedium
+                                      .copyWith(
+                                      color: Color.fromARGB(255, 0x75, 0x17, 0x1e),
+                                      fontSize: 18.0),
+                                    ),
+                                )
                             ],),
-                            item.state == BookingState.cancelled ? SizedBox() : SizedBox(height: 20.0,)
+                            item.state == BookingState.cancelled ? 
+                              SizedBox()
+                              : SizedBox(height: 20.0,)
                           ],)
                         ),
                         isExpanded: _isExpanded[index],

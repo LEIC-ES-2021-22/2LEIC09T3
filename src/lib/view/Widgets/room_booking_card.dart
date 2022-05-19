@@ -86,15 +86,6 @@ class RoomBookingCard extends GenericCard {
                     ],)
                   ],)
                 ))
-      //   Table(
-      //     columnWidths: {1: FractionColumnWidth(.4)},
-      //     defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      //     children:getBookingInfo(context, booking))
-      // )),
-      // StoreConnector<AppState, String>(
-      //     converter: (store) => store.state.content['bookingsRefreshTime'],
-      //     builder: (context, bookingsRefreshTime) =>
-      //         this.showLastRefreshedTime(bookingsRefreshTime, context))
     )]);
   }
 
