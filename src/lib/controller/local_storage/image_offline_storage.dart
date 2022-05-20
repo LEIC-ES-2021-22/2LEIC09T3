@@ -20,11 +20,20 @@ Future<File> getImageFromNetwork(
   return DefaultCacheManager().getSingleFile(url, headers: headers);
 }
 
-Future<File> retrieveRoomImage(String url, Map<String, String> headers) async {
+Future<File> retrieveRoomImage(String url, String roomPath) async {
   final path = await _localPath;
   final connectivityResult = await (Connectivity().checkConnectivity());
   final hasInternetConnection = connectivityResult != ConnectivityResult.none;
 
+  final targetPath = '$path/' + roomPath;
+  final File file = File(targetPath);
+
+  if (hasInternetConnection)
+    return saveImage(targetPath, url, Map<String, String>());
+
+  if (file.existsSync()) return file;
+
+  return null;
 }
 
 /// Downloads and caches the user's profile image located at [url]. The image
