@@ -41,36 +41,7 @@ class AppState {
       'virtualCard': null,
       'virtualCardStatus': RequestStatus.none,
       'notifications': <UniNotification>[],
-      'bookings': <RoomBooking>[
-          RoomBooking(
-            124236, 
-            BookingState.accepted, 
-            'B002', 
-            60,
-            DateTime(2021, 12, 16, 15, 10),
-          ),
-          RoomBooking(
-            183231, 
-            BookingState.cancelled, 
-            'B202', 
-            180,
-            DateTime(2021, 12, 11, 13, 0),
-          ),
-          RoomBooking(
-            13232,
-            BookingState.pending,
-            'I003',
-            140,
-            DateTime(2022, 5, 17, 14, 30),
-          ),
-          RoomBooking(
-            1222131,
-            BookingState.pending,
-            'I003',
-            140,
-            DateTime(2022, 5, 17, 14, 30),
-          ),
-      ]
+      'bookings': <RoomBooking>[]
     };
   }
 

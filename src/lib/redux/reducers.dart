@@ -72,7 +72,7 @@ AppState appReducers(AppState state, dynamic action) {
     return setVirtualCardStatus(state, action);
   } else if (action is SetNotificationsAction) {
     return setNotifications(state, action);
-  } else if (action is SetBookings) {
+  } else if (action is SetBookingsAction) {
     return setBookings(state, action);
   }
 
@@ -251,7 +251,7 @@ AppState setNotifications(AppState state, SetNotificationsAction action) {
   return state.cloneAndUpdateValue('notifications', action.notifications);
 }
 
-AppState setBookings(AppState state, SetBookings action) {
+AppState setBookings(AppState state, SetBookingsAction action) {
   Logger().i('setting bookings' + action.bookings.toString());
   return state.cloneAndUpdateValue('bookings', action.bookings);
 }
