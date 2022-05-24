@@ -52,6 +52,8 @@ AppState appReducers(AppState state, dynamic action) {
     return setPrintRefreshTime(state, action);
   } else if (action is SetFeesRefreshTimeAction) {
     return setFeesRefreshTime(state, action);
+  } else if (action is SetBookingsRefreshTimeAction) {
+    return setBookingsRefreshTime(state, action);
   } else if (action is SetInitialStoreStateAction) {
     return setInitialStoreState(state, action);
   } else if (action is SetHomePageEditingMode) {
@@ -70,6 +72,8 @@ AppState appReducers(AppState state, dynamic action) {
     return setVirtualCardStatus(state, action);
   } else if (action is SetNotificationsAction) {
     return setNotifications(state, action);
+  } else if (action is SetBookings) {
+    return setBookings(state, action);
   }
 
   return state;
@@ -205,6 +209,11 @@ AppState setFeesRefreshTime(AppState state, SetFeesRefreshTimeAction action) {
   return state.cloneAndUpdateValue('feesRefreshTime', action.time);
 }
 
+AppState setBookingsRefreshTime(AppState state, SetBookingsRefreshTimeAction action) {
+  Logger().i('setting bookings refresh time ' + action.time.toString());
+  return state.cloneAndUpdateValue('bookingsRefreshTime', action.time);
+}
+
 AppState setHomePageEditingMode(AppState state, SetHomePageEditingMode action) {
   Logger().i('setting home page editing mode to ' + action.state.toString());
   return state.cloneAndUpdateValue('homePageEditingMode', action.state);
@@ -240,4 +249,9 @@ AppState setVirtualCardStatus(AppState state, SetVirtualCardStatus action) {
 AppState setNotifications(AppState state, SetNotificationsAction action) {
   Logger().i('setting notifications ' + action.notifications.toString());
   return state.cloneAndUpdateValue('notifications', action.notifications);
+}
+
+AppState setBookings(AppState state, SetBookings action) {
+  Logger().i('setting bookings' + action.bookings.toString());
+  return state.cloneAndUpdateValue('bookings', action.bookings);
 }

@@ -20,6 +20,8 @@ import 'package:uni/view/Pages/splash_page_view.dart';
 import 'package:uni/view/Widgets/page_transition.dart';
 import 'package:uni/view/navigation_service.dart';
 import 'package:uni/view/theme.dart';
+import 'package:uni/model/room_bookings_model.dart';
+import 'package:uni/view/Pages/room_bookings_page_view.dart';
 
 import 'controller/on_start_up.dart';
 import 'model/schedule_page_model.dart';
@@ -86,6 +88,9 @@ class MyAppState extends State<MyApp> {
               case '/' + Constants.navStops:
                 return PageTransition.makePageTransition(
                     page: BusStopNextArrivalsPage(), settings: settings);
+              case '/' + Constants.navBookings:
+                return PageTransition.makePageTransition(
+                    page: RoomBookingsPage(), settings: settings);
               case '/' + Constants.navAbout:
                 return PageTransition.makePageTransition(
                     page: AboutPageView(), settings: settings);

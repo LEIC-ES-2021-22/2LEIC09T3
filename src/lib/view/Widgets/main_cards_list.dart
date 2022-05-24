@@ -9,6 +9,7 @@ import 'package:uni/view/Widgets/account_info_card.dart';
 import 'package:uni/view/Widgets/back_button_exit_wrapper.dart';
 import 'package:uni/view/Widgets/bus_stop_card.dart';
 import 'package:uni/view/Widgets/exam_card.dart';
+import 'package:uni/view/Widgets/room_booking_card.dart';
 import 'package:uni/view/Widgets/virtual_card_card.dart';
 import 'package:uni/view/Widgets/print_info_card.dart';
 import 'package:uni/view/Widgets/schedule_card.dart';
@@ -21,6 +22,8 @@ class MainCardsList extends StatelessWidget {
         ExamCard.fromEditingInformation(k, em, od),
     FAVORITE_WIDGET_TYPE.account: (k, em, od) =>
         AccountInfoCard.fromEditingInformation(k, em, od),
+    FAVORITE_WIDGET_TYPE.account: (k, em, od) =>
+        RoomBookingCard.fromEditingInformation(k, em, od),
     FAVORITE_WIDGET_TYPE.printBalance: (k, em, od) =>
         PrintInfoCard.fromEditingInformation(k, em, od),
     FAVORITE_WIDGET_TYPE.busStops: (k, em, od) =>

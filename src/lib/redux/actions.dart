@@ -2,6 +2,7 @@ import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/course_unit.dart';
 import 'package:uni/model/entities/exam.dart';
 import 'package:uni/model/entities/lecture.dart';
+import 'package:uni/model/entities/room_booking.dart';
 import 'package:uni/model/entities/profile.dart';
 import 'package:uni/model/entities/restaurant.dart';
 import 'package:uni/model/entities/session.dart';
@@ -151,6 +152,11 @@ class SetFeesRefreshTimeAction {
   SetFeesRefreshTimeAction(this.time);
 }
 
+class SetBookingsRefreshTimeAction {
+  String time;
+  SetBookingsRefreshTimeAction(this.time);
+}
+
 class SetHomePageEditingMode {
   bool state;
   SetHomePageEditingMode(this.state);
@@ -184,4 +190,9 @@ class SetVirtualCardStatus {
 class SetNotificationsAction {
   List<UniNotification> notifications;
   SetNotificationsAction(this.notifications);
+}
+
+class SetBookings {
+  List<RoomBooking> bookings;
+  SetBookings(this.bookings);
 }

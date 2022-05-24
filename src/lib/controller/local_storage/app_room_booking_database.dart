@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 /// This database stores information about Room Bookings.
 class AppBookingsDatabase extends AppDatabase {
   AppBookingsDatabase()
-      : super('room_bookings.db', ['CREATE TABLE room_bookings(bookingId INTEGER, accepted INTEGER, room TEXT, duration INTEGER, date TEXT)']); 
+      : super('room_bookings.db', ['CREATE TABLE room_bookings(bookingId INTEGER, state TEXT, room TEXT, duration INTEGER, date TEXT)']); 
 
   /// Replaces all of the data in this database with [room_bookings].
   void saveNewBookings(List<RoomBooking> bookings) async { 
@@ -42,7 +42,7 @@ class AppBookingsDatabase extends AppDatabase {
     return List.generate(maps.length, (i) {
       return RoomBooking(
           maps[i]['bookingId'],
-          maps[i]['accepted'] == 1,
+          BookingState.values.firstWhere((element) => element.name == maps[i]['state']),
           maps[i]['room'],
           maps[i]['duration'],
           DateTime.parse(maps[i]['date']));
