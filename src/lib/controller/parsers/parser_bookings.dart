@@ -13,7 +13,7 @@ Future<List<RoomBooking>> parseBookings(String bookingsJson) async {
 
   for (dynamic booking in bookings) {
     final int bookingId = booking['id'];
-    final BookingState state = booking['state'];
+    final BookingState state = booking['state']; // this needs to be changed
     final String room = booking['room'];
     final int duration = booking['duration'];
     final DateTime date = DateTime.parse(booking['date']);
@@ -21,7 +21,7 @@ Future<List<RoomBooking>> parseBookings(String bookingsJson) async {
     roomBookings.add(RoomBooking(bookingId, state, room, duration, date));
   }
 
-  roomBookings.sort((a, b) => (a.date).compareTo(b.date));
+  roomBookings.sort((a, b) => (a.date).compareTo(b.date)); // sort bookings by date?
 
   return roomBookings;
 }

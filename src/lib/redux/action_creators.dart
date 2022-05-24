@@ -16,6 +16,7 @@ import 'package:uni/controller/local_storage/app_lectures_database.dart';
 import 'package:uni/controller/local_storage/app_refresh_times_database.dart';
 import 'package:uni/controller/local_storage/app_shared_preferences.dart';
 import 'package:uni/controller/local_storage/app_uni_notifications_database.dart';
+import 'package:uni/controller/local_storage/app_room_booking_database.dart';
 import 'package:uni/controller/local_storage/app_user_database.dart';
 import 'package:uni/controller/local_storage/app_restaurant_database.dart';
 import 'package:uni/controller/networking/network_router.dart'
@@ -25,6 +26,7 @@ import 'package:uni/controller/parsers/parser_exams.dart';
 import 'package:uni/controller/parsers/parser_fees.dart';
 import 'package:uni/controller/parsers/parser_print_balance.dart';
 import 'package:uni/controller/parsers/parser_notifications.dart';
+import 'package:uni/controller/parsers/parser_bookings.dart';
 import 'package:uni/controller/restaurant_fetcher/restaurant_fetcher_html.dart';
 import 'package:uni/controller/schedule_fetcher/schedule_fetcher.dart';
 import 'package:uni/controller/schedule_fetcher/schedule_fetcher_api.dart';
@@ -39,6 +41,7 @@ import 'package:uni/model/entities/restaurant.dart';
 import 'package:uni/model/entities/session.dart';
 import 'package:uni/model/entities/trip.dart';
 import 'package:uni/model/entities/uni_notification.dart';
+import 'package:uni/model/entities/room_booking.dart';
 import 'package:uni/model/notifications_page_model.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/reducers.dart';
@@ -228,6 +231,29 @@ Future<List<UniNotification>> extractNotifications(
   return parseNotifications(jsonNotifs);
 }
 
+//TODO: This function is to be implemented  by the msc students
+// So we are just retrieving a json string
+Future<List<RoomBooking>> extractBookings(Store<AppState> store) async {
+  final jsonBookings = jsonEncode([
+    {
+      'id': 123,
+      'state': 'accepted', // this may need to be changed
+      'room': 'B307',
+      'duration': 30,
+      'date': '2022-03-17'
+    },
+    {
+      'id': 456,
+      'state': 'pending', // this may need to be changed
+      'room': 'B310',
+      'duration': 60,
+      'date': '2022-03-18'
+    }
+  ]);
+
+  return parseBookings(jsonBookings);
+}
+
 Future<List<Exam>> extractExams(
     Store<AppState> store, ParserExams parserExams) async {
   Set<Exam> courseExams = Set();
@@ -273,11 +299,10 @@ ThunkAction<AppState> getUserNotifications(
 
       final db = AppNotificationsDatabase();
       await db.insertNotifications(notifications);
-      
+
       final storedNotifications = await db.notifications();
-      final validNotifications = storedNotifications
-        .where(notifications.contains)
-        .toList();
+      final validNotifications =
+          storedNotifications.where(notifications.contains).toList();
 
       db.saveNewNotifications(validNotifications);
 
@@ -623,8 +648,8 @@ ThunkAction<AppState> updateStateBasedOnLocalNotifications() {
 
 ThunkAction<AppState> deleteNotification(int index) {
   return (store) {
-    final List<UniNotification> notifications = 
-      store.state.content['notifications'];
+    final List<UniNotification> notifications =
+        store.state.content['notifications'];
 
     final newNotifications = notifications
         .where((element) => element != notifications[index])
