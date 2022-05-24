@@ -675,6 +675,14 @@ ThunkAction<AppState> updateStateBasedOnLocalNotifications() {
   };
 }
 
+ThunkAction<AppState> updateStateBasedOnLocalBookings() {
+  return (Store<AppState> store) async {
+    final db = AppBookingsDatabase();
+    final bookings = await db.bookings();
+    store.dispatch(SetBookingsAction(bookings));
+  };
+}
+
 ThunkAction<AppState> deleteNotification(int index) {
   return (store) {
     final List<UniNotification> notifications =
@@ -688,6 +696,20 @@ ThunkAction<AppState> deleteNotification(int index) {
     db.saveNewNotifications(newNotifications);
 
     store.dispatch(SetNotificationsAction(newNotifications));
+  };
+}
+
+ThunkAction<AppState> deleteBookings(int index) {
+  return (store) {
+    final List<RoomBooking> bookings = store.state.content['room_bookings'];
+
+    final newBookings =
+        bookings.where((element) => element != bookings[index]).toList();
+
+    final db = AppBookingsDatabase();
+    db.saveNewBookings(newBookings);
+
+    store.dispatch(SetBookingsAction(newBookings));
   };
 }
 
