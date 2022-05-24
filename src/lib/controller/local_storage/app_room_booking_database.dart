@@ -13,14 +13,14 @@ class AppBookingsDatabase extends AppDatabase {
   /// Replaces all of the data in this database with [room_bookings].
   void saveNewBookings(List<RoomBooking> bookings) async { 
     await deleteRoomBookings();
-    await _insertRoomBookings(bookings);
+    await insertRoomBookings(bookings);
   }
 
   /// Adds all items from [bookings] to this database.
   /// 
   /// If a row with the same data is present, it will be replaced.
 
-  Future<void> _insertRoomBookings(List<RoomBooking> bookings) async {
+  Future<void> insertRoomBookings(List<RoomBooking> bookings) async {
     for (RoomBooking booking in bookings) {
       await insertInDatabase(
         'room_bookings',

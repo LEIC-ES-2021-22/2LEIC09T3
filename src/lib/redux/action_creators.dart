@@ -317,6 +317,35 @@ ThunkAction<AppState> getUserNotifications(
   };
 }
 
+ThunkAction<AppState> getUserBookings(
+    Completer<Null> action, Tuple2<String, String> userPersistentInfo) {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(SetBookingStatusAction(RequestStatus.busy));
+
+      final List<RoomBooking> bookings = await extractBookings(store);
+
+      bookings.sort((a, b) => a.date.compareTo(b.date));
+
+      final db = AppBookingsDatabase();
+      await db.insertRoomBookings(bookings);
+
+      final storedBookings = await db.bookings();
+      final validBookings = storedBookings.where(bookings.contains).toList();
+
+      db.saveNewBookings(storedBookings);
+
+      store.dispatch(SetBookingStatusAction(RequestStatus.successful));
+      store.dispatch(SetBookingsAction(validBookings));
+    } catch (e) {
+      Logger().e('Failed to get Bookings');
+      store.dispatch(SetBookingStatusAction(RequestStatus.failed));
+    }
+
+    action.complete();
+  };
+}
+
 ThunkAction<AppState> getUserExams(Completer<Null> action,
     ParserExams parserExams, Tuple2<String, String> userPersistentInfo) {
   return (Store<AppState> store) async {
