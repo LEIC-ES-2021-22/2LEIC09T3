@@ -24,7 +24,7 @@ class _RoomBookingsPageState extends SecondaryPageViewState {
 
     if (bookings.length == newBookings.length) return false;
 
-    store.dispatch(SetBookings(newBookings));
+    store.dispatch(SetBookingsAction(newBookings));
     return true;
   }
 
@@ -39,7 +39,7 @@ class _RoomBookingsPageState extends SecondaryPageViewState {
           : booking;
     }).toList();
 
-    store.dispatch(SetBookings(newBookings));
+    store.dispatch(SetBookingsAction(newBookings));
     return true;
   }
 

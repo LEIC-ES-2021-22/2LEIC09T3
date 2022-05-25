@@ -203,7 +203,3 @@ class SetBookingsAction {
   SetBookingsAction(this.bookings);
 }
 
-class SetBookings {
-  List<RoomBooking> bookings;
-  SetBookings(this.bookings);
-}

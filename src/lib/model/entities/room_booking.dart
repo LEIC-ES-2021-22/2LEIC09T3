@@ -23,7 +23,7 @@ class RoomBooking {
   Map<String, dynamic> toMap() {
     return {
       'bookingId': bookingId,
-      'accepted': state,
+      'state': state,
       'room': room,
       'duration': duration,
       'date': date

@@ -236,18 +236,16 @@ Future<List<UniNotification>> extractNotifications(
 Future<List<RoomBooking>> extractBookings(Store<AppState> store) async {
   final jsonBookings = jsonEncode([
     {
-      'id': 123,
-      'state': 'accepted', // this may need to be changed
+      'id': 111,
       'room': 'B307',
       'duration': 30,
-      'date': '2022-03-17'
+      'date': '2022-08-17 10:00:00'
     },
     {
-      'id': 456,
-      'state': 'pending', // this may need to be changed
+      'id': 222,
       'room': 'B310',
       'duration': 60,
-      'date': '2022-03-18'
+      'date': '2022-08-19 11:00:00'
     }
   ]);
 
@@ -699,7 +697,7 @@ ThunkAction<AppState> deleteNotification(int index) {
   };
 }
 
-ThunkAction<AppState> deleteBookings(int index) {
+ThunkAction<AppState> deleteBooking(int index) {
   return (store) {
     final List<RoomBooking> bookings = store.state.content['room_bookings'];
 

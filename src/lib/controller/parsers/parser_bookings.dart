@@ -13,7 +13,7 @@ Future<List<RoomBooking>> parseBookings(String bookingsJson) async {
 
   for (dynamic booking in bookings) {
     final int bookingId = booking['id'];
-    final BookingState state = booking['state']; // this needs to be changed
+    final BookingState state = BookingState.accepted; // this needs to be changed
     final String room = booking['room'];
     final int duration = booking['duration'];
     final DateTime date = DateTime.parse(booking['date']);
