@@ -310,7 +310,6 @@ ThunkAction<AppState> getUserBookings(
   return (Store<AppState> store) async {
     try {
       store.dispatch(SetBookingStatusAction(RequestStatus.busy));
-
       final List<RoomBooking> bookings = await extractBookings(store);
 
       bookings.sort((a, b) => a.date.compareTo(b.date));
@@ -321,7 +320,7 @@ ThunkAction<AppState> getUserBookings(
       final storedBookings = await db.bookings();
       final validBookings = storedBookings.where(bookings.contains).toList();
 
-      db.saveNewBookings(storedBookings);
+      db.saveNewBookings(validBookings);
 
       store.dispatch(SetBookingStatusAction(RequestStatus.successful));
       store.dispatch(SetBookingsAction(validBookings));

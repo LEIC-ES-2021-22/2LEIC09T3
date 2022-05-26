@@ -260,6 +260,6 @@ AppState setBookingsStatus(AppState state, SetBookingStatusAction action) {
 }
 
 AppState setBookings(AppState state, SetBookingsAction action) {
-  Logger().i('setting bookings' + action.bookings.toString());
+  Logger().i('setting bookings ' + action.bookings.toString());
   return state.cloneAndUpdateValue('bookings', action.bookings);
 }
