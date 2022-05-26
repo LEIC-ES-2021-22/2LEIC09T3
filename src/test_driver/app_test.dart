@@ -8,7 +8,7 @@ import 'dart:convert';
 import 'steps/then_notif_screen_is_shown.dart';
 import 'steps/then_the_icon_changes.dart';
 import 'steps/when_the_user_taps_notification_button.dart';
-import 'steps/when_there_are_unread_notifications.dart';
+import 'steps/given_there_are_unread_notifications.dart';
 import 'steps/given_user_is_logged_in.dart';
 
 Future<void> main() {

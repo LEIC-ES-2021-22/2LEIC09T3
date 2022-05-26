@@ -97,6 +97,7 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: RoundedRectangleBorder(),
           child: TextButton(
+            key: const ValueKey('home_button'),
             onPressed: () {
               final currentRouteName = ModalRoute.of(context).settings.name;
               if (currentRouteName != Constants.navPersonalArea) {
