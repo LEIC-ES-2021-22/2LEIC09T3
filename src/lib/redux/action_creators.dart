@@ -235,18 +235,8 @@ Future<List<UniNotification>> extractNotifications(
 // So we are just retrieving a json string
 Future<List<RoomBooking>> extractBookings(Store<AppState> store) async {
   final jsonBookings = jsonEncode([
-    {
-      'id': 111,
-      'room': 'B307',
-      'duration': 30,
-      'date': '2022-08-17 10:00:00'
-    },
-    {
-      'id': 222,
-      'room': 'B310',
-      'duration': 60,
-      'date': '2022-08-19 11:00:00'
-    }
+    {'id': 111, 'room': 'B307', 'duration': 30, 'date': '2022-08-17 10:00:00'},
+    {'id': 222, 'room': 'B310', 'duration': 60, 'date': '2022-08-19 11:00:00'}
   ]);
 
   return parseBookings(jsonBookings);
@@ -697,12 +687,29 @@ ThunkAction<AppState> deleteNotification(int index) {
   };
 }
 
-ThunkAction<AppState> deleteBooking(int index) {
+ThunkAction<AppState> cancelRoomBooking(int index) {
   return (store) {
-    final List<RoomBooking> bookings = store.state.content['room_bookings'];
+    final List<RoomBooking> bookings = store.state.content['bookings'];
 
     final newBookings =
         bookings.where((element) => element != bookings[index]).toList();
+
+    final db = AppBookingsDatabase();
+    db.saveNewBookings(newBookings);
+
+    store.dispatch(SetBookingsAction(newBookings));
+  };
+}
+
+ThunkAction<AppState> changeBookingStatus(int index, BookingState newState) {
+  return (store) {
+    final List<RoomBooking> bookings = store.state.content['bookings'];
+
+    final newBookings = bookings.map((booking) {
+      return booking == bookings[index]
+          ? booking.copyWith(state: newState)
+          : booking;
+    }).toList();
 
     final db = AppBookingsDatabase();
     db.saveNewBookings(newBookings);

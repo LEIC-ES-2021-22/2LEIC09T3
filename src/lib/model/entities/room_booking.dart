@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 enum BookingState {
   accepted,
-  pending,
+  pending, 
   cancelled
 }
 /// Manages a RoomBooking.
@@ -23,7 +23,7 @@ class RoomBooking {
   Map<String, dynamic> toMap() {
     return {
       'bookingId': bookingId,
-      'state': state,
+      'state': state.name, 
       'room': room,
       'duration': duration,
       'date': date

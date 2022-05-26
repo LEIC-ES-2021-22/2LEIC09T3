@@ -7,8 +7,8 @@ import 'package:uni/utils/datetime.dart';
 
 class RoomBookingsPageView extends StatefulWidget {
   final List<RoomBooking> bookings;
-  final bool Function(BuildContext, int) cancelBooking;
-  final bool Function(BuildContext, int, BookingState) changeBookingState;
+  final void Function(BuildContext, int) cancelBooking;
+  final void Function(BuildContext, int, BookingState) changeBookingState;
 
   RoomBookingsPageView({
     Key key,
