@@ -3,18 +3,25 @@ import 'package:flutter_gherkin/flutter_gherkin.dart';
 import 'package:gherkin/gherkin.dart';
 
 
-StepDefinitionGeneric WhenUserHasUnreadNotifications() {
+StepDefinitionGeneric GivenUserHasUnreadNotifications() {
   return given1<String, FlutterWorld>(
     RegExp(r"the user (has|doesn't have) unread notifications"),
         (predicate, context) async {
-          final has = predicate == 'has';
+            final has = predicate == 'has';
 
-          final hasUnreadNotifications = await FlutterDriverUtils.isPresent(
-            context.world.driver,
-            find.text(String.fromCharCode(0xe450))
-          );
+            await FlutterDriverUtils.tap(
+              context.world.driver,
+              find.byValueKey('notifications_button'),
+            );
 
-          context.expect(has, hasUnreadNotifications);
-    },
+            // FIXME: why this no work?
+            final hasUnreadNotifications = await FlutterDriverUtils.isPresent(
+              context.world.driver, 
+              find.text('Marcar como lida'),
+            );
+
+            print(hasUnreadNotifications);
+            context.expect(has, hasUnreadNotifications);
+    }, configuration: StepDefinitionConfiguration()..timeout = const Duration(days: 1)
   );
 }

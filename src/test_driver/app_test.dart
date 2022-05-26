@@ -1,22 +1,34 @@
-// import 'dart:async';
-// import 'package:flutter_gherkin/flutter_gherkin.dart';
-// import 'package:gherkin/gherkin.dart';
-// import 'package:glob/glob.dart';
+import 'dart:async';
+import 'package:flutter_gherkin/flutter_gherkin.dart';
+import 'package:gherkin/gherkin.dart';
+import 'package:glob/glob.dart';
+import 'dart:io';
+import 'dart:convert';
 
-// import 'steps/when_there_are_unread_notifications.dart';
-// import 'steps/when_user_is_logged_in.dart';
+import 'steps/when_there_are_unread_notifications.dart';
+import 'steps/given_user_is_logged_in.dart';
 
-// Future<void> main() {
-//   final config = FlutterTestConfiguration()
-//     ..features = [Glob(r'test_driver/features/**.feature')]
-//     ..reporters = [
-//       ProgressReporter(),
-//       TestRunSummaryReporter(),
-//       JsonReporter(path: './report.json')
-//     ]
-//     ..stepDefinitions = [WhenUserIsLoggedInStep(), WhenUserHasUnreadNotifications()]
-//     ..customStepParameterDefinitions = []
-//     ..restartAppBetweenScenarios = true
-//     ..targetAppPath = 'test_driver/app.dart';
-//   return GherkinRunner().execute(config);
-// }
+Future<void> main() {
+
+  print('Please provide your UP username: ', );
+  final username = stdin.readLineSync(encoding: utf8);
+
+  print('Please provide your UP password: ');
+  final password = stdin.readLineSync(encoding: utf8);
+
+  print('Thanks >:D');
+  print('\n');
+
+  final config = FlutterTestConfiguration()
+    ..features = [Glob(r'test_driver/features/**.feature')]
+    ..reporters = [
+      ProgressReporter(),
+      TestRunSummaryReporter(),
+      JsonReporter(path: './report.json')
+    ]
+    ..stepDefinitions = [GivenUserIsLoggedInStep(username, password), GivenUserHasUnreadNotifications()]
+    ..customStepParameterDefinitions = []
+    ..restartAppBetweenScenarios = true
+    ..targetAppPath = 'test_driver/app.dart';
+  return GherkinRunner().execute(config);
+}
