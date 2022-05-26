@@ -41,7 +41,8 @@ class AppState {
       'virtualCard': null,
       'virtualCardStatus': RequestStatus.none,
       'notifications': <UniNotification>[],
-      'bookings': <RoomBooking>[]
+      'bookings': <RoomBooking>[],
+      'bookingsStatus' : RequestStatus.none
     };
   }
 

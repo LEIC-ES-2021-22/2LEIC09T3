@@ -74,6 +74,8 @@ AppState appReducers(AppState state, dynamic action) {
     return setNotifications(state, action);
   } else if (action is SetBookingsAction) {
     return setBookings(state, action);
+  } else if (action is SetBookingStatusAction) {
+    return setBookingsStatus(state, action);
   }
 
   return state;
@@ -209,7 +211,8 @@ AppState setFeesRefreshTime(AppState state, SetFeesRefreshTimeAction action) {
   return state.cloneAndUpdateValue('feesRefreshTime', action.time);
 }
 
-AppState setBookingsRefreshTime(AppState state, SetBookingsRefreshTimeAction action) {
+AppState setBookingsRefreshTime(
+    AppState state, SetBookingsRefreshTimeAction action) {
   Logger().i('setting bookings refresh time ' + action.time.toString());
   return state.cloneAndUpdateValue('bookingsRefreshTime', action.time);
 }
@@ -249,6 +252,11 @@ AppState setVirtualCardStatus(AppState state, SetVirtualCardStatus action) {
 AppState setNotifications(AppState state, SetNotificationsAction action) {
   Logger().i('setting notifications ' + action.notifications.toString());
   return state.cloneAndUpdateValue('notifications', action.notifications);
+}
+
+AppState setBookingsStatus(AppState state, SetBookingStatusAction action) {
+  Logger().i('setting user bookings status to ' + action.status.toString());
+  return state.cloneAndUpdateValue('bookingsStatus', action.status);
 }
 
 AppState setBookings(AppState state, SetBookingsAction action) {
