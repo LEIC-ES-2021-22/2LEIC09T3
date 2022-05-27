@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [v1](#end-of-v1)
+- [v2](#end-of-v2)
 
 ## End of v1
 
@@ -24,3 +25,25 @@
 
 - Better time management by distributing the implementation of features across the entire iteration
 - Implement integration tests
+
+
+#
+## End of v2
+
+**Release:** https://github.com/LEIC-ES-2021-22/2LEIC09T3/releases/tag/v2
+
+<p align="center" justify="center">
+    <img src="images/v2/project-board.png" width="100%" />
+</p>
+
+### Retrospective
+
+#### What did we do well?
+
+- We improved our time management
+- We managed to finish most of the intended workload
+- We implemented automated gherkin tests
+
+#### What would we do differently?
+
+- Better understanding of the effort and time needed to complete the expected assignments 
