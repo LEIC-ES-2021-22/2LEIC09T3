@@ -14,6 +14,7 @@ import 'package:uni/controller/local_storage/app_last_user_info_update_database.
 import 'package:uni/controller/local_storage/app_lectures_database.dart';
 import 'package:uni/controller/local_storage/app_refresh_times_database.dart';
 import 'package:uni/controller/local_storage/app_uni_notifications_database.dart';
+import 'package:uni/controller/local_storage/app_room_booking_database.dart';
 import 'package:uni/controller/local_storage/app_user_database.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/redux/action_creators.dart';
@@ -31,6 +32,7 @@ Future logout(BuildContext context) async {
   AppLastUserInfoUpdateDatabase().deleteLastUpdate();
   AppBusStopDatabase().deleteBusStops();
   AppNotificationsDatabase().deleteNotifications();
+  AppBookingsDatabase().deleteRoomBookings();
 
   final path = (await getApplicationDocumentsDirectory()).path;
   (File('$path/profile_pic.png')).delete();

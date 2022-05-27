@@ -1,10 +1,7 @@
 import 'package:intl/intl.dart';
 
-enum BookingState {
-  accepted,
-  pending,
-  cancelled
-}
+enum BookingState { accepted, pending, cancelled }
+
 /// Manages a RoomBooking.
 ///
 /// The information stored is:
@@ -17,16 +14,17 @@ class RoomBooking {
   int duration;
   DateTime date;
 
-  RoomBooking(this.bookingId, this.state, this.room, this.duration, this.date) {}
+  RoomBooking(
+      this.bookingId, this.state, this.room, this.duration, this.date) {}
 
   /// Converts this RoomBooking to a map.
   Map<String, dynamic> toMap() {
     return {
       'bookingId': bookingId,
-      'accepted': state,
+      'state': state.name,
       'room': room,
       'duration': duration,
-      'date': date
+      'date': date.toString()
     };
   }
 
@@ -41,17 +39,13 @@ class RoomBooking {
       identical(this, other) ||
       other is RoomBooking &&
           runtimeType == other.runtimeType &&
-          bookingId == other.bookingId &&
-          state == other.state &&
-          room == other.room &&
-          duration == other.duration &&
-          date == other.date;
+          bookingId == other.bookingId;
 
   @override
   int get hashCode =>
-      bookingId.hashCode ^ 
-      state.hashCode ^ 
-      room.hashCode ^ 
-      duration.hashCode ^ 
+      bookingId.hashCode ^
+      state.hashCode ^
+      room.hashCode ^
+      duration.hashCode ^
       date.hashCode;
 }

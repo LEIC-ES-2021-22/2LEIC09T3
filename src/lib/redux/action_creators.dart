@@ -16,6 +16,7 @@ import 'package:uni/controller/local_storage/app_lectures_database.dart';
 import 'package:uni/controller/local_storage/app_refresh_times_database.dart';
 import 'package:uni/controller/local_storage/app_shared_preferences.dart';
 import 'package:uni/controller/local_storage/app_uni_notifications_database.dart';
+import 'package:uni/controller/local_storage/app_room_booking_database.dart';
 import 'package:uni/controller/local_storage/app_user_database.dart';
 import 'package:uni/controller/local_storage/app_restaurant_database.dart';
 import 'package:uni/controller/networking/network_router.dart'
@@ -25,6 +26,7 @@ import 'package:uni/controller/parsers/parser_exams.dart';
 import 'package:uni/controller/parsers/parser_fees.dart';
 import 'package:uni/controller/parsers/parser_print_balance.dart';
 import 'package:uni/controller/parsers/parser_notifications.dart';
+import 'package:uni/controller/parsers/parser_bookings.dart';
 import 'package:uni/controller/restaurant_fetcher/restaurant_fetcher_html.dart';
 import 'package:uni/controller/schedule_fetcher/schedule_fetcher.dart';
 import 'package:uni/controller/schedule_fetcher/schedule_fetcher_api.dart';
@@ -39,6 +41,7 @@ import 'package:uni/model/entities/restaurant.dart';
 import 'package:uni/model/entities/session.dart';
 import 'package:uni/model/entities/trip.dart';
 import 'package:uni/model/entities/uni_notification.dart';
+import 'package:uni/model/entities/room_booking.dart';
 import 'package:uni/model/notifications_page_model.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/reducers.dart';
@@ -228,6 +231,18 @@ Future<List<UniNotification>> extractNotifications(
   return parseNotifications(jsonNotifs);
 }
 
+//TODO: This function is to be implemented  by the msc students
+// So we are just retrieving a json string
+Future<List<RoomBooking>> extractBookings(Store<AppState> store) async {
+  final jsonBookings = jsonEncode([
+    {'id': 111, 'state': 'accepted','room': 'B307', 'duration': 30, 'date': '2022-08-17 10:00:00'},
+    {'id': 222, 'state': 'cancelled', 'room': 'B310', 'duration': 60, 'date': '2022-08-19 11:00:00'},
+    {'id': 333, 'state': 'pending', 'room': 'B310', 'duration': 60, 'date': '2022-08-19 11:00:00'}
+  ]);
+
+  return parseBookings(jsonBookings);
+}
+
 Future<List<Exam>> extractExams(
     Store<AppState> store, ParserExams parserExams) async {
   Set<Exam> courseExams = Set();
@@ -273,11 +288,10 @@ ThunkAction<AppState> getUserNotifications(
 
       final db = AppNotificationsDatabase();
       await db.insertNotifications(notifications);
-      
+
       final storedNotifications = await db.notifications();
-      final validNotifications = storedNotifications
-        .where(notifications.contains)
-        .toList();
+      final validNotifications =
+          storedNotifications.where(notifications.contains).toList();
 
       db.saveNewNotifications(validNotifications);
 
@@ -286,6 +300,34 @@ ThunkAction<AppState> getUserNotifications(
     } catch (e) {
       Logger().e('Failed to get Notifications');
       store.dispatch(SetNotificationStatusAction(RequestStatus.failed));
+    }
+
+    action.complete();
+  };
+}
+
+ThunkAction<AppState> getUserBookings(
+    Completer<Null> action, Tuple2<String, String> userPersistentInfo) {
+  return (Store<AppState> store) async {
+    try {
+      store.dispatch(SetBookingStatusAction(RequestStatus.busy));
+      final List<RoomBooking> bookings = await extractBookings(store);
+
+      bookings.sort((a, b) => a.date.compareTo(b.date));
+
+      final db = AppBookingsDatabase();
+      await db.insertRoomBookings(bookings);
+
+      final storedBookings = await db.bookings();
+      final validBookings = storedBookings;
+
+      db.saveNewBookings(validBookings);
+
+      store.dispatch(SetBookingStatusAction(RequestStatus.successful));
+      store.dispatch(SetBookingsAction(validBookings));
+    } catch (e) {
+      Logger().e('Failed to get Bookings');
+      store.dispatch(SetBookingStatusAction(RequestStatus.failed));
     }
 
     action.complete();
@@ -621,10 +663,18 @@ ThunkAction<AppState> updateStateBasedOnLocalNotifications() {
   };
 }
 
+ThunkAction<AppState> updateStateBasedOnLocalBookings() {
+  return (Store<AppState> store) async {
+    final db = AppBookingsDatabase();
+    final bookings = await db.bookings();
+    store.dispatch(SetBookingsAction(bookings));
+  };
+}
+
 ThunkAction<AppState> deleteNotification(int index) {
   return (store) {
-    final List<UniNotification> notifications = 
-      store.state.content['notifications'];
+    final List<UniNotification> notifications =
+        store.state.content['notifications'];
 
     final newNotifications = notifications
         .where((element) => element != notifications[index])
@@ -634,6 +684,37 @@ ThunkAction<AppState> deleteNotification(int index) {
     db.saveNewNotifications(newNotifications);
 
     store.dispatch(SetNotificationsAction(newNotifications));
+  };
+}
+
+ThunkAction<AppState> cancelRoomBooking(int index) {
+  return (store) {
+    final List<RoomBooking> bookings = store.state.content['bookings'];
+
+    final newBookings =
+        bookings.where((element) => element != bookings[index]).toList();
+
+    final db = AppBookingsDatabase();
+    db.saveNewBookings(newBookings);
+
+    store.dispatch(SetBookingsAction(newBookings));
+  };
+}
+
+ThunkAction<AppState> changeBookingStatus(int index, BookingState newState) {
+  return (store) {
+    final List<RoomBooking> bookings = store.state.content['bookings'];
+
+    final newBookings = bookings.map((booking) {
+      return booking == bookings[index]
+          ? booking.copyWith(state: newState)
+          : booking;
+    }).toList();
+
+    final db = AppBookingsDatabase();
+    db.saveNewBookings(newBookings);
+
+    store.dispatch(SetBookingsAction(newBookings));
   };
 }
 

@@ -59,7 +59,8 @@ Future loadRemoteUserInfoToState(Store<AppState> store) async {
       trips = Completer(),
       lastUpdate = Completer(),
       restaurants = Completer(),
-      notifications = Completer();
+      notifications = Completer(),
+      bookings = Completer();
 
   store.dispatch(getUserInfo(userInfo));
   store.dispatch(getUserPrintBalance(printBalance));
@@ -74,6 +75,7 @@ Future loadRemoteUserInfoToState(Store<AppState> store) async {
     store.dispatch(getUserExams(exams, ParserExams(), userPersistentInfo));
     store.dispatch(getUserSchedule(schedule, userPersistentInfo));
     store.dispatch(getUserNotifications(notifications, userPersistentInfo));
+    store.dispatch(getUserBookings(bookings, userPersistentInfo));
   });
 
   final allRequests = Future.wait([
@@ -108,11 +110,13 @@ void loadLocalUserInfoToState(store) async {
     store.dispatch(updateStateBasedOnLocalRefreshTimes());
     store.dispatch(updateStateBasedOnLocalTime());
     store.dispatch(updateStateBasedOnLocalNotifications());
+    store.dispatch(updateStateBasedOnLocalBookings());
     store.dispatch(SaveProfileStatusAction(RequestStatus.successful));
     store.dispatch(SetPrintBalanceStatusAction(RequestStatus.successful));
     store.dispatch(SetFeesStatusAction(RequestStatus.successful));
     store.dispatch(SetCoursesStatesStatusAction(RequestStatus.successful));
     store.dispatch(SetNotificationStatusAction(RequestStatus.successful));
+    store.dispatch(SetBookingStatusAction(RequestStatus.successful));
 
     // TODO: Make this work
     store.dispatch(SetVirtualCardStatus(RequestStatus.busy));

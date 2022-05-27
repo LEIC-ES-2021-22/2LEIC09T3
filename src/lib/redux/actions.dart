@@ -9,6 +9,7 @@ import 'package:uni/model/entities/session.dart';
 import 'package:uni/model/entities/trip.dart';
 import 'package:uni/model/entities/virtual_card.dart';
 import 'package:uni/model/entities/uni_notification.dart';
+import 'package:uni/model/entities/room_booking.dart';
 import 'package:uni/model/home_page_model.dart';
 
 import '../model/entities/bus_stop.dart';
@@ -36,6 +37,11 @@ class SetExamsStatusAction {
 class SetNotificationStatusAction {
   RequestStatus status;
   SetNotificationStatusAction(this.status);
+}
+
+class SetBookingStatusAction {
+  RequestStatus status;
+  SetBookingStatusAction(this.status);
 }
 
 class SetRestaurantsAction {
@@ -192,7 +198,8 @@ class SetNotificationsAction {
   SetNotificationsAction(this.notifications);
 }
 
-class SetBookings {
+class SetBookingsAction {
   List<RoomBooking> bookings;
-  SetBookings(this.bookings);
+  SetBookingsAction(this.bookings);
 }
+
