@@ -5,6 +5,10 @@ import 'package:glob/glob.dart';
 import 'dart:io';
 import 'dart:convert';
 
+import 'steps/notification_is_deleted.dart';
+import 'steps/notification_swipe.dart';
+import 'steps/there_are_notifications.dart';
+import 'steps/on_notification_screen.dart';
 import 'steps/then_notif_screen_is_shown.dart';
 import 'steps/then_the_icon_changes.dart';
 import 'steps/when_the_user_taps_notification_button.dart';
@@ -33,7 +37,11 @@ Future<void> main() {
                          GivenUserHasUnreadNotifications(), 
                          ThenTheIconIsDifferentStep(),
                          WhenUserTapsNotifButton(),
-                         ThenNotifScreenIsShown()]
+                         ThenNotifScreenIsShown(),
+                         UserIsOnNotificationsScreen(),
+                         ThereAreNotifications(),
+                         SwipeAndTapNotification(),
+                         TheNotificationIsDeleted()]
     ..customStepParameterDefinitions = []
     ..restartAppBetweenScenarios = true
     ..targetAppPath = 'test_driver/app.dart';

@@ -29,6 +29,7 @@ class SlidableWidget<T> extends StatelessWidget {
           extentRatio: 0.25,
           children: [
             SlidableAction(
+              key: const ValueKey('notifications_delete'),
               backgroundColor: Color.fromARGB(255, 0x75, 0x17, 0x1e),
               foregroundColor: Colors.white,
               icon: Icons.delete,

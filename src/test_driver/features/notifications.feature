@@ -12,15 +12,14 @@ Feature: Receive SIGARRA's notifications on the uni app
         
     # Scenario: Student taps on pending notification
     #     Given the user is logged in to uni
-    #     And the Student is on the "Notifications" screen
+    #     And the user is on the "notifications" screen
     #     And there are unseen notifications
     #     When the Student taps on an unseen notification
     #     Then the notification is marked as "seen".
 
-    # Scenario: Student deletes notification
-    #     Given the user is logged in to uni
-    #     And the Student is on the "Notifications" screen
-    #     And there are notifications
-    #     When the Student swipes a notification to the left
-    #     Then the notification is deleted from uni
-    #     And SIGARRA is notified that the notification was dismissed 
+    Scenario: Student deletes notification
+        Given the user is logged in to uni
+        And the user is on the notifications screen
+        And there are notifications
+        When the user swipes a notification to the left and taps the delete button
+        Then the notification is deleted from uni
