@@ -5,8 +5,10 @@ import 'package:glob/glob.dart';
 import 'dart:io';
 import 'dart:convert';
 
+import 'steps/no_unread_notifications.dart';
 import 'steps/notification_is_deleted.dart';
 import 'steps/notification_swipe.dart';
+import 'steps/taps_on_unread_notification.dart';
 import 'steps/there_are_notifications.dart';
 import 'steps/on_notification_screen.dart';
 import 'steps/then_notif_screen_is_shown.dart';
@@ -41,7 +43,9 @@ Future<void> main() {
                          UserIsOnNotificationsScreen(),
                          ThereAreNotifications(),
                          SwipeAndTapNotification(),
-                         TheNotificationIsDeleted()]
+                         TheNotificationIsDeleted(),
+                         TapsOnUnread(),
+                         NoUnreadNotifications()]
     ..customStepParameterDefinitions = []
     ..restartAppBetweenScenarios = true
     ..targetAppPath = 'test_driver/app.dart';
