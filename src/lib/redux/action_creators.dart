@@ -19,6 +19,7 @@ import 'package:uni/controller/local_storage/app_uni_notifications_database.dart
 import 'package:uni/controller/local_storage/app_room_booking_database.dart';
 import 'package:uni/controller/local_storage/app_user_database.dart';
 import 'package:uni/controller/local_storage/app_restaurant_database.dart';
+import 'package:uni/controller/local_storage/app_virtual_card_database.dart';
 import 'package:uni/controller/networking/network_router.dart'
     show NetworkRouter;
 import 'package:uni/controller/parsers/parser_courses.dart';
@@ -27,6 +28,7 @@ import 'package:uni/controller/parsers/parser_fees.dart';
 import 'package:uni/controller/parsers/parser_print_balance.dart';
 import 'package:uni/controller/parsers/parser_notifications.dart';
 import 'package:uni/controller/parsers/parser_bookings.dart';
+import 'package:uni/controller/parsers/parser_virtual_card.dart';
 import 'package:uni/controller/restaurant_fetcher/restaurant_fetcher_html.dart';
 import 'package:uni/controller/schedule_fetcher/schedule_fetcher.dart';
 import 'package:uni/controller/schedule_fetcher/schedule_fetcher_api.dart';
@@ -42,6 +44,7 @@ import 'package:uni/model/entities/session.dart';
 import 'package:uni/model/entities/trip.dart';
 import 'package:uni/model/entities/uni_notification.dart';
 import 'package:uni/model/entities/room_booking.dart';
+import 'package:uni/model/entities/virtual_card.dart';
 import 'package:uni/model/notifications_page_model.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/reducers.dart';
@@ -243,6 +246,15 @@ Future<List<RoomBooking>> extractBookings(Store<AppState> store) async {
   return parseBookings(jsonBookings);
 }
 
+Future<VirtualCard> extractCard(Store<AppState> store) async {
+  final cardJson = jsonEncode({
+    'id': 1234,
+    'key': 'pkey'
+  });
+
+  return parseCard(cardJson);
+}
+
 Future<List<Exam>> extractExams(
     Store<AppState> store, ParserExams parserExams) async {
   Set<Exam> courseExams = Set();
@@ -328,6 +340,26 @@ ThunkAction<AppState> getUserBookings(
     } catch (e) {
       Logger().e('Failed to get Bookings');
       store.dispatch(SetBookingStatusAction(RequestStatus.failed));
+    }
+
+    action.complete();
+  };
+}
+
+ThunkAction<AppState> getUserVirtualCard(
+    Completer<Null> action, Tuple2<String, String> userPersistentInfo) {
+  return (Store<AppState> store) async {
+    try {
+      final VirtualCard card =
+          await extractCard(store);
+
+      final db = AppVirtualCardDatabase();
+      await db.saveNewVirtualCard(card);
+
+      store.dispatch(SetVirtualCard(await db.virtualCard()));
+    } catch (e) {
+      Logger().e('Failed to get card', e);
+      store.dispatch(SetVirtualCardStatus(RequestStatus.failed));
     }
 
     action.complete();
@@ -668,6 +700,14 @@ ThunkAction<AppState> updateStateBasedOnLocalBookings() {
     final db = AppBookingsDatabase();
     final bookings = await db.bookings();
     store.dispatch(SetBookingsAction(bookings));
+  };
+}
+
+ThunkAction<AppState> updateStateBasedOnLocalVirtualCard() {
+  return (Store<AppState> store) async {
+    final db = AppVirtualCardDatabase();
+    final card = await db.virtualCard();
+    store.dispatch(SetVirtualCard(card));
   };
 }
 
