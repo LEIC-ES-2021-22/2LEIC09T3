@@ -185,6 +185,7 @@ class _LoginPageViewState extends State<LoginPageView> {
   /// Creates the widget for the username input.
   Widget createUsernameInput(BuildContext context) {
     return TextFormField(
+      key: const ValueKey('login_username'),
       style: TextStyle(color: Colors.white, fontSize: 20),
       enableSuggestions: false,
       autocorrect: false,
@@ -205,6 +206,7 @@ class _LoginPageViewState extends State<LoginPageView> {
   /// Creates the widget for the password input.
   Widget createPasswordInput() {
     return TextFormField(
+        key: const ValueKey('login_password'),
         style: TextStyle(color: Colors.white, fontSize: 20),
         enableSuggestions: false,
         autocorrect: false,

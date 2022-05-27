@@ -97,6 +97,7 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: RoundedRectangleBorder(),
           child: TextButton(
+            key: const ValueKey('home_button'),
             onPressed: () {
               final currentRouteName = ModalRoute.of(context).settings.name;
               if (currentRouteName != Constants.navPersonalArea) {
@@ -148,6 +149,9 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
           }
 
           return IconButton(
+            key: hasPendingNotifications ? 
+              ValueKey('notifications_button_active')
+              : ValueKey('notifications_button_inactive'),
             iconSize: 30,
             icon: Icon(hasPendingNotifications
                 ? Icons.notifications_active

@@ -30,15 +30,17 @@ class NotificationsPageView extends StatelessWidget {
       Expanded(
           child: notifications.isEmpty ? 
             Text(
-              "Não há notificações para mostrar.",
+              'Não há notificações para mostrar.',
               style: Theme.of(context).textTheme.bodyMedium,
               )
             : ListView.builder(
+              key: const ValueKey('slidable_notifications'),
               itemCount: notifications.length,
               itemBuilder: (context, index) {
                 final item = notifications[index];
 
                 return SlidableWidget(
+                  key: ValueKey('slidable_notification_$index'),
                   child: Card(
                     elevation: 3,
                     child: buildListTile(context, item)
