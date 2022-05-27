@@ -6,7 +6,7 @@ import 'package:gherkin/gherkin.dart';
 
 StepDefinitionGeneric SwipeAndTapNotification() {
   return when<FlutterWorld>(
-    'the user swipes a notification to the left',
+    'the user swipes a notification to the left and taps the delete button',
     (context) async {
 
       while (await FlutterDriverUtils.isPresent(
