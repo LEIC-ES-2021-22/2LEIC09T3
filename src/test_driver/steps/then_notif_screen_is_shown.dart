@@ -14,7 +14,7 @@ StepDefinitionGeneric ThenNotifScreenIsShown() {
         timeout: const Duration(seconds: 30)
       );
 
-      context.expect(true, finder);
+      context.expect(finder, true);
     }, configuration: StepDefinitionConfiguration()..timeout = const Duration(days: 1)
   );
 }

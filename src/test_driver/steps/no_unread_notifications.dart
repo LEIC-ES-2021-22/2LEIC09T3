@@ -33,7 +33,7 @@ StepDefinitionGeneric NoUnreadNotifications() {
         i++;
       }
 
-      context.expect(false, hasUnreadNotifications);
+      context.expect(hasUnreadNotifications, false);
     }, configuration: StepDefinitionConfiguration()..timeout = const Duration(days: 1)
   );
 }

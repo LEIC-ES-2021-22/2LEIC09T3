@@ -12,7 +12,7 @@ StepDefinitionGeneric TheNotificationIsDeleted() {
         timeout: const Duration(seconds: 30)
       );
 
-      context.expect(true, no_notifications);
+      context.expect(no_notifications, true);
     }, configuration: StepDefinitionConfiguration()..timeout = const Duration(days: 1)
   );
 }
