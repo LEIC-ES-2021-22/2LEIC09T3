@@ -318,7 +318,7 @@ ThunkAction<AppState> getUserBookings(
       await db.insertRoomBookings(bookings);
 
       final storedBookings = await db.bookings();
-      final validBookings = storedBookings.where(bookings.contains).toList();
+      final validBookings = storedBookings;
 
       db.saveNewBookings(validBookings);
 
