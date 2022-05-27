@@ -235,8 +235,9 @@ Future<List<UniNotification>> extractNotifications(
 // So we are just retrieving a json string
 Future<List<RoomBooking>> extractBookings(Store<AppState> store) async {
   final jsonBookings = jsonEncode([
-    {'id': 111, 'room': 'B307', 'duration': 30, 'date': '2022-08-17 10:00:00'},
-    {'id': 222, 'room': 'B310', 'duration': 60, 'date': '2022-08-19 11:00:00'}
+    {'id': 111, 'state': 'accepted','room': 'B307', 'duration': 30, 'date': '2022-08-17 10:00:00'},
+    {'id': 222, 'state': 'cancelled', 'room': 'B310', 'duration': 60, 'date': '2022-08-19 11:00:00'},
+    {'id': 333, 'state': 'pending', 'room': 'B310', 'duration': 60, 'date': '2022-08-19 11:00:00'}
   ]);
 
   return parseBookings(jsonBookings);
