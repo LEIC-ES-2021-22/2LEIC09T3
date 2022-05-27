@@ -6,13 +6,27 @@ StepDefinitionGeneric UserIsOnNotificationsScreen() {
   return given<FlutterWorld>(
     'the user is on the notifications screen',
     (context) async {
-      await FlutterDriverUtils.tap(
-        context.world.driver,
-        find.byValueKey('notifications_button'),
-        timeout: const Duration(seconds: 30),
+      bool finder = await FlutterDriverUtils.isPresent(
+        context.world.driver, 
+        find.byValueKey('notifications_button_active'),
+        timeout: const Duration(seconds: 5),
       );
 
-      bool finder = await FlutterDriverUtils.isPresent(
+      if (finder) {
+          await FlutterDriverUtils.tap(
+          context.world.driver,
+          find.byValueKey('notifications_button_active'),
+          timeout: const Duration(seconds: 30),
+        );
+      } else {
+        await FlutterDriverUtils.tap(
+          context.world.driver,
+          find.byValueKey('notifications_button_inactive'),
+          timeout: const Duration(seconds: 30),
+        );
+      }
+
+      finder = await FlutterDriverUtils.isPresent(
         context.world.driver,
         find.text('Notificações'),
         timeout: const Duration(seconds: 30),

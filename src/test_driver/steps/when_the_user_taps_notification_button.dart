@@ -6,11 +6,27 @@ StepDefinitionGeneric WhenUserTapsNotifButton() {
   return when1<String, FlutterWorld>(
     RegExp(r'the user taps the {string} button'),
     (key, context) async {
-      await FlutterDriverUtils.tap(
+      
+      final finder = await FlutterDriverUtils.isPresent(
         context.world.driver, 
-        find.byValueKey('${key}_button'),
-        timeout: const Duration(seconds: 30),
+        find.byValueKey('notifications_button_active'),
+        timeout: const Duration(seconds: 5),
       );
+
+      if (finder) {
+          await FlutterDriverUtils.tap(
+          context.world.driver,
+          find.byValueKey('notifications_button_active'),
+          timeout: const Duration(seconds: 30),
+        );
+      } else {
+        await FlutterDriverUtils.tap(
+          context.world.driver,
+          find.byValueKey('notifications_button_inactive'),
+          timeout: const Duration(seconds: 30),
+        );
+      }
+
     }, configuration: StepDefinitionConfiguration()..timeout = const Duration(days: 1)
   );
 }

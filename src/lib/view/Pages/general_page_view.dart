@@ -149,7 +149,9 @@ abstract class GeneralPageViewState extends State<StatefulWidget> {
           }
 
           return IconButton(
-            key: const ValueKey('notifications_button'),
+            key: hasPendingNotifications ? 
+              ValueKey('notifications_button_active')
+              : ValueKey('notifications_button_inactive'),
             iconSize: 30,
             icon: Icon(hasPendingNotifications
                 ? Icons.notifications_active

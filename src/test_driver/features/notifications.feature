@@ -1,9 +1,9 @@
 Feature: Receive SIGARRA's notifications on the uni app
 
-    #Scenario: Student has pending notifications
-    #    Given the user is logged in to uni
-    #    And the user has unread notifications
-    #    Then a badge on the notifications button is displayed
+    Scenario: Student has pending notifications
+       Given the user is logged in to uni
+       And the user has unread notifications
+       Then a badge on the notifications button is displayed
 
     Scenario: Student wants to see pending notifications
         Given the user is logged in to uni

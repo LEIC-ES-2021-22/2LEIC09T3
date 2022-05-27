@@ -9,11 +9,25 @@ StepDefinitionGeneric TapsOnUnread() {
     'the user slides a notification to the right and taps on "Marcar como lida"',
     (context) async {
 
-      await FlutterDriverUtils.tap(
+      final finder = await FlutterDriverUtils.isPresent(
         context.world.driver, 
-        find.byValueKey('notifications_button'),
+        find.byValueKey('notifications_button_active'),
         timeout: const Duration(seconds: 5),
       );
+
+      if (finder) {
+          await FlutterDriverUtils.tap(
+          context.world.driver,
+          find.byValueKey('notifications_button_active'),
+          timeout: const Duration(seconds: 30),
+        );
+      } else {
+        await FlutterDriverUtils.tap(
+          context.world.driver,
+          find.byValueKey('notifications_button_inactive'),
+          timeout: const Duration(seconds: 30),
+        );
+      }
 
       int i = 0;
 

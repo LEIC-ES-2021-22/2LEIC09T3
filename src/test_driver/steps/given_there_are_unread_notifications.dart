@@ -69,14 +69,29 @@ StepDefinitionGeneric GivenUserHasUnreadNotifications() {
         (predicate, context) async {
             final has = predicate == 'has';
 
-            await FlutterDriverUtils.tap(
-              context.world.driver,
-              find.byValueKey('notifications_button'),
+            final finder = await FlutterDriverUtils.isPresent(
+              context.world.driver, 
+              find.byValueKey('notifications_button_active'),
+              timeout: Duration(seconds: 5),
             );
 
+            if (finder) {
+                await FlutterDriverUtils.tap(
+                context.world.driver,
+                find.byValueKey('notifications_button_active'),
+                timeout: const Duration(seconds: 10),
+              );
+            } else {
+              await FlutterDriverUtils.tap(
+                context.world.driver,
+                find.byValueKey('notifications_button_inactive'),
+                timeout: const Duration(seconds: 10),
+              ); 
+            }
+
             var hasUnreadNotifications = false;
-            // FIXME: why this no work?
             int i = 0;
+
             while (!hasUnreadNotifications && await FlutterDriverUtils.isPresent(
               context.world.driver,
               find.byValueKey('slidable_notification_$i'),
