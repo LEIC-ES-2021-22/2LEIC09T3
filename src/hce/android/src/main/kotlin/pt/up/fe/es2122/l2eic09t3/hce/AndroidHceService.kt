@@ -5,13 +5,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.nfc.NfcAdapter
 import pt.up.fe.es2122.l2eic09t3.hce.pigeon.Pigeon
-import android.util.Log
 import java.lang.Exception
 
 class AndroidHceService(private val context: Context): Pigeon.HceService {
 
     private fun getHceState(): Pigeon.HceState {
-        Log.e("BRUH", "getState")
         val pm = context.packageManager
         val hasHceSupport = pm.hasSystemFeature(PackageManager.FEATURE_NFC_HOST_CARD_EMULATION)
 

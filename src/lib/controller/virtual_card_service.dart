@@ -2,9 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hce/hce.dart';
 import 'package:logger/logger.dart';
 import 'package:redux/redux.dart';
+import 'package:toast/toast.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/session.dart';
 import 'package:uni/model/entities/virtual_card.dart';
@@ -65,12 +68,9 @@ class VirtualCardService extends ApduService {
 
   @override
   Future<Uint8List> processApdu(Uint8List command) async {
-    if (command == Uint8List.fromList([0x0, 0xA4, 0x04, 0x0, 5, 0xFE, 0xE7, 0x1A, 0xD0, 0x9E])) {
-      Logger().d("SELECT AID");
+    if (listEquals(command, Uint8List.fromList([0x0, 0xA4, 0x04, 0x0, 5, 0xFE, 0xE7, 0x1A, 0xD0, 0x9E]))) {
       return Uint8List.fromList([0x90, 0x00]);
-    } else if (command == Uint8List.fromList([0x0, 0xCA, 0x0, 0x0, 0x0F, 0xFF])) {
-      Logger().d("GET DATA");
-
+    } else if (listEquals(command, Uint8List.fromList(const [0x0, 0xCA, 0x0, 0x0, 0x0F, 0xFF]))) {
       final username = _store.state.content['session'].studentNumber;
       final privateKey = _store.state.content['virtualCard'].privateKey;
 
@@ -82,9 +82,9 @@ class VirtualCardService extends ApduService {
       return Uint8List.fromList([
         length,
         ...utf8.encode(username),
-        0x0,
+        ...utf8.encode('\n'),
         ...utf8.encode(privateKey),
-        0,
+        ...utf8.encode('\n'),
         0x90, 0x0]);
     }
 
@@ -92,7 +92,5 @@ class VirtualCardService extends ApduService {
   }
 
   @override
-  Future<void> processDeactivation(ServiceDeactivationReasonWrapper reason) async {
-    return;
-  }
+  Future<void> processDeactivation(ServiceDeactivationReasonWrapper reason) async {}
 }

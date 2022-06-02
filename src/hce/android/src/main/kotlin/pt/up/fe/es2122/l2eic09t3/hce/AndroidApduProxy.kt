@@ -2,7 +2,6 @@ package pt.up.fe.es2122.l2eic09t3.hce
 
 import android.nfc.cardemulation.HostApduService
 import android.os.Bundle
-import android.util.Log
 import pt.up.fe.es2122.l2eic09t3.hce.pigeon.Pigeon
 
 class AndroidApduProxy : HostApduService() {
@@ -31,14 +30,10 @@ class AndroidApduProxy : HostApduService() {
             return NACK
         }
 
-        Log.i("POG1", Thread.currentThread().name)
-
         api.processApdu(p0) { it ->
             if (!running) {
                 return@processApdu
             }
-
-            Log.i("POG2", Thread.currentThread().name)
 
             if (it == null) {
                 notifyUnhandled()
