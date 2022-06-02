@@ -4,5 +4,5 @@ enum FAVORITE_WIDGET_TYPE {
   printBalance,
   account,
   busStops,
-  inAppCard
+  virtualCard
 }

@@ -153,7 +153,7 @@ class VirtualCardCard extends GenericCard {
   }
 
   @override
-  String getTitle() => 'In-App Card';
+  String getTitle() => 'Cartão Virtual';
 
   @override
   onClick(BuildContext context) {}

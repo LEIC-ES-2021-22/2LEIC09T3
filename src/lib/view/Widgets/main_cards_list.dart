@@ -28,7 +28,7 @@ class MainCardsList extends StatelessWidget {
         PrintInfoCard.fromEditingInformation(k, em, od),
     FAVORITE_WIDGET_TYPE.busStops: (k, em, od) =>
         BusStopCard.fromEditingInformation(k, em, od),
-    FAVORITE_WIDGET_TYPE.inAppCard: (k, em, od) =>
+    FAVORITE_WIDGET_TYPE.virtualCard: (k, em, od) =>
         VirtualCardCard.fromEditingInformation(k, em, od)
   };
 
