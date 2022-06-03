@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uni/view/Widgets/row_container.dart';
+import 'package:uni/view/Pages/single_room_page_view.dart';
 
 class ScheduleSlot extends StatelessWidget {
   final String subject;
@@ -84,7 +85,14 @@ class ScheduleSlot extends StatelessWidget {
           Row(
             children: [
               createScheduleSlotTeacherInfo(context),
-              createScheduleSlotClass(context)
+              GestureDetector(
+                onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SingleRoomPageView(
+                    universityRoom: this.classNumber,
+                  ))
+                ),
+                child: createScheduleSlotClass(context),
+              ),
             ],
           )
         ],
