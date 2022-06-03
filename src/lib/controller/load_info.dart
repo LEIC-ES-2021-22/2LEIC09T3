@@ -12,8 +12,11 @@ import 'package:uni/redux/action_creators.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/refresh_items_action.dart';
 import 'package:uni/utils/constants.dart';
+import 'package:uni/controller/virtual_card_service.dart';
 
 import 'local_storage/app_shared_preferences.dart';
+
+VirtualCardService _virtualCardService = null;
 
 Future loadReloginInfo(Store<AppState> store) async {
   final Tuple2<String, String> userPersistentCredentials =
@@ -60,7 +63,8 @@ Future loadRemoteUserInfoToState(Store<AppState> store) async {
       lastUpdate = Completer(),
       restaurants = Completer(),
       notifications = Completer(),
-      bookings = Completer();
+      bookings = Completer(),
+      virtualCard = Completer();
 
   store.dispatch(getUserInfo(userInfo));
   store.dispatch(getUserPrintBalance(printBalance));
@@ -76,6 +80,7 @@ Future loadRemoteUserInfoToState(Store<AppState> store) async {
     store.dispatch(getUserSchedule(schedule, userPersistentInfo));
     store.dispatch(getUserNotifications(notifications, userPersistentInfo));
     store.dispatch(getUserBookings(bookings, userPersistentInfo));
+    store.dispatch(getUserVirtualCard(virtualCard, userPersistentInfo));
   });
 
   final allRequests = Future.wait([
@@ -86,10 +91,20 @@ Future loadRemoteUserInfoToState(Store<AppState> store) async {
     coursesStates.future,
     userInfo.future,
     trips.future,
-    restaurants.future
+    restaurants.future,
+    notifications.future,
+    bookings.future,
+    virtualCard.future
   ]);
-  allRequests.then((futures) {
+  allRequests.then((futures) async {
     store.dispatch(setLastUserInfoUpdateTimestamp(lastUpdate));
+
+    if (_virtualCardService == null) {
+    _virtualCardService = VirtualCardService(store);
+    }
+
+    await _virtualCardService.teardown();
+    await _virtualCardService.init();
   });
   return lastUpdate.future;
 }
@@ -111,19 +126,13 @@ void loadLocalUserInfoToState(store) async {
     store.dispatch(updateStateBasedOnLocalTime());
     store.dispatch(updateStateBasedOnLocalNotifications());
     store.dispatch(updateStateBasedOnLocalBookings());
+    store.dispatch(updateStateBasedOnLocalVirtualCard());
     store.dispatch(SaveProfileStatusAction(RequestStatus.successful));
     store.dispatch(SetPrintBalanceStatusAction(RequestStatus.successful));
     store.dispatch(SetFeesStatusAction(RequestStatus.successful));
     store.dispatch(SetCoursesStatesStatusAction(RequestStatus.successful));
     store.dispatch(SetNotificationStatusAction(RequestStatus.successful));
     store.dispatch(SetBookingStatusAction(RequestStatus.successful));
-
-    // TODO: Make this work
-    store.dispatch(SetVirtualCardStatus(RequestStatus.busy));
-    await Future.delayed(Duration(seconds: 2), () {
-      store.dispatch(SetVirtualCardStatus(RequestStatus.successful));
-      store.dispatch(SetVirtualCard(VirtualCard(123, "12312312")));
-    });
   }
 }
 

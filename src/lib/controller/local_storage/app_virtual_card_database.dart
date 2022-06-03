@@ -9,10 +9,10 @@ import 'package:sqflite/sqflite.dart';
 class AppVirtualCardDatabase extends AppDatabase {
   AppVirtualCardDatabase()
       : super('virtual_cards.db',
-            ['CREATE TABLE virtual_cards(cardId TEXT, privateKey TEXT)']);
+            ['CREATE TABLE virtual_cards(cardId INTEGER PRIMARY KEY, privateKey TEXT)']);
 
   /// Replaces all of the data in this database with [VirtualCard].
-  void saveNewVirtualCard(VirtualCard virtualCard) async {
+  Future<void> saveNewVirtualCard(VirtualCard virtualCard) async {
     await deleteVirtualCards();
     await _insertVirtualCard(virtualCard);
   }

@@ -39,7 +39,7 @@ class AppState {
       'coursesStateStatus': RequestStatus.none,
       'lastUserInfoUpdateTime': null,
       'virtualCard': null,
-      'virtualCardStatus': RequestStatus.none,
+      'virtualCardStatus': RequestStatus.busy,
       'notifications': <UniNotification>[],
       'bookings': <RoomBooking>[],
       'bookingsStatus' : RequestStatus.none
