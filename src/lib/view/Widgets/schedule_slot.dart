@@ -68,10 +68,16 @@ class ScheduleSlot extends StatelessWidget {
         ' (' + this.typeClass + ')',
         Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
         TextAlign.center);
-    final roomTextField = createTextField(
+    final roomTextField = GestureDetector(
+                onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SingleRoomPageView(
+                    universityRoom: this.rooms,
+                  ))
+                ),
+                child: createTextField(
         this.rooms,
-        Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
-        TextAlign.right);
+        Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4, color: Theme.of(context).accentColor),
+        TextAlign.right));
     return [
       createScheduleSlotTime(context),
       Column(
@@ -85,14 +91,7 @@ class ScheduleSlot extends StatelessWidget {
           Row(
             children: [
               createScheduleSlotTeacherInfo(context),
-              GestureDetector(
-                onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SingleRoomPageView(
-                    universityRoom: this.classNumber,
-                  ))
-                ),
-                child: createScheduleSlotClass(context),
-              ),
+              createScheduleSlotClass(context),
             ],
           )
         ],
