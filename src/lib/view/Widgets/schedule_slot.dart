@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:uni/model/entities/university_room.dart';
 import 'package:uni/view/Widgets/row_container.dart';
 import 'package:uni/view/Pages/single_room_page_view.dart';
+import 'package:uni/model/single_room_page_model.dart';
 
 class ScheduleSlot extends StatelessWidget {
   final String subject;
@@ -10,6 +12,7 @@ class ScheduleSlot extends StatelessWidget {
   final String teacher;
   final String typeClass;
   final String classNumber;
+  final TabController tabController;
 
   ScheduleSlot({
     Key key,
@@ -20,6 +23,7 @@ class ScheduleSlot extends StatelessWidget {
     @required this.end,
     this.teacher,
     this.classNumber,
+    this.tabController
   }) : super(key: key);
 
   @override
@@ -69,15 +73,17 @@ class ScheduleSlot extends StatelessWidget {
         Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
         TextAlign.center);
     final roomTextField = GestureDetector(
-                onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SingleRoomPageView(
-                    universityRoom: this.rooms,
-                  ))
-                ),
-                child: createTextField(
+      onTap: () => Navigator.push(context,
+        MaterialPageRoute(builder: (context) => SingleRoomPageModel( 
+          // this.rooms,
+          universityRoom: UniversityRoom(123, this.rooms, 'pog'),
+        )) 
+      ),
+      child: createTextField(
         this.rooms,
         Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4, color: Theme.of(context).accentColor),
-        TextAlign.right));
+        TextAlign.right)
+    );
     return [
       createScheduleSlotTime(context),
       Column(
