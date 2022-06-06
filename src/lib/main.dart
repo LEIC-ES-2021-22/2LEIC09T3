@@ -7,6 +7,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:redux/redux.dart';
 import 'package:uni/controller/middleware.dart';
 import 'package:uni/model/app_state.dart';
+import 'package:uni/model/printing_page_model.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/reducers.dart';
 import 'package:uni/utils/constants.dart' as Constants;
@@ -94,6 +95,9 @@ class MyAppState extends State<MyApp> {
               case '/' + Constants.navAbout:
                 return PageTransition.makePageTransition(
                     page: AboutPageView(), settings: settings);
+              case '/' + Constants.navPrinting:
+                return PageTransition.makePageTransition(
+                    page: PrintingPage(), settings: settings);
               case '/' + Constants.navBugReport:
                 return PageTransition.makePageTransition(
                     page: BugReportPageView(),
