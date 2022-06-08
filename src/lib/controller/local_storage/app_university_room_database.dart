@@ -13,7 +13,7 @@ class AppUniversityRoomsDatabase extends AppDatabase {
         ]);
 
   /// Replaces all of the data in this database with [UniversityRooms].
-  void saveNewNotifications(List<UniversityRoom> universityRooms) async {
+  void saveNewNotification(List<UniversityRoom> universityRooms) async {
     await deleteUniversityRooms();
     await _insertUniversityRooms(universityRooms);
   }
