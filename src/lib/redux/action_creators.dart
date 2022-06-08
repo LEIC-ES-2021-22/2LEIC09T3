@@ -38,6 +38,7 @@ import 'package:uni/model/entities/course.dart';
 import 'package:uni/model/entities/course_unit.dart';
 import 'package:uni/model/entities/exam.dart';
 import 'package:uni/model/entities/lecture.dart';
+import 'package:uni/model/entities/printing.dart';
 import 'package:uni/model/entities/profile.dart';
 import 'package:uni/model/entities/restaurant.dart';
 import 'package:uni/model/entities/session.dart';
@@ -773,5 +774,21 @@ ThunkAction<AppState> toggleNotificationReadStatus(int index) {
     db.saveNewNotifications(newNotifications);
 
     store.dispatch(SetNotificationsAction(newNotifications));
+  };
+}
+
+ThunkAction<AppState> createNewPrinting(Printing printing) {
+  return (store) {
+    final List<Printing> currentPrintings = store.state.content['printings'];
+    final newPrintings = [printing, ...currentPrintings];
+    store.dispatch(SetPrintingsAction(newPrintings));
+  };
+}
+
+ThunkAction<AppState> deletePrinting(Printing printing) {
+  return (store) {
+    final List<Printing> currentPrintings = store.state.content['printings'];
+    final newPrintings = currentPrintings.where((element) => element != printing);
+    store.dispatch(SetPrintingsAction(newPrintings));
   };
 }

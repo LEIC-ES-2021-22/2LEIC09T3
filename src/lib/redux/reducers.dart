@@ -76,6 +76,8 @@ AppState appReducers(AppState state, dynamic action) {
     return setBookings(state, action);
   } else if (action is SetBookingStatusAction) {
     return setBookingsStatus(state, action);
+  } else if (action is SetPrintingsAction) {
+    return setPrintings(state, action);
   }
 
   return state;
@@ -262,4 +264,9 @@ AppState setBookingsStatus(AppState state, SetBookingStatusAction action) {
 AppState setBookings(AppState state, SetBookingsAction action) {
   Logger().i('setting bookings ' + action.bookings.toString());
   return state.cloneAndUpdateValue('bookings', action.bookings);
+}
+
+AppState setPrintings(AppState state, SetPrintingsAction action) {
+  Logger().i('setting printings ' + action.printings.toString());
+  return state.cloneAndUpdateValue('printings', action.printings);
 }

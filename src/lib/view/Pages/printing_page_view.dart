@@ -16,7 +16,7 @@ class PrintingPageView extends StatelessWidget {
       ListView(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        children: <Widget>[PageTitle(name: 'Impressões', alignment: Alignment.centerLeft)],
+        children: <Widget>[PageTitle(name: 'Impressões')],
       ),
       Expanded(
         child: Scaffold(
@@ -27,7 +27,7 @@ class PrintingPageView extends StatelessWidget {
             child: Icon(Icons.add),
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => NewPrintingPageView()));
+                  MaterialPageRoute(builder: (_) => NewPrintingPageView("iloveesof.pdf")));
             },
           ),
         )

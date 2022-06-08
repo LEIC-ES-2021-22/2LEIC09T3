@@ -36,6 +36,8 @@ Future<void> main() async {
     (options) {
       options.dsn =
           'https://a2661645df1c4992b24161010c5e0ecb@o553498.ingest.sentry.io/5680848';
+
+      options.debug = false;
     },
     appRunner: () => {runApp(MyApp())},
   );

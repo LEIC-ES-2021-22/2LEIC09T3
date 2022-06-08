@@ -13,7 +13,7 @@ class PrintingCard extends GenericCard {
       padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
       child: Row(children: [
         Flexible(
-          flex: 1,
+          flex: 3,
           child: Column(
             children: [
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -21,11 +21,13 @@ class PrintingCard extends GenericCard {
                   'Cor:',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    fontSize: 16
                   ),
                 ),
-                Text(printing.color ? 'cor' : 'B&W',
+                Text(printing.color ? 'Cor' : 'P&B',
                     style: TextStyle(
                       fontWeight: FontWeight.w300,
+                      fontSize: 16
                     ))
               ]),
               SizedBox(height: 10),
@@ -34,11 +36,13 @@ class PrintingCard extends GenericCard {
                   'Páginas:',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                      fontSize: 16
                   ),
                 ),
                 Text(printing.numCopies.toString(),
                     style: TextStyle(
                       fontWeight: FontWeight.w300,
+                      fontSize: 16
                     ))
               ]),
               SizedBox(height: 10),
@@ -47,11 +51,13 @@ class PrintingCard extends GenericCard {
                   'Tamanho:',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    fontSize: 16
                   ),
                 ),
                 Text(printing.pageSize,
                     style: TextStyle(
                       fontWeight: FontWeight.w300,
+                      fontSize: 16
                     ))
               ]),
               SizedBox(height: 10),
@@ -60,11 +66,13 @@ class PrintingCard extends GenericCard {
                   'Preço total:',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    fontSize: 16
                   ),
                 ),
                 Text(printing.price.toString() + '€',
                     style: TextStyle(
                       fontWeight: FontWeight.w300,
+                      fontSize: 16
                     ))
               ]),
             ],
