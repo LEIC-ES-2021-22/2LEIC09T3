@@ -44,6 +44,7 @@ dependencies:
   add_2_calendar: ^1.4.0
   sentry_flutter: ^5.0.0
   email_validator: ^1.0.6
+  file_picker: ^4.6.1
   hce:
     path: ./hce
 
