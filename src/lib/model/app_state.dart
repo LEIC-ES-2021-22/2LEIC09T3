@@ -1,5 +1,6 @@
 // enum should be placed somewhere else?
 import 'package:uni/model/entities/bus_stop.dart';
+import 'package:uni/model/entities/printing.dart';
 import 'package:uni/model/entities/room_booking.dart';
 import 'package:uni/model/entities/session.dart';
 import 'package:uni/model/entities/trip.dart';
@@ -42,7 +43,12 @@ class AppState {
       'virtualCardStatus': RequestStatus.busy,
       'notifications': <UniNotification>[],
       'bookings': <RoomBooking>[],
-      'bookingsStatus' : RequestStatus.none
+      'bookingsStatus' : RequestStatus.none,
+      'printings': [
+        Printing(1, "pog.pdf", "A4", false, 12, 2.13),
+        Printing(2, "wegoooooo.pdf", "A3", true, 1, 1.32), 
+        Printing(3, "doom.kms", "A4", true, 2, 0.21),
+      ],
     };
   }
 
