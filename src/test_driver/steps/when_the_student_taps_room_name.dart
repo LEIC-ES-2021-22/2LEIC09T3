@@ -7,24 +7,51 @@ import 'package:gherkin/gherkin.dart';
 StepDefinitionGeneric WhenUserTapsRoomName() {
   return when<FlutterWorld>('the user taps on the room name on a class widget',
       (context) async {
-    final finder = await FlutterDriverUtils.isPresent(
+    await FlutterDriverUtils.tap(
       context.world.driver,
-      find.text('B001'),
-      timeout: const Duration(seconds: 5),
+      find.byValueKey('drawer_item_Horário'),
+      timeout: const Duration(seconds: 30),
     );
 
-    if (finder) {
+    await FlutterDriverUtils.tap(
+      context.world.driver,
+      find.byValueKey('schedule-page-tab-2'),
+      timeout: const Duration(seconds: 30),
+    );
+
+    await FlutterDriverUtils.tap(
+      context.world.driver,
+      find.byValueKey('schedule-page-tab-1'),
+      timeout: const Duration(seconds: 30),
+    );
+
+    for (int i = 0; i < 5; i++) {
       await FlutterDriverUtils.tap(
         context.world.driver,
-        find.text('B001'),
+        find.byValueKey('schedule-page-tab-$i'),
         timeout: const Duration(seconds: 30),
       );
-    } else {
-      await FlutterDriverUtils.tap(
+
+      final finder = await FlutterDriverUtils.isPresent(
         context.world.driver,
-        find.text('B305'),
-        timeout: const Duration(seconds: 30),
+        find.byValueKey('lecture-0'),
+        timeout: const Duration(seconds: 5),
       );
+
+      final anotherFinder = await FlutterDriverUtils.isPresent(
+        context.world.driver,
+        find.byValueKey('lecture-0-room'),
+        timeout: const Duration(seconds: 5),
+      );
+
+      if (anotherFinder) {
+        await FlutterDriverUtils.tap(
+          context.world.driver,
+          find.byValueKey('lecture-0-room'),
+          timeout: const Duration(seconds: 30),
+        );
+        break;
+      }
     }
   },
       configuration: StepDefinitionConfiguration()

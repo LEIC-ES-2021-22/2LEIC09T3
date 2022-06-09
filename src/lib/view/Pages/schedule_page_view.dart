@@ -73,6 +73,7 @@ class SchedulePageView extends StatelessWidget {
     for (int i = 0; i < lectures.length; i++) {
       final Lecture lecture = lectures[i];
       scheduleContent.add(ScheduleSlot(
+        key: ValueKey('lecture-' + i.toString()),
         subject: lecture.subject,
         typeClass: lecture.typeClass,
         rooms: lecture.room,
@@ -80,6 +81,7 @@ class SchedulePageView extends StatelessWidget {
         end: lecture.endTime,
         teacher: lecture.teacher,
         classNumber: lecture.classNumber,
+        lectureIndex: i,
       ));
     }
     return scheduleContent;

@@ -87,7 +87,8 @@ class NavigationDrawerState extends State<NavigationDrawer> {
 
   Widget createDrawerNavigationOption(String d) {
     return Container(
-        decoration: _getSelectionDecoration(d),
+        key: ValueKey('drawer_item_' + d),
+        decoration: _getSelectionDecoration('drawer_item_' + d),
         child: ListTile(
           title: Container(
             padding: EdgeInsets.only(bottom: 3.0, left: 20.0),

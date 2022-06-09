@@ -32,7 +32,7 @@ Future<void> main() {
   print('\n');
 
   final config = FlutterTestConfiguration()
-    ..features = [Glob(r'test_driver/features/**.feature')]
+    ..features = [Glob(r'test_driver/features/university_map.feature')]
     ..reporters = [
       ProgressReporter(),
       TestRunSummaryReporter(),
@@ -40,7 +40,7 @@ Future<void> main() {
     ]
     ..stepDefinitions = [
       GivenUserIsLoggedInStep(username, password),
-      GivenUserHasUnreadNotifications(),
+      /*GivenUserHasUnreadNotifications(),
       ThenTheIconIsDifferentStep(),
       WhenUserTapsNotifButton(),
       ThenNotifScreenIsShown(),
@@ -49,7 +49,8 @@ Future<void> main() {
       SwipeAndTapNotification(),
       TheNotificationIsDeleted(),
       TapsOnUnread(),
-      NoUnreadNotifications(),
+      NoUnreadNotifications(),*/
+      GivenOpenDrawer(),
       WhenUserTapsRoomName(),
       ThenTheClassroomsLocationIsShown()
     ]

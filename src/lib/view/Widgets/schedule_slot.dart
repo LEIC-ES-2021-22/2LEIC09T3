@@ -13,6 +13,7 @@ class ScheduleSlot extends StatelessWidget {
   final String typeClass;
   final String classNumber;
   final TabController tabController;
+  final lectureIndex;
 
   ScheduleSlot(
       {Key key,
@@ -23,7 +24,8 @@ class ScheduleSlot extends StatelessWidget {
       @required this.end,
       this.teacher,
       this.classNumber,
-      this.tabController})
+      this.tabController,
+      this.lectureIndex})
       : super(key: key);
 
   @override
@@ -79,7 +81,8 @@ class ScheduleSlot extends StatelessWidget {
                 builder: (context) => SingleRoomPageModel(
                       universityRoom: UniversityRoom(123, this.rooms, 'pog'),
                     ))),
-        child: createTextField(
+        child: createTextFieldWithKey(
+            ('lecture-' + this.lectureIndex.toString() + '-room'),
             this.rooms,
             Theme.of(context)
                 .textTheme
@@ -130,6 +133,11 @@ class ScheduleSlot extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: style,
     );
+  }
+
+  Widget createTextFieldWithKey(String keyName, text, style, alignment) {
+    return Text(text,
+        overflow: TextOverflow.ellipsis, style: style, key: ValueKey(keyName));
   }
 
   Widget createScheduleSlotPrimInfoColumn(elements) {
