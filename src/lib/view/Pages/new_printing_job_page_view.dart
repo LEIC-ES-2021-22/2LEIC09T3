@@ -13,12 +13,9 @@ import 'package:uni/view/Widgets/page_title.dart';
 
 class NewPrintingJobPageView extends StatefulWidget {
 
-  final String filename;
-  final String filepath;
+  final void Function(BuildContext, Map<String, dynamic>) onSubmit;
 
-  NewPrintingJobPageView(Map<String, String> file, {Key key}) :
-    filename = file['name'],
-    filepath = file['path'],
+  NewPrintingJobPageView({Key key, @required this.onSubmit}) :
     super(key: key);
 
   @override 
@@ -31,11 +28,9 @@ class NewPrintingJobPageViewState extends SecondaryPageViewState {
   Widget getBody(BuildContext context) {
     return NewPrintingJobForm(
       title: getPageTitle(),
-      onSubmit: (data) {
+      onSubmit: (context, data) {
         final widget  = this.widget as NewPrintingJobPageView;
-
-        final file = File(widget.filepath);
-        
+        widget.onSubmit(context, data);
         
         Navigator.pop(context);
       });
@@ -50,7 +45,7 @@ class NewPrintingJobPageViewState extends SecondaryPageViewState {
 
 class NewPrintingJobForm extends StatefulWidget {
 
-  final Function(Map<String, dynamic>) onSubmit; 
+  final void Function(BuildContext, Map<String, dynamic>) onSubmit; 
   final Widget title;
 
   NewPrintingJobForm({ 
@@ -87,7 +82,7 @@ class NewPrintingJobFormState extends State<NewPrintingJobForm> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.upload),
         onPressed: () {
-          widget.onSubmit({
+          widget.onSubmit(context, {
             'copies': copies,
             'color': color,
             'size': size,
