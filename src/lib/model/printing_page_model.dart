@@ -18,6 +18,11 @@ class _PrintingPageState extends SecondaryPageViewState {
   Widget getBody(BuildContext context) {
     return StoreConnector<AppState, List<Printing>>(
       converter: (store) => store.state.content['printings'],
-      builder: (context, printings) => PrintingPageView(printings: printings));
+      builder: (context, printings) => PrintingPageView(
+        printings: printings,
+        onNewPrintJob: (job) {
+          
+        }
+      ));
   }
 }

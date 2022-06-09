@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -30,6 +32,10 @@ class NewPrintingJobPageViewState extends SecondaryPageViewState {
     return NewPrintingJobForm(
       title: getPageTitle(),
       onSubmit: (data) {
+        final widget  = this.widget as NewPrintingJobPageView;
+
+        final file = File(widget.filepath);
+        
         
         Navigator.pop(context);
       });
