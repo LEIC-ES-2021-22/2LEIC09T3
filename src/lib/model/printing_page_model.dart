@@ -21,14 +21,19 @@ class _PrintingPageState extends SecondaryPageViewState {
   
   @override
   Widget getBody(BuildContext context) {
-    return StoreConnector<AppState, List<Printing>>(
-      converter: (store) => store.state.content['printings'],
-      builder: (context, printings) => PrintingPageView(
-        printings: printings,
+    return StoreConnector<AppState, Map<String, dynamic>>(
+      converter: (store) => {
+        'printings': store.state.content['printings'],
+        'printingJobs': store.state.content['printingJobs'],
+      },
+      builder: (context, data) => PrintingPageView(
+        printings: data['printings'],
+        printingJobs: data['printingJobs'],
         onNewPrinting: (context, job) {
           final store = StoreProvider.of<AppState>(context);
-          final printing = Printing(0, job['filename'], job['filepath'], job['size'] ? 'A4' : 'A3', job['color'], job['copies'], 23);
-          store.dispatch(createNewPrinting(printing));
+          final printing = Printing(456, job['filename'], job['filepath'], job['size'] ? 'A4' : 'A3', job['color'], job['copies'], 23);
+
+          store.dispatch(scheduleNewPrinting(printing));
         }
       ));
   }

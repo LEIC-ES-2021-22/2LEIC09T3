@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 import 'package:redux/redux.dart';
@@ -13,6 +16,8 @@ import 'package:uni/controller/local_storage/app_courses_database.dart';
 import 'package:uni/controller/local_storage/app_exams_database.dart';
 import 'package:uni/controller/local_storage/app_last_user_info_update_database.dart';
 import 'package:uni/controller/local_storage/app_lectures_database.dart';
+import 'package:uni/controller/local_storage/app_printing_database.dart';
+import 'package:uni/controller/local_storage/app_printing_job_database.dart';
 import 'package:uni/controller/local_storage/app_refresh_times_database.dart';
 import 'package:uni/controller/local_storage/app_shared_preferences.dart';
 import 'package:uni/controller/local_storage/app_uni_notifications_database.dart';
@@ -39,6 +44,7 @@ import 'package:uni/model/entities/course_unit.dart';
 import 'package:uni/model/entities/exam.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:uni/model/entities/printing.dart';
+import 'package:uni/model/entities/printing_job.dart';
 import 'package:uni/model/entities/profile.dart';
 import 'package:uni/model/entities/restaurant.dart';
 import 'package:uni/model/entities/session.dart';
@@ -777,18 +783,44 @@ ThunkAction<AppState> toggleNotificationReadStatus(int index) {
   };
 }
 
-ThunkAction<AppState> createNewPrinting(Printing printing) {
-  return (store) {
-    final List<Printing> currentPrintings = store.state.content['printings'];
-    final newPrintings = [printing, ...currentPrintings];
-    store.dispatch(SetPrintingsAction(newPrintings));
-  };
-}
-
 ThunkAction<AppState> deletePrinting(Printing printing) {
   return (store) {
     final List<Printing> currentPrintings = store.state.content['printings'];
     final newPrintings = currentPrintings.where((element) => element != printing).toList();
     store.dispatch(SetPrintingsAction(newPrintings));
+  };
+}
+
+ThunkAction<AppState> deletePrintingJob(PrintingJob job) {
+  return (store) {
+    final List<PrintingJob> currentJobs = store.state.content['printingJobs'];
+    final newJobs = currentJobs.where((element) => element != job).toList();
+    store.dispatch(SetPrintingJobsAction(newJobs));
+  };
+}
+
+ThunkAction<AppState> scheduleNewPrinting(Printing printing) {
+  return (store) async {
+    try {
+      final result = await InternetAddress.lookup('print.up.pt');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        // final file = File(printing.path);
+        // final bytes = await file.readAsBytes();
+        
+        // send file to print.up.pt
+
+        final job = PrintingJob(123, DateTime.now(), 'print\\WP-GERAL-${printing.color ? 'C' : 'P'}-${printing.pageSize}', printing.numCopies, (Random().nextDouble() * 50 + 10).roundToDouble() / 100, printing.name, "Retido numa fila");
+        final db = AppPrintingJobDatabase();
+        await db.insertPrintingJobs([job]);
+
+        store.dispatch(SetPrintingJobsAction([...store.state.content['printingJobs'], job]));
+        return;        
+      }
+    } on SocketException catch (_) {}
+
+    final db = AppPrintingDatabase();
+    await db.insertPrintings([printing]);
+
+    store.dispatch(SetPrintingsAction([...store.state.content['printings'], printing]));
   };
 }

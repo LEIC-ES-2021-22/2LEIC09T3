@@ -4,6 +4,7 @@ import 'package:uni/model/entities/uni_notification.dart';
 import 'package:uni/model/single_notification_page_model.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/slidable_widget.dart';
+import 'package:uni/utils/datetime.dart';
 
 class NotificationsPageView extends StatelessWidget {
   final List<UniNotification> notifications;
@@ -87,7 +88,7 @@ class NotificationsPageView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            item.readableDate,
+            item.date.readableDate,
             style: item.read
                 ? Theme.of(context).textTheme.bodyText2
                 : Theme.of(context).textTheme.bodyText1,
