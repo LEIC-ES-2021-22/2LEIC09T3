@@ -60,19 +60,19 @@ class NewPrintingJobForm extends StatefulWidget {
 
 class NewPrintingJobFormState extends State<NewPrintingJobForm> {
 
-  bool color = true;
-  bool size = true;
+  PrintingColor color = PrintingColor.color;
+  PageSize size = PageSize.a4;
   var copies = 1;
 
   @override
   Widget build(BuildContext context) {
-        final changeColor = (bool val) {
+    final changeColor = (PrintingColor val) {
       setState(() {
         color = val;
       });
     };
 
-    final changeSize = (bool val) {
+    final changeSize = (PageSize val) {
       setState(() {
         size = val;
       });
@@ -123,7 +123,7 @@ class NewPrintingJobFormState extends State<NewPrintingJobForm> {
                     ),
                   ),
                   Radio(
-                    value: true,
+                    value: PrintingColor.color,
                     groupValue: color,
                     onChanged: changeColor,
                   )
@@ -142,7 +142,7 @@ class NewPrintingJobFormState extends State<NewPrintingJobForm> {
                     )
                   ),
                   Radio(
-                    value: false,
+                    value: PrintingColor.baw,
                     groupValue: color, 
                     onChanged: changeColor,
                   )
@@ -171,7 +171,7 @@ class NewPrintingJobFormState extends State<NewPrintingJobForm> {
                     ),
                   ),
                   Radio(
-                    value: true,
+                    value: PageSize.a4,
                     groupValue: size,
                     onChanged: changeSize,
                   )
@@ -190,7 +190,7 @@ class NewPrintingJobFormState extends State<NewPrintingJobForm> {
                     ),
                   ),
                   Radio(
-                    value: false,
+                    value: PageSize.a3,
                     groupValue: size,
                     onChanged: changeSize,
                   )

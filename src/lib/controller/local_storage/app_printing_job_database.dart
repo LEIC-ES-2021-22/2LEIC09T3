@@ -9,7 +9,7 @@ import 'package:sqflite/sqflite.dart';
 class AppPrintingJobDatabase extends AppDatabase {
   AppPrintingJobDatabase()
       : super('printing_jobs.db', [
-          'CREATE TABLE printing_jobs(date TEXT, printerName TEXT, numPages INTEGER, price REAL, documentName TEXT)'
+          'CREATE TABLE printing_jobs(date TEXT, printerName TEXT, numPages INTEGER, price REAL, documentName TEXT, UNIQUE (date, printerName, numPages, price, documentName))'
         ]);
 
   /// Replaces all of the data in this database with [printingJobs].

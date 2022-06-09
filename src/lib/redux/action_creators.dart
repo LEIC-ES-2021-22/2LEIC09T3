@@ -33,6 +33,7 @@ import 'package:uni/controller/parsers/parser_fees.dart';
 import 'package:uni/controller/parsers/parser_print_balance.dart';
 import 'package:uni/controller/parsers/parser_notifications.dart';
 import 'package:uni/controller/parsers/parser_bookings.dart';
+import 'package:uni/controller/parsers/parser_printing_jobs.dart';
 import 'package:uni/controller/parsers/parser_virtual_card.dart';
 import 'package:uni/controller/restaurant_fetcher/restaurant_fetcher_html.dart';
 import 'package:uni/controller/schedule_fetcher/schedule_fetcher.dart';
@@ -262,6 +263,19 @@ Future<VirtualCard> extractCard(Store<AppState> store) async {
   return parseCard(cardJson);
 }
 
+//TODO: This function is to be implemented  by the msc students
+// So we are just retrieving a json string
+Future<List<PrintingJob>> extractPrintingJobs(Store<AppState> store) async {
+  final jsonPrintingJobs = jsonEncode([
+    {'state': 'retained', 'createdAt': '2022-06-09 21:52:23', 'printer': 'print\\WP-GERAL-P-A4', 'pages': 21, 'price': 0.23, 'documentName': 'Resumos_ESOF.pdf'},
+    {'state': 'cancelled', 'createdAt': '2022-06-06 21:52:23', 'printer': 'print\\WP-GERAL-C-A3', 'pages': 21, 'price': 0.84, 'documentName': 'Resumos_ESOF.pdf'},
+    {'state': 'retained', 'createdAt': '2022-06-10 10:56:32', 'printer': 'print\\WP-GERAL-P-A4', 'pages': 5, 'price': 0.12, 'documentName': 'Guiao_Apresentacao_Uni.pdf'},
+    {'state': 'retained', 'createdAt': '2022-06-03 12:41:12', 'printer': 'print\\WP-GERAL-P-A3', 'pages': 1, 'price': 0.08, 'documentName': 'Poster_Projeto_UP.png'},
+  ]);
+
+  return parsePrintingJobs(jsonPrintingJobs);
+}
+
 Future<List<Exam>> extractExams(
     Store<AppState> store, ParserExams parserExams) async {
   Set<Exam> courseExams = Set();
@@ -367,6 +381,53 @@ ThunkAction<AppState> getUserVirtualCard(
     } catch (e) {
       Logger().e('Failed to get card', e);
       store.dispatch(SetVirtualCardStatus(RequestStatus.failed));
+    }
+
+    action.complete();
+  };
+}
+
+ThunkAction<AppState> getUserPrintingJobs(
+    Completer<Null> action, Tuple2<String, String> userPersistentInfo) {
+  return (Store<AppState> store) async {
+    try {
+      final List<PrintingJob> jobs =
+          await extractPrintingJobs(store);
+
+      jobs
+          .sort((job1, job2) => job1.date.compareTo(job2.date));
+
+      final db = AppPrintingJobDatabase();
+      db.saveNewPrintingJobs(jobs);
+
+      store.dispatch(SetPrintingJobsAction(jobs));
+    } catch (e) {
+      Logger().e('Failed to get Printing Jobs');
+    }
+
+    action.complete();
+  };
+}
+
+ThunkAction<AppState> scheduleUserPrintings(
+    Completer<Null> action, Tuple2<String, String> userPersistentInfo) {
+  return (Store<AppState> store) async {
+    try {
+      final db = AppPrintingDatabase();
+
+      final Set<Printing> printings = {
+        ...store.state.content['printings'],
+        ...await db.printings(),
+      };
+
+      await db.deletePrintings();
+      printings.forEach((element) {
+        store.dispatch(scheduleNewPrinting(element));
+      });
+
+      store.dispatch(SetPrintingsAction(await db.printings()));
+    } catch (e) {
+      Logger().e('Failed to get Printings');
     }
 
     action.complete();
@@ -718,6 +779,22 @@ ThunkAction<AppState> updateStateBasedOnLocalVirtualCard() {
   };
 }
 
+ThunkAction<AppState> updateStateBasedOnLocalPrintings() {
+  return (Store<AppState> store) async {
+    final db = AppPrintingDatabase();
+    final printings = await db.printings();
+    store.dispatch(SetPrintingsAction(printings));
+  };
+}
+
+ThunkAction<AppState> updateStateBasedOnLocalPrintingJobs() {
+  return (Store<AppState> store) async {
+    final db = AppPrintingJobDatabase();
+    final jobs = await db.printingJobs();
+    store.dispatch(SetPrintingJobsAction(jobs));
+  };
+}
+
 ThunkAction<AppState> deleteNotification(int index) {
   return (store) {
     final List<UniNotification> notifications =
@@ -804,19 +881,28 @@ ThunkAction<AppState> scheduleNewPrinting(Printing printing) {
     try {
       final result = await InternetAddress.lookup('print.up.pt');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        // final file = File(printing.path);
-        // final bytes = await file.readAsBytes();
+        final file = File(printing.path);
+        final bytes = await file.readAsBytes();
         
         // send file to print.up.pt
 
-        final job = PrintingJob(123, DateTime.now(), 'print\\WP-GERAL-${printing.color ? 'C' : 'P'}-${printing.pageSize}', printing.numCopies, (Random().nextDouble() * 50 + 10).roundToDouble() / 100, printing.name, "Retido numa fila");
-        final db = AppPrintingJobDatabase();
-        await db.insertPrintingJobs([job]);
+        final json = jsonEncode([{
+          'state': 'retained',
+          'createdAt': DateTime.now().toString(),
+          'printer': 'print\\WP-GERAL-${printing.color == PrintingColor.color ? 'C' : 'P'}-${printing.pageSize.name.toUpperCase()}',
+          'pages': printing.numCopies,
+          'price': (Random().nextDouble() * 50 + 10).roundToDouble() / 100,
+          'docName': printing.name
+        }]);
 
-        store.dispatch(SetPrintingJobsAction([...store.state.content['printingJobs'], job]));
+        final jobs = await parsePrintingJobs(json);
+        final db = AppPrintingJobDatabase();
+        await db.insertPrintingJobs(jobs);
+
+        store.dispatch(SetPrintingJobsAction([...store.state.content['printingJobs'], ...jobs]));
         return;        
       }
-    } on SocketException catch (_) {}
+    } catch (_) {}
 
     final db = AppPrintingDatabase();
     await db.insertPrintings([printing]);

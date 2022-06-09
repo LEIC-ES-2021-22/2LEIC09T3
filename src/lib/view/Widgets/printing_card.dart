@@ -38,7 +38,7 @@ class PrintingCard extends GenericCard {
                     fontSize: 16
                   ),
                 ),
-                Text(printing.color ? 'Cor' : 'P&B',
+                Text(printing.color == PrintingColor.color ? 'Cor' : 'P&B',
                     style: TextStyle(
                       fontWeight: FontWeight.w300,
                       fontSize: 16
@@ -68,22 +68,7 @@ class PrintingCard extends GenericCard {
                     fontSize: 16
                   ),
                 ),
-                Text(printing.pageSize,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w300,
-                      fontSize: 16
-                    ))
-              ]),
-              SizedBox(height: 10),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text(
-                  'Preço total:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16
-                  ),
-                ),
-                Text(printing.price.toString() + '€',
+                Text(printing.pageSize.name.toUpperCase(),
                     style: TextStyle(
                       fontWeight: FontWeight.w300,
                       fontSize: 16

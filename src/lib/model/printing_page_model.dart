@@ -31,7 +31,7 @@ class _PrintingPageState extends SecondaryPageViewState {
         printingJobs: data['printingJobs'],
         onNewPrinting: (context, job) {
           final store = StoreProvider.of<AppState>(context);
-          final printing = Printing(456, job['filename'], job['filepath'], job['size'] ? 'A4' : 'A3', job['color'], job['copies'], 23);
+          final printing = Printing(job['filename'], job['filepath'], job['size'], job['color'], job['copies']);
 
           store.dispatch(scheduleNewPrinting(printing));
         }
