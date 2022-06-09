@@ -33,6 +33,8 @@ class Printing {
     final FilePickerResult result =
         await FilePicker.platform.pickFiles(
           allowMultiple: false,
+          allowCompression: true,
+          type: FileType.custom ,
           allowedExtensions: [
             'xlam',
             'xls',
