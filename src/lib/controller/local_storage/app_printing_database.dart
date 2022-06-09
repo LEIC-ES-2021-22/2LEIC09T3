@@ -9,7 +9,7 @@ import 'package:sqflite/sqflite.dart';
 class AppPrintingDatabase extends AppDatabase {
   AppPrintingDatabase()
       : super('printings.db', [
-          'CREATE TABLE printings(id INTEGER PRIMARY KEY, name TEXT, path TEXT, pageSize TEXT, color INTEGER, numCopies INTEGER, price REAL)'
+          'CREATE TABLE printings(name TEXT, path TEXT, pageSize INTEGER, color INTEGER, numCopies INTEGER)'
         ]);
 
   /// Replaces all of the data in this database with [printings].
@@ -42,13 +42,11 @@ class AppPrintingDatabase extends AppDatabase {
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
       return Printing(
-          maps[i]['id'],
           maps[i]['name'],
           maps[i]['path'],
-          maps[i]['pageSize'],
-          maps[i]['color'] == 1,
-          maps[i]['numCopies'],
-          maps[i]['price']);
+          maps[i]['pageSize'] == 0 ? PageSize.a3 : PageSize.a4,
+          maps[i]['color'] == 0 ? PrintingColor.color : PrintingColor.baw,
+          maps[i]['numCopies']);
     });
   }
 

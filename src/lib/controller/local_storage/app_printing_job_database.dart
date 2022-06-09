@@ -9,16 +9,16 @@ import 'package:sqflite/sqflite.dart';
 class AppPrintingJobDatabase extends AppDatabase {
   AppPrintingJobDatabase()
       : super('printing_jobs.db', [
-          'CREATE TABLE printing_jobs(id INTEGER PRIMARY KEY, date TEXT, printerName TEXT, numPages INTEGER, price REAL, documentName TEXT, status TEXT)'
+          'CREATE TABLE printing_jobs(date TEXT, printerName TEXT, numPages INTEGER, price REAL, documentName TEXT)'
         ]);
 
-  /// Replaces all of the data in this database with [printing_jobs].
+  /// Replaces all of the data in this database with [printingJobs].
   void saveNewPrintingJobs(List<PrintingJob> printingJobs) async {
     await deletePrintingJobs();
     await insertPrintingJobs(printingJobs);
   }
 
-  /// Adds all items from [printing_jobs] to this database.
+  /// Adds all items from [printingJobs] to this database.
   ///
   /// If a row with the same data is present, nothing is done.
   Future<void> insertPrintingJobs(List<PrintingJob> printingJobs) async {
@@ -37,18 +37,17 @@ class AppPrintingJobDatabase extends AppDatabase {
     final Database db = await this.getDatabase();
 
     // Query the table for All The Dogs.
-    final List<Map<String, dynamic>> maps = await db.query('printing_jobs');
+    final List<Map<String, dynamic>> maps = await db.query('printingJobs');
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
       return PrintingJob(
-          maps[i]['id'],
-          DateTime.parse(maps[i]['date']),
-          maps[i]['printerName'],
-          maps[i]['numPages'],
-          maps[i]['price'],
-          maps[i]['documentName'],
-          maps[i]['status']);
+        DateTime.parse(maps[i]['date']),
+        maps[i]['printerName'],
+        maps[i]['numPages'],
+        maps[i]['price'],
+        maps[i]['documentName'],
+      );
     });
   }
 

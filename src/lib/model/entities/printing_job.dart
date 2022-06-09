@@ -1,45 +1,47 @@
+import 'package:uni/model/entities/printing.dart';
+
 class PrintingJob {
-  final int id;
   final DateTime date;
   final String printerName;
   final int numPages;
   final double price;
   final String documentName;
-  final String status;
 
-  PrintingJob(this.id, this.date, this.printerName, this.numPages, this.price,
-      this.documentName, this.status) {}
+  PrintingJob(this.date, this.printerName, this.numPages, this.price,
+      this.documentName);
 
   static PrintingJob fromJson(dynamic data) {
     return PrintingJob(
-        data['id'],
-        DateTime.parse(data['date']),
-        data['printerName'],
-        data['numPages'],
-        data['price'],
-        data['documentName'],
-        data['status']);
+      DateTime.parse(data['date']),
+      data['printerName'],
+      data['numPages'],
+      data['price'],
+      data['documentName'],
+    );
   }
 
-  String getPageSize() {
-    return this.printerName.substring(this.printerName.lastIndexOf('-') + 1);
+  PageSize getPageSize() {
+    return this.printerName.substring(this.printerName.lastIndexOf('-') + 1) ==
+            "A4"
+        ? PageSize.a4
+        : PageSize.a3;
   }
 
-  bool isColored() {
+  PrintingColor isColored() {
     return this.printerName.substring(this.printerName.lastIndexOf('-') - 1,
-            this.printerName.lastIndexOf('-')) ==
-        'C';
+                this.printerName.lastIndexOf('-')) ==
+            'C'
+        ? PrintingColor.color
+        : PrintingColor.baw;
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'date': date.toString(),
       'printerName': printerName,
       'numPages': numPages,
       'price': price,
-      'documentName': documentName,
-      'status': status
+      'documentName': documentName
     };
   }
 
@@ -48,8 +50,17 @@ class PrintingJob {
       identical(this, other) ||
       other is PrintingJob &&
           runtimeType == other.runtimeType &&
-          id == other.id;
+          date == other.date &&
+          printerName == other.printerName &&
+          numPages == other.numPages &&
+          price == other.price &&
+          documentName == other.documentName;
 
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode =>
+      date.hashCode ^
+      printerName.hashCode ^
+      numPages.hashCode ^
+      price.hashCode ^
+      documentName.hashCode;
 }

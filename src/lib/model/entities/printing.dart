@@ -1,35 +1,36 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
+enum PageSize { a3, a4 }
+
+enum PrintingColor { color, baw }
+
 class Printing {
-  final int id;
   final String name;
   final String path;
-  final String pageSize;
-  final bool color;
+  final PageSize pageSize;
+  final PrintingColor color;
   final int numCopies;
-  final double price;
 
   Printing(
-      int this.id,
-      String this.name,
-      String this.path,
-      String this.pageSize,
-      bool this.color,
-      int this.numCopies,
-      double this.price);
+    String this.name,
+    String this.path,
+    PageSize this.pageSize,
+    PrintingColor this.color,
+    int this.numCopies,
+  );
 
   static Printing fromJson(dynamic data) {
-    return Printing(data['id'], data['name'], data['path'], data['size'],
-        data['color'], data['copies'], data['price']);
+    return Printing(data['name'], data['path'], data['size'], data['color'],
+        data['copies']);
   }
 
-  static Future<Map<String, String>> selectFile() async {
+  static Future<Map<String, dynamic>> selectFile() async {
     final FilePickerResult result =
         await FilePicker.platform.pickFiles(allowMultiple: false);
 
     if (result == null) {
-      return {'name': 'not found', 'path': '/'}; //maybe make the map <String, Dynamic> and return null instead?
+      return {'name': null, 'path': null};
     }
 
     final PlatformFile file = result.files.first;
@@ -37,27 +38,27 @@ class Printing {
     return {'name': file.name, 'path': file.path};
   }
 
-  bool isValid(Printing printing) {
-    return !(printing.name == 'not found' && printing.path == '/');
-  }
-
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'name': name,
       'path': path,
       'size': pageSize,
       'color': color,
       'numCopies': numCopies,
-      'price': price
     };
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Printing && runtimeType == other.runtimeType && id == other.id;
+      other is Printing &&
+          runtimeType == other.runtimeType &&
+          path == other.path &&
+          pageSize == other.pageSize &&
+          color == other.color &&
+          numCopies == other.numCopies;
 
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode =>
+      path.hashCode ^ pageSize.hashCode ^ color.hashCode ^ numCopies.hashCode;
 }
