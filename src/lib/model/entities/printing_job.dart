@@ -1,5 +1,3 @@
-import 'package:uni/model/entities/printing.dart';
-
 class PrintingJob {
   final DateTime date;
   final String printerName;
@@ -18,21 +16,6 @@ class PrintingJob {
       data['price'],
       data['documentName'],
     );
-  }
-
-  PageSize getPageSize() {
-    return this.printerName.substring(this.printerName.lastIndexOf('-') + 1) ==
-            "A4"
-        ? PageSize.a4
-        : PageSize.a3;
-  }
-
-  PrintingColor isColored() {
-    return this.printerName.substring(this.printerName.lastIndexOf('-') - 1,
-                this.printerName.lastIndexOf('-')) ==
-            'C'
-        ? PrintingColor.color
-        : PrintingColor.baw;
   }
 
   Map<String, dynamic> toMap() {

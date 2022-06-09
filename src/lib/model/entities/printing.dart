@@ -21,7 +21,11 @@ class Printing {
   );
 
   static Printing fromJson(dynamic data) {
-    return Printing(data['name'], data['path'], data['size'], data['color'],
+    return Printing(
+        data['name'],
+        data['path'],
+        data['size'] == 0 ? PageSize.a3 : PageSize.a4,
+        data['color'] == 0 ? PrintingColor.color : PrintingColor.baw,
         data['copies']);
   }
 
@@ -30,7 +34,7 @@ class Printing {
         await FilePicker.platform.pickFiles(allowMultiple: false);
 
     if (result == null) {
-      return {'name': null, 'path': null};
+      return null;
     }
 
     final PlatformFile file = result.files.first;
@@ -42,8 +46,8 @@ class Printing {
     return {
       'name': name,
       'path': path,
-      'size': pageSize,
-      'color': color,
+      'size': pageSize.index,
+      'color': color.index,
       'numCopies': numCopies,
     };
   }
