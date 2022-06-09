@@ -19,19 +19,29 @@ class PrintingPageView extends StatelessWidget {
         children: <Widget>[PageTitle(name: 'Impressões')],
       ),
       Expanded(
-        child: Scaffold(
-        body: ListView.builder(
-          itemCount: printings.length,
-          itemBuilder: (context, index) => PrintingCard(printings[index])),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => NewPrintingPageView("iloveesof.pdf")));
-            },
-          ),
-        )
-      )
+          child: Scaffold(
+            body: Row(children: [
+              Expanded(
+                child: printings.isEmpty
+                    ? Text('Não há impressões para mostrar',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        textAlign: TextAlign.center)
+                    : ListView.builder(
+                        itemCount: printings.length,
+                        itemBuilder: (context, index) =>
+                            PrintingCard(printings[index])),
+              )
+            ]),
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => NewPrintingPageView("iloveesof.pdf")));
+              },
+            ),
+      ))
     ]);
   }
 }

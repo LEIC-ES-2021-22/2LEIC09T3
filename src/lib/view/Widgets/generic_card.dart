@@ -8,13 +8,13 @@ abstract class GenericCard extends StatefulWidget {
         super(key: key);
 
   GenericCard.fromEditingInformation(
-      Key key, bool editingMode, Function onDelete)
+      Key key, bool editingMode, Function(dynamic) onDelete)
       : editingMode = editingMode,
         onDelete = onDelete,
         super(key: key);
 
   final bool editingMode;
-  final Function onDelete;
+  final Function(dynamic) onDelete;
 
   @override
   State<StatefulWidget> createState() {
@@ -98,12 +98,7 @@ class GenericCardState extends State<GenericCard> {
                             alignment: Alignment.center,
                             margin: EdgeInsets.only(top: 8),
                           ),
-                          Flexible(
-                            child: Container(
-                              child: this.getDeleteIcon(context),
-                              alignment: Alignment.centerRight,
-                              height: 32,
-                            )),
+                          this.getDeleteIconWrapper(context)
                         ].where((e) => e != null).toList(),
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       ),
@@ -128,7 +123,7 @@ class GenericCardState extends State<GenericCard> {
             iconSize: 22,
             icon: Icon(Icons.delete),
             tooltip: 'Remover',
-            onPressed: widget.onDelete,
+            onPressed: () => widget.onDelete(context),
           )
         : null;
   }
@@ -141,5 +136,14 @@ class GenericCardState extends State<GenericCard> {
           size: 22.0
         )
         : null; 
+  }
+
+  Widget getDeleteIconWrapper(context) {
+    return Flexible(
+      child: Container(
+        child: this.getDeleteIcon(context),
+        alignment: Alignment.centerRight,
+        height: 32,
+      ));
   }
 }

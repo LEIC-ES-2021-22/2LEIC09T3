@@ -788,7 +788,7 @@ ThunkAction<AppState> createNewPrinting(Printing printing) {
 ThunkAction<AppState> deletePrinting(Printing printing) {
   return (store) {
     final List<Printing> currentPrintings = store.state.content['printings'];
-    final newPrintings = currentPrintings.where((element) => element != printing);
+    final newPrintings = currentPrintings.where((element) => element != printing).toList();
     store.dispatch(SetPrintingsAction(newPrintings));
   };
 }
