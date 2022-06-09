@@ -8,8 +8,6 @@ import 'package:uni/view/Pages/secondary_page_view.dart';
 import 'package:uni/view/Widgets/generic_card.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 
-
-
 class NewPrintingPageView extends StatefulWidget {
 
   String filename;
