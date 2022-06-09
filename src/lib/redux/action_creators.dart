@@ -219,15 +219,15 @@ Future<List<UniNotification>> extractNotifications(
     Store<AppState> store) async {
   final jsonNotifs = jsonEncode([
     {
-      'id': 123,
-      'title': 'Notif1',
-      'content': 'Hello, this is an example',
+      'id': 1837203,
+      'title': 'Alteração do Cartão de Cidadão',
+      'content': 'O cartão de cidadão foi alterado',
       'date': '2021-02-27'
     },
     {
-      'id': 456,
-      'title': 'Notif2',
-      'content': 'Hello, this is an example',
+      'id': 1920381,
+      'title': 'A certidão foi emitida.',
+      'content': 'A certidão de matrícula requerida no dia 03-03 já se encontra pronta para levantamento',
       'date': '2022-03-17'
     }
   ]);
@@ -239,9 +239,9 @@ Future<List<UniNotification>> extractNotifications(
 // So we are just retrieving a json string
 Future<List<RoomBooking>> extractBookings(Store<AppState> store) async {
   final jsonBookings = jsonEncode([
-    {'id': 111, 'state': 'accepted','room': 'B307', 'duration': 30, 'date': '2022-08-17 10:00:00'},
-    {'id': 222, 'state': 'cancelled', 'room': 'B310', 'duration': 60, 'date': '2022-08-19 11:00:00'},
-    {'id': 333, 'state': 'pending', 'room': 'B310', 'duration': 60, 'date': '2022-08-19 11:00:00'}
+    {'id': 103883, 'state': 'accepted','room': 'B307', 'duration': 30, 'date': '2022-08-17 10:00:00'},
+    {'id': 294781, 'state': 'cancelled', 'room': 'B310', 'duration': 60, 'date': '2022-08-19 11:00:00'},
+    {'id': 287481, 'state': 'pending', 'room': 'B310', 'duration': 60, 'date': '2022-08-19 11:00:00'}
   ]);
 
   return parseBookings(jsonBookings);
@@ -249,8 +249,8 @@ Future<List<RoomBooking>> extractBookings(Store<AppState> store) async {
 
 Future<VirtualCard> extractCard(Store<AppState> store) async {
   final cardJson = jsonEncode({
-    'id': 1234,
-    'key': 'pkey'
+    'id': 6034518,
+    'key': 'V1cxR2Jsb3lWakJhVXpVMFkwY3dQUT0='
   });
 
   return parseCard(cardJson);
