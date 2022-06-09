@@ -31,7 +31,14 @@ class Printing {
 
   static Future<Map<String, dynamic>> selectFile() async {
     final FilePickerResult result =
-        await FilePicker.platform.pickFiles(allowMultiple: false);
+        await FilePicker.platform.pickFiles(
+          allowMultiple: false,
+          allowedExtensions: [
+            'pdf',
+            'pptx',
+            'xsls'
+          ]
+        );
 
     if (result == null) {
       return null;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uni/model/entities/printing.dart';
-import 'package:uni/view/Pages/new_printing_page_view.dart';
+import 'package:uni/view/Pages/new_printing_job_page_view.dart';
 import 'package:uni/view/Widgets/generic_card.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 import 'package:uni/view/Widgets/printing_card.dart';
@@ -34,11 +34,16 @@ class PrintingPageView extends StatelessWidget {
             ]),
             floatingActionButton: FloatingActionButton(
               child: Icon(Icons.add),
-              onPressed: () {
+              onPressed: () async {
+                final file = await Printing.selectFile();
+                if (file == null) {
+                  return;
+                }
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (_) => NewPrintingPageView("iloveesof.pdf")));
+                        builder: (_) => NewPrintingJobPageView(file)));
               },
             ),
       ))
