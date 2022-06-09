@@ -18,6 +18,9 @@ import 'steps/given_there_are_unread_notifications.dart';
 import 'steps/given_user_is_logged_in.dart';
 import 'steps/when_the_student_taps_room_name.dart';
 import 'steps/then_a_screen_for_classroom_location_is_shown.dart';
+import 'steps/when_the_user_swipes_to_the_right.dart';
+import 'steps/then_a_screen_for_seeing_classroom_zoomed_is_shown.dart';
+import 'steps/the_user_is_on_the_room_page.dart';
 
 Future<void> main() {
   print(
@@ -32,7 +35,7 @@ Future<void> main() {
   print('\n');
 
   final config = FlutterTestConfiguration()
-    ..features = [Glob(r'test_driver/features/university_map.feature')]
+    ..features = [Glob(r'test_driver/features/**.feature')]
     ..reporters = [
       ProgressReporter(),
       TestRunSummaryReporter(),
@@ -40,7 +43,7 @@ Future<void> main() {
     ]
     ..stepDefinitions = [
       GivenUserIsLoggedInStep(username, password),
-      /*GivenUserHasUnreadNotifications(),
+      GivenUserHasUnreadNotifications(),
       ThenTheIconIsDifferentStep(),
       WhenUserTapsNotifButton(),
       ThenNotifScreenIsShown(),
@@ -49,10 +52,13 @@ Future<void> main() {
       SwipeAndTapNotification(),
       TheNotificationIsDeleted(),
       TapsOnUnread(),
-      NoUnreadNotifications(),*/
+      NoUnreadNotifications(),
       GivenOpenDrawer(),
       WhenUserTapsRoomName(),
-      ThenTheClassroomsLocationIsShown()
+      ThenTheClassroomsLocationIsShown(),
+      AndUserInOnRoomPage(),
+      WhenTheUserSwipesToTheRight(),
+      ThenTheClassroomsZoomedLocationIsShown()
     ]
     ..customStepParameterDefinitions = []
     ..restartAppBetweenScenarios = true
