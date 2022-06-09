@@ -1,16 +1,17 @@
 class UniversityRoom {
   int roomId;
   String name;
-  String pathToImage;
+  String urlToFloorImage;
+  String urlToClassroomImage;
 
-  UniversityRoom(int this.roomId, String this.name, String this.pathToImage) {}
+  UniversityRoom(int this.roomId, String this.name, String this.urlToFloorImage, this.urlToClassroomImage) {}
 
   Map<String, dynamic> toMap() {
-    return {'roomId': roomId, 'name': name, 'pathToImage': pathToImage};
+    return {'roomId': roomId, 'name': name, 'urlTooFloorImage': urlToFloorImage, 'urlToClassroomImage': urlToClassroomImage};
   }
 
-  UniversityRoom copyWith({int roomId, String name, String pathToImage}) {
-    return UniversityRoom(roomId, name, pathToImage);
+  UniversityRoom copyWith({int roomId, String name, String urlToFloorImage, String urlToClassroomImage}) {
+    return UniversityRoom(roomId, name, urlToFloorImage, urlToClassroomImage);
   }
 
   @override
@@ -20,8 +21,9 @@ class UniversityRoom {
           runtimeType == other.runtimeType &&
           roomId == other.roomId &&
           name == other.name &&
-          pathToImage == other.pathToImage;
+          urlToFloorImage == other.urlToFloorImage &&
+          urlToClassroomImage == other.urlToClassroomImage;
 
   @override
-  int get hashCode => roomId.hashCode ^ name.hashCode ^ pathToImage.hashCode;
+  int get hashCode => roomId.hashCode ^ name.hashCode ^ urlToFloorImage.hashCode ^ urlToClassroomImage.hashCode;
 }

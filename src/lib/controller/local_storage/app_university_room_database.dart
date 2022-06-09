@@ -9,7 +9,7 @@ import 'package:sqflite/sqflite.dart';
 class AppUniversityRoomsDatabase extends AppDatabase {
   AppUniversityRoomsDatabase()
       : super('university_rooms.db', [
-          'CREATE TABLE university_rooms(roomId INTEGER, name TEXT, path TEXT)'
+          'CREATE TABLE university_rooms(roomId INTEGER, name TEXT, urlToFloorImage TEXT, urlToClassroomImage TEXT)'
         ]);
 
   /// Replaces all of the data in this database with [UniversityRooms].
@@ -44,7 +44,8 @@ class AppUniversityRoomsDatabase extends AppDatabase {
       return UniversityRoom(
           maps[i]['roomId'],
           maps[i]['name'],
-          maps[i]['path']
+          maps[i]['urlToFloorImage'],
+          maps[i]['urlToClassroomImage']
         );
     });
   }

@@ -27,7 +27,7 @@ class _SingleRoomPageModelState extends SecondaryPageViewState with SingleTicker
     Key key,
   });
 
-  UniversityRoom universityRoom = UniversityRoom(123, 'B001', 'assets/images/salas/B001.png');
+  UniversityRoom universityRoom = UniversityRoom(123, 'B001', 'https://sigarra.up.pt/feup/pt/instal_geral2.get_mapa?pv_id=76365', 'https://sigarra.up.pt/feup/pt/instal_geral2.get_mapa?pv_id=76365');
   TabController tabController; 
   @override
   Widget getBody(BuildContext context) {

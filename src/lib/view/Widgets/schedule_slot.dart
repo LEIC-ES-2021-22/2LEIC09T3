@@ -76,7 +76,7 @@ class ScheduleSlot extends StatelessWidget {
       onTap: () => Navigator.push(context,
         MaterialPageRoute(builder: (context) => SingleRoomPageModel( 
           // this.rooms,
-          universityRoom: UniversityRoom(123, this.rooms, 'pog'),
+          universityRoom: UniversityRoom(123, this.rooms, 'pog', 'pog'),
         )) 
       ),
       child: createTextField(

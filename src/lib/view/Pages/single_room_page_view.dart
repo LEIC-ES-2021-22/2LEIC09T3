@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:logger/logger.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +9,8 @@ import 'package:uni/model/entities/university_room.dart';
 
 /// Manages the 'classroom map' sections of the app
 class SingleRoomPageView extends StatelessWidget {
-
   SingleRoomPageView(
-      {Key key,
-      @required this.tabController,
-      @required this.universityRoom});
+      {Key key, @required this.tabController, @required this.universityRoom});
 
   final UniversityRoom universityRoom;
   final TabController tabController;
@@ -56,7 +54,8 @@ class SingleRoomPageView extends StatelessWidget {
         tabs.add(Container(
           color: Theme.of(context).backgroundColor,
           width: queryData.size.width * 1 / 2,
-          child: Tab(key: Key('floor-page'), text: 'Sala ' + universityRoom.name),
+          child:
+              Tab(key: Key('floor-page'), text: 'Sala ' + universityRoom.name),
         ));
       }
     }
@@ -76,15 +75,14 @@ class SingleRoomPageView extends StatelessWidget {
   }
 
   Widget printMap(context, bool isClassroom) {
-    return isClassroom ? Container(
-      child: Image.asset(
-        universityRoom.pathToImage,
-      ),
-    )
-    : Container(
-      child: Image.asset(
-        'assets/images/salas/pisoB.png',
-      )
-    );
+    return isClassroom
+        ? Container(
+            child: CachedNetworkImage(
+              imageUrl: universityRoom.urlToFloorImage,
+          ),)
+        : Container(
+            child: CachedNetworkImage(
+              imageUrl: universityRoom.urlToClassroomImage,
+          ),);
   }
 }
