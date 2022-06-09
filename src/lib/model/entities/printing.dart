@@ -1,39 +1,68 @@
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+
+enum PageSize { a3, a4 }
+
+enum PrintingColor { color, baw }
+
 class Printing {
-  final int id;
   final String name;
-  final String pageSize;
-  final bool color;
+  final String path;
+  final PageSize pageSize;
+  final PrintingColor color;
   final int numCopies;
-  final double price;
 
   Printing(
-    int this.id,
     String this.name,
-    String this.pageSize,
-    bool this.color,
+    String this.path,
+    PageSize this.pageSize,
+    PrintingColor this.color,
     int this.numCopies,
-    double this.price
   );
 
   static Printing fromJson(dynamic data) {
     return Printing(
-      data['id'],
-      data['name'],
-      data['size'],
-      data['color'],
-      data['copies'],
-      data['price'],
-    );
+        data['name'],
+        data['path'],
+        data['size'] == 0 ? PageSize.a3 : PageSize.a4,
+        data['color'] == 0 ? PrintingColor.color : PrintingColor.baw,
+        data['copies']);
+  }
+
+  static Future<Map<String, dynamic>> selectFile() async {
+    final FilePickerResult result =
+        await FilePicker.platform.pickFiles(allowMultiple: false);
+
+    if (result == null) {
+      return null;
+    }
+
+    final PlatformFile file = result.files.first;
+
+    return {'name': file.name, 'path': file.path};
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'name': name,
-      'size': pageSize,
-      'color': color,
+      'path': path,
+      'size': pageSize.index,
+      'color': color.index,
       'numCopies': numCopies,
-      'price': price
     };
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Printing &&
+          runtimeType == other.runtimeType &&
+          path == other.path &&
+          pageSize == other.pageSize &&
+          color == other.color &&
+          numCopies == other.numCopies;
+
+  @override
+  int get hashCode =>
+      path.hashCode ^ pageSize.hashCode ^ color.hashCode ^ numCopies.hashCode;
 }
