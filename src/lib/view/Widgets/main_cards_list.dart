@@ -148,7 +148,7 @@ class MainCardsList extends StatelessWidget {
   Widget createFavoriteWidgetFromType(
       FAVORITE_WIDGET_TYPE type, int i, BuildContext context) {
     return this.cardCreators[type](Key(i.toString()), this.isEditing(context),
-        () => removeFromFavorites(i, context));
+        (context) => removeFromFavorites(i, context));
   }
 
   void reorderCard(int oldIndex, int newIndex,
