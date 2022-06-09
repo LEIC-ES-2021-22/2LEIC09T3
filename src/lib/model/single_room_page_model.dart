@@ -17,21 +17,25 @@ class SingleRoomPageModel extends StatefulWidget {
     Key key,
     @required this.universityRoom,
   });
-  
-  @override 
-  _SingleRoomPageModelState createState() => _SingleRoomPageModelState(universityRoom);
+
+  @override
+  _SingleRoomPageModelState createState() =>
+      _SingleRoomPageModelState(universityRoom);
 }
 
-class _SingleRoomPageModelState extends SecondaryPageViewState with SingleTickerProviderStateMixin {
-  _SingleRoomPageModelState(UniversityRoom universityRoom, {
+class _SingleRoomPageModelState extends SecondaryPageViewState
+    with SingleTickerProviderStateMixin {
+  _SingleRoomPageModelState(
+    UniversityRoom universityRoom, {
     Key key,
   });
 
-  UniversityRoom universityRoom = UniversityRoom(123, 'B001', 'assets/images/salas/B001.png');
-  TabController tabController; 
+  UniversityRoom universityRoom =
+      UniversityRoom(123, 'B001', 'assets/images/salas/B001.png');
+  TabController tabController;
   @override
   Widget getBody(BuildContext context) {
-      return SingleRoomPageView(
+    return SingleRoomPageView(
       universityRoom: universityRoom,
       tabController: tabController,
     );

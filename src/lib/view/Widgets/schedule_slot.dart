@@ -13,18 +13,20 @@ class ScheduleSlot extends StatelessWidget {
   final String typeClass;
   final String classNumber;
   final TabController tabController;
+  final lectureIndex;
 
-  ScheduleSlot({
-    Key key,
-    @required this.subject,
-    @required this.typeClass,
-    @required this.rooms,
-    @required this.begin,
-    @required this.end,
-    this.teacher,
-    this.classNumber,
-    this.tabController
-  }) : super(key: key);
+  ScheduleSlot(
+      {Key key,
+      @required this.subject,
+      @required this.typeClass,
+      @required this.rooms,
+      @required this.begin,
+      @required this.end,
+      this.teacher,
+      this.classNumber,
+      this.tabController,
+      this.lectureIndex})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class ScheduleSlot extends StatelessWidget {
   }
 
   Widget createScheduleSlotRow(context) {
-    return  Container(
+    return Container(
         key: Key('schedule-slot-time-${this.begin}-${this.end}'),
         margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
         child: Row(
@@ -49,7 +51,7 @@ class ScheduleSlot extends StatelessWidget {
   }
 
   Widget createScheduleSlotTime(context) {
-    return  Column(
+    return Column(
       key: Key('schedule-slot-time-${this.begin}-${this.end}'),
       children: <Widget>[
         createScheduleTime(this.begin, context),
@@ -73,17 +75,20 @@ class ScheduleSlot extends StatelessWidget {
         Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
         TextAlign.center);
     final roomTextField = GestureDetector(
-      onTap: () => Navigator.push(context,
-        MaterialPageRoute(builder: (context) => SingleRoomPageModel( 
-          // this.rooms,
-          universityRoom: UniversityRoom(123, this.rooms, 'pog'),
-        )) 
-      ),
-      child: createTextField(
-        this.rooms,
-        Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4, color: Theme.of(context).accentColor),
-        TextAlign.right)
-    );
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SingleRoomPageModel(
+                      universityRoom: UniversityRoom(123, this.rooms, 'pog'),
+                    ))),
+        child: createTextFieldWithKey(
+            ('lecture-' + this.lectureIndex.toString() + '-room'),
+            this.rooms,
+            Theme.of(context)
+                .textTheme
+                .headline4
+                .apply(fontSizeDelta: -4, color: Theme.of(context).accentColor),
+            TextAlign.right));
     return [
       createScheduleSlotTime(context),
       Column(
@@ -128,6 +133,11 @@ class ScheduleSlot extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: style,
     );
+  }
+
+  Widget createTextFieldWithKey(String keyName, text, style, alignment) {
+    return Text(text,
+        overflow: TextOverflow.ellipsis, style: style, key: ValueKey(keyName));
   }
 
   Widget createScheduleSlotPrimInfoColumn(elements) {
