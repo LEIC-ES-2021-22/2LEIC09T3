@@ -37,10 +37,11 @@ class PrintingPageView extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium,
                         textAlign: TextAlign.center)
                     : ListView.builder(
+                        padding: EdgeInsets.only(bottom: 75),
                         itemCount: printings.length + printingJobs.length,
                         itemBuilder: (context, index) => index < printings.length
-                           ? PrintingCard(printings[index])
-                           : PrintingJobCard(printingJobs[index - printings.length])
+                          ? PrintingCard(printings[index])
+                          : PrintingJobCard(printingJobs[index - printings.length])
                       ),
               )
             ]),
@@ -49,6 +50,8 @@ class PrintingPageView extends StatelessWidget {
               onPressed: () async {
                 final file = await Printing.selectFile();
                 if (file == null || file['path'] == null) {
+                  const snackbar = SnackBar(content: Text('Houve um erro ao ler o ficheiro. Por favor, tenta novamente...'));
+                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   return;
                 }
 
