@@ -1,27 +1,39 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/printing.dart';
+import 'package:uni/model/entities/printing_job.dart';
 import 'package:uni/redux/action_creators.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
 import 'package:uni/view/Widgets/generic_card.dart';
 import 'package:uni/view/Widgets/page_title.dart';
 
-class NewPrintingPageView extends StatefulWidget {
+class NewPrintingJobPageView extends StatefulWidget {
 
-  String filename;
-  NewPrintingPageView(this.filename, {Key key}) : super(key: key);
+  final void Function(BuildContext, Map<String, dynamic>) onSubmit;
+
+  NewPrintingJobPageView({Key key, @required this.onSubmit}) :
+    super(key: key);
 
   @override 
-  NewPrintingPageViewState createState() => NewPrintingPageViewState();
+  NewPrintingJobPageViewState createState() => NewPrintingJobPageViewState();
 }
 
-class NewPrintingPageViewState extends SecondaryPageViewState {
+class NewPrintingJobPageViewState extends SecondaryPageViewState {
 
   @override
   Widget getBody(BuildContext context) {
-    return NewPrintingForm((widget as NewPrintingPageView).filename, title: getPageTitle());
+    return NewPrintingJobForm(
+      title: getPageTitle(),
+      onSubmit: (context, data) {
+        final widget  = this.widget as NewPrintingJobPageView;
+        widget.onSubmit(context, data);
+        
+        Navigator.pop(context);
+      });
   }
 
   Widget getPageTitle() {
@@ -31,36 +43,36 @@ class NewPrintingPageViewState extends SecondaryPageViewState {
   }
 }
 
-class NewPrintingForm extends StatefulWidget {
+class NewPrintingJobForm extends StatefulWidget {
 
-  String filename;
-  Widget title;
+  final void Function(BuildContext, Map<String, dynamic>) onSubmit; 
+  final Widget title;
 
-  NewPrintingForm(this.filename, { @required this.title, Key key}) : super(key: key);
+  NewPrintingJobForm({ 
+    Key key,
+    @required this.title,
+    @required this.onSubmit
+  }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => NewPrintingFormState();
+  State<StatefulWidget> createState() => NewPrintingJobFormState();
 }
 
-class NewPrintingFormState extends State<NewPrintingForm> {
+class NewPrintingJobFormState extends State<NewPrintingJobForm> {
 
-  bool color = true;
-  bool size = true;
+  PrintingColor color = PrintingColor.color;
+  PageSize size = PageSize.a4;
   var copies = 1;
 
-  Printing createPrintingFromForm() {
-    return Printing(1, widget.filename, size ? 'A4' : 'A3', color, 1, 23);
-  }
-    
   @override
   Widget build(BuildContext context) {
-        final changeColor = (bool val) {
+    final changeColor = (PrintingColor val) {
       setState(() {
         color = val;
       });
     };
 
-    final changeSize = (bool val) {
+    final changeSize = (PageSize val) {
       setState(() {
         size = val;
       });
@@ -70,12 +82,11 @@ class NewPrintingFormState extends State<NewPrintingForm> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.upload),
         onPressed: () {
-          final store = StoreProvider.of<AppState>(context);
-          
-          final printing = createPrintingFromForm();
-          store.dispatch(createNewPrinting(printing));
-          
-          Navigator.pop(context);
+          widget.onSubmit(context, {
+            'copies': copies,
+            'color': color,
+            'size': size,
+          });
         }
       ),
       body: Container(
@@ -112,7 +123,7 @@ class NewPrintingFormState extends State<NewPrintingForm> {
                     ),
                   ),
                   Radio(
-                    value: true,
+                    value: PrintingColor.color,
                     groupValue: color,
                     onChanged: changeColor,
                   )
@@ -131,7 +142,7 @@ class NewPrintingFormState extends State<NewPrintingForm> {
                     )
                   ),
                   Radio(
-                    value: false,
+                    value: PrintingColor.baw,
                     groupValue: color, 
                     onChanged: changeColor,
                   )
@@ -160,7 +171,7 @@ class NewPrintingFormState extends State<NewPrintingForm> {
                     ),
                   ),
                   Radio(
-                    value: true,
+                    value: PageSize.a4,
                     groupValue: size,
                     onChanged: changeSize,
                   )
@@ -179,7 +190,7 @@ class NewPrintingFormState extends State<NewPrintingForm> {
                     ),
                   ),
                   Radio(
-                    value: false,
+                    value: PageSize.a3,
                     groupValue: size,
                     onChanged: changeSize,
                   )

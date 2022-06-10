@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uni/model/entities/uni_notification.dart';
 import 'package:uni/model/profile_page_model.dart';
 import 'package:uni/view/Pages/unnamed_page_view.dart';
+import 'package:uni/utils/datetime.dart';
 
 class SingleNotificationPageView extends StatefulWidget {
   
@@ -64,7 +65,7 @@ class SingleNotificationPageViewState extends UnnamedPageView {
       alignment: Alignment.centerLeft,
       margin: EdgeInsets.only(bottom: 10.0, left: 20.0, right: 20.0),
       child: Text(
-          notification.readableDate,
+          notification.date.readableDate,
           textAlign: TextAlign.left,
           style: Theme.of(context).textTheme.bodySmall,
         )

@@ -3,6 +3,7 @@ import 'package:uni/model/entities/course_unit.dart';
 import 'package:uni/model/entities/exam.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:uni/model/entities/printing.dart';
+import 'package:uni/model/entities/printing_job.dart';
 import 'package:uni/model/entities/room_booking.dart';
 import 'package:uni/model/entities/profile.dart';
 import 'package:uni/model/entities/restaurant.dart';
@@ -207,4 +208,9 @@ class SetBookingsAction {
 class SetPrintingsAction {
   List<Printing> printings;
   SetPrintingsAction(this.printings);
+}
+
+class SetPrintingJobsAction {
+  List<PrintingJob> printingJobs;
+  SetPrintingJobsAction(this.printingJobs);
 }

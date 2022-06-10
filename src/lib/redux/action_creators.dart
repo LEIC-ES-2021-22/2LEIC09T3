@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 import 'package:redux/redux.dart';
@@ -13,6 +16,8 @@ import 'package:uni/controller/local_storage/app_courses_database.dart';
 import 'package:uni/controller/local_storage/app_exams_database.dart';
 import 'package:uni/controller/local_storage/app_last_user_info_update_database.dart';
 import 'package:uni/controller/local_storage/app_lectures_database.dart';
+import 'package:uni/controller/local_storage/app_printing_database.dart';
+import 'package:uni/controller/local_storage/app_printing_job_database.dart';
 import 'package:uni/controller/local_storage/app_refresh_times_database.dart';
 import 'package:uni/controller/local_storage/app_shared_preferences.dart';
 import 'package:uni/controller/local_storage/app_uni_notifications_database.dart';
@@ -20,6 +25,7 @@ import 'package:uni/controller/local_storage/app_room_booking_database.dart';
 import 'package:uni/controller/local_storage/app_user_database.dart';
 import 'package:uni/controller/local_storage/app_restaurant_database.dart';
 import 'package:uni/controller/local_storage/app_virtual_card_database.dart';
+import 'package:uni/controller/mock_apis/printing_mock_api.dart';
 import 'package:uni/controller/networking/network_router.dart'
     show NetworkRouter;
 import 'package:uni/controller/parsers/parser_courses.dart';
@@ -28,6 +34,7 @@ import 'package:uni/controller/parsers/parser_fees.dart';
 import 'package:uni/controller/parsers/parser_print_balance.dart';
 import 'package:uni/controller/parsers/parser_notifications.dart';
 import 'package:uni/controller/parsers/parser_bookings.dart';
+import 'package:uni/controller/parsers/parser_printing_jobs.dart';
 import 'package:uni/controller/parsers/parser_virtual_card.dart';
 import 'package:uni/controller/restaurant_fetcher/restaurant_fetcher_html.dart';
 import 'package:uni/controller/schedule_fetcher/schedule_fetcher.dart';
@@ -39,6 +46,7 @@ import 'package:uni/model/entities/course_unit.dart';
 import 'package:uni/model/entities/exam.dart';
 import 'package:uni/model/entities/lecture.dart';
 import 'package:uni/model/entities/printing.dart';
+import 'package:uni/model/entities/printing_job.dart';
 import 'package:uni/model/entities/profile.dart';
 import 'package:uni/model/entities/restaurant.dart';
 import 'package:uni/model/entities/session.dart';
@@ -256,6 +264,15 @@ Future<VirtualCard> extractCard(Store<AppState> store) async {
   return parseCard(cardJson);
 }
 
+//TODO: This function is to be implemented  by the msc students
+// So we are just retrieving a json string
+Future<List<PrintingJob>> extractPrintingJobs(Store<AppState> store) async {
+  final api = PrintingMockApi();
+  final jsonPrintingJobs = await api.getPrintingJobs(); 
+
+  return parsePrintingJobs(jsonPrintingJobs);
+}
+
 Future<List<Exam>> extractExams(
     Store<AppState> store, ParserExams parserExams) async {
   Set<Exam> courseExams = Set();
@@ -361,6 +378,53 @@ ThunkAction<AppState> getUserVirtualCard(
     } catch (e) {
       Logger().e('Failed to get card', e);
       store.dispatch(SetVirtualCardStatus(RequestStatus.failed));
+    }
+
+    action.complete();
+  };
+}
+
+ThunkAction<AppState> getUserPrintingJobs(
+    Completer<Null> action, Tuple2<String, String> userPersistentInfo) {
+  return (Store<AppState> store) async {
+    try {
+      final List<PrintingJob> jobs =
+          await extractPrintingJobs(store);
+
+      jobs
+          .sort((job1, job2) => job1.date.compareTo(job2.date));
+
+      final db = AppPrintingJobDatabase();
+      db.saveNewPrintingJobs(jobs);
+
+      store.dispatch(SetPrintingJobsAction(jobs));
+    } catch (e) {
+      Logger().e('Failed to get Printing Jobs', e);
+    }
+
+    action.complete();
+  };
+}
+
+ThunkAction<AppState> scheduleUserPrintings(
+    Completer<Null> action, Tuple2<String, String> userPersistentInfo) {
+  return (Store<AppState> store) async {
+    try {
+      final db = AppPrintingDatabase();
+
+      final Set<Printing> printings = {
+        ...store.state.content['printings'],
+        ...await db.printings(),
+      };
+
+      await db.deletePrintings();
+      for (final printing in printings) {
+        await scheduleNewPrinting(printing, updateStateWhenFailed: false)(store);
+      }
+
+      store.dispatch(SetPrintingsAction(await db.printings()));
+    } catch (e) {
+      Logger().e('Failed to get Printings', e);
     }
 
     action.complete();
@@ -712,6 +776,22 @@ ThunkAction<AppState> updateStateBasedOnLocalVirtualCard() {
   };
 }
 
+ThunkAction<AppState> updateStateBasedOnLocalPrintings() {
+  return (Store<AppState> store) async {
+    final db = AppPrintingDatabase();
+    final printings = await db.printings();
+    store.dispatch(SetPrintingsAction(printings));
+  };
+}
+
+ThunkAction<AppState> updateStateBasedOnLocalPrintingJobs() {
+  return (Store<AppState> store) async {
+    final db = AppPrintingJobDatabase();
+    final jobs = await db.printingJobs();
+    store.dispatch(SetPrintingJobsAction(jobs));
+  };
+}
+
 ThunkAction<AppState> deleteNotification(int index) {
   return (store) {
     final List<UniNotification> notifications =
@@ -777,18 +857,62 @@ ThunkAction<AppState> toggleNotificationReadStatus(int index) {
   };
 }
 
-ThunkAction<AppState> createNewPrinting(Printing printing) {
-  return (store) {
-    final List<Printing> currentPrintings = store.state.content['printings'];
-    final newPrintings = [printing, ...currentPrintings];
-    store.dispatch(SetPrintingsAction(newPrintings));
-  };
-}
-
 ThunkAction<AppState> deletePrinting(Printing printing) {
   return (store) {
     final List<Printing> currentPrintings = store.state.content['printings'];
     final newPrintings = currentPrintings.where((element) => element != printing).toList();
+
+    final db = AppPrintingDatabase();
+    db.saveNewPrintings(newPrintings);
+
     store.dispatch(SetPrintingsAction(newPrintings));
+  };
+}
+
+ThunkAction<AppState> deletePrintingJob(PrintingJob job) {
+  return (store) async {
+    final api = PrintingMockApi();
+    if (!await api.deletePrintingJob(job)) {
+      return;
+    }
+
+    final newJobs = await extractPrintingJobs(store);
+
+    final db = AppPrintingJobDatabase();
+    db.saveNewPrintingJobs(newJobs);
+
+    store.dispatch(SetPrintingJobsAction(newJobs));
+  };
+}
+
+ThunkAction<AppState> scheduleNewPrinting(Printing printing, { bool updateStateWhenFailed = true}) {
+  return (store) async {
+    try {
+      final result = await InternetAddress.lookup('print.up.pt');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        final file = File(printing.path);
+        final bytes = await file.readAsBytes();
+        
+        // send file to print.up.pt
+
+        final api = PrintingMockApi();
+        final jobs = await parsePrintingJobs(await api.schedulePrintingJob(printing, bytes));
+
+        final db = AppPrintingJobDatabase();
+        await db.insertPrintingJobs(jobs);
+
+        store.dispatch(SetPrintingJobsAction(await db.printingJobs()));
+        return true;        
+      }
+    } catch (_) {}
+
+    final db = AppPrintingDatabase();
+    await db.insertPrintings([printing]);
+
+    if (updateStateWhenFailed) {
+      store.dispatch(SetPrintingsAction([...store.state.content['printings'], printing]));
+    }
+
+    return false;
   };
 }

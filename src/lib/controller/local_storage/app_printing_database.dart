@@ -44,8 +44,8 @@ class AppPrintingDatabase extends AppDatabase {
       return Printing(
           maps[i]['name'],
           maps[i]['path'],
-          maps[i]['pageSize'] == 0 ? PageSize.a3 : PageSize.a4,
-          maps[i]['color'] == 0 ? PrintingColor.color : PrintingColor.baw,
+          PageSize.values[maps[i]['pageSize']],
+          PrintingColor.values[maps[i]['color']],
           maps[i]['numCopies']);
     });
   }

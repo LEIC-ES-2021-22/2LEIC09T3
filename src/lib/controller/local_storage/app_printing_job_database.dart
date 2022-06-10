@@ -8,8 +8,8 @@ import 'package:sqflite/sqflite.dart';
 /// This database stores information about Printing Requests that will possibly be sent to print.up.pt via the API.
 class AppPrintingJobDatabase extends AppDatabase {
   AppPrintingJobDatabase()
-      : super('printing_jobs.db', [
-          'CREATE TABLE printing_jobs(date TEXT, printerName TEXT, numPages INTEGER, price REAL, documentName TEXT)'
+      : super('printingjobs.db', [
+          'CREATE TABLE printingjobs(date TEXT, printerName TEXT, numPages INTEGER, price REAL, documentName TEXT, UNIQUE (date, printerName, numPages, price, documentName))'
         ]);
 
   /// Replaces all of the data in this database with [printingJobs].
@@ -24,7 +24,7 @@ class AppPrintingJobDatabase extends AppDatabase {
   Future<void> insertPrintingJobs(List<PrintingJob> printingJobs) async {
     for (PrintingJob printingJob in printingJobs) {
       await insertInDatabase(
-        'printing_jobs',
+        'printingjobs',
         printingJob.toMap(),
         conflictAlgorithm: ConflictAlgorithm.abort,
       );
@@ -37,7 +37,7 @@ class AppPrintingJobDatabase extends AppDatabase {
     final Database db = await this.getDatabase();
 
     // Query the table for All The Dogs.
-    final List<Map<String, dynamic>> maps = await db.query('printingJobs');
+    final List<Map<String, dynamic>> maps = await db.query('printingjobs');
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
@@ -56,6 +56,6 @@ class AppPrintingJobDatabase extends AppDatabase {
     // Get a reference to the database
     final Database db = await this.getDatabase();
 
-    await db.delete('printing_jobs');
+    await db.delete('printingjobs');
   }
 }

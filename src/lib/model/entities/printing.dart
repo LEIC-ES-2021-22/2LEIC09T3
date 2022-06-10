@@ -31,7 +31,51 @@ class Printing {
 
   static Future<Map<String, dynamic>> selectFile() async {
     final FilePickerResult result =
-        await FilePicker.platform.pickFiles(allowMultiple: false);
+        await FilePicker.platform.pickFiles(
+          allowMultiple: false,
+          allowCompression: true,
+          type: FileType.custom ,
+          allowedExtensions: [
+            'xlam',
+            'xls',
+            'xlsb',
+            'xlsm',
+            'xlsx',
+            'xltm',
+            'xltx',
+            'pot',
+            'potm',
+            'potx',
+            'ppam',
+            'pps',
+            'ppsm',
+            'ppsx',
+            'ppt',
+            'pptm',
+            'pptx',
+            'doc',
+            'docm',
+            'docx',
+            'dot',
+            'dotm',
+            'dotx',
+            'rtf',
+            'txt',
+            'pdf',
+            'bmp',
+            'dib',
+            'gif',
+            'jfif',
+            'jif',
+            'jpe',
+            'jpeg',
+            'jpg',
+            'png',
+            'tif',
+            'tiff',
+            'xps'
+          ]
+        );
 
     if (result == null) {
       return null;
@@ -46,7 +90,7 @@ class Printing {
     return {
       'name': name,
       'path': path,
-      'size': pageSize.index,
+      'pageSize': pageSize.index,
       'color': color.index,
       'numCopies': numCopies,
     };

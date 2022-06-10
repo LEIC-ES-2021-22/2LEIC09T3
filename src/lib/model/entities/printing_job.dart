@@ -10,9 +10,9 @@ class PrintingJob {
 
   static PrintingJob fromJson(dynamic data) {
     return PrintingJob(
-      DateTime.parse(data['date']),
-      data['printerName'],
-      data['numPages'],
+      DateTime.parse(data['createdAt']),
+      data['printer'],
+      data['pages'],
       data['price'],
       data['documentName'],
     );
