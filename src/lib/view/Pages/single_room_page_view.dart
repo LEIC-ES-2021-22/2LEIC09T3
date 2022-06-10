@@ -18,6 +18,7 @@ class SingleRoomPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final MediaQueryData queryData = MediaQuery.of(context);
 
     return Column(children: <Widget>[
@@ -26,27 +27,24 @@ class SingleRoomPageView extends StatelessWidget {
         shrinkWrap: true,
         children: <Widget>[
           PageTitle(name: 'Mapa'),
-          TabBar(
+          ...(status == RequestStatus.successful ? [TabBar(
             controller: tabController,
             isScrollable: true,
             tabs: createTabs(queryData, context),
-          ),
+          )] : []) 
         ],
       ),
       Expanded(
-          child: TabBarView(
-        controller: tabController,
-        children: createMaps(context),
-      ))
+        child: status == RequestStatus.successful
+          ? TabBarView(
+          controller: tabController,
+          children: createMaps(context)) 
+          : Center(child: CircularProgressIndicator()))
     ]);
   }
 
   // Returns a list of widgets empty with tabs for each day map
   List<Widget> createTabs(queryData, BuildContext context) {
-    if (status != RequestStatus.successful) {
-      return [];
-    }
-
     final List<Widget> tabs = <Widget>[];
     for (var i = 0; i < 2; i++) {
       if (i == 0) {

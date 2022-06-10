@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/university_room.dart';
+import 'package:uni/redux/action_creators.dart';
 import 'package:uni/view/Widgets/row_container.dart';
 import 'package:uni/view/Pages/single_room_page_view.dart';
 import 'package:uni/model/single_room_page_model.dart';
@@ -75,12 +78,24 @@ class ScheduleSlot extends StatelessWidget {
         Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
         TextAlign.center);
     final roomTextField = GestureDetector(
-      onTap: () => Navigator.push(context,
-        MaterialPageRoute(builder: (context) => SingleRoomPageModel( 
-          this.rooms,
-          this.roomId
-        )) 
-      ),
+      onTap: () {
+        
+        final store = StoreProvider.of<AppState>(context);
+        final data = {
+            'room': store.state.content['universityRoom'],
+            'status': store.state.content['universityRoomStatus']
+          };
+        if (data['status'] != RequestStatus.successful || data['room'].roomId != roomId) {
+          store.dispatch(loadRoomUrls(rooms, roomId));
+        }
+      
+        Navigator.push(context,
+          MaterialPageRoute(builder: (context) => SingleRoomPageModel( 
+            this.rooms,
+            this.roomId
+          )) 
+        );
+      },
       child: createTextField(
         this.rooms,
         Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4, color: Theme.of(context).accentColor),

@@ -805,10 +805,10 @@ ThunkAction<AppState> loadRoomUrls(String room, String roomId) {
       }
     }
 
-    buildingUrl = buildingUrl.substring(0, buildingUrl.length - 1);
+    buildingUrl = res.request.url.resolve(buildingUrl.substring(0, buildingUrl.length - 1)).toString();
     final buildingRes = await http.get(Uri.parse(buildingUrl));
     final buildingHmtl = parse(buildingRes.body);
-    final buildingName = html.querySelector('h1:not([id])').text;
+    final buildingName = buildingHmtl.querySelector('h1:not([id])').text;
 
     final buildingImage = buildingRes.request.url.resolve(buildingHmtl.querySelector('.planta img').attributes['src']).toString();
 

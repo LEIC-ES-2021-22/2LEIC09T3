@@ -275,4 +275,5 @@ AppState setUniversityRoom(AppState state, SetUniversityRoomAction action) {
 
 AppState setUniversityRoomStatus(AppState state, SetUniversityRoomStatusAction action) {
   Logger().i('setting university room status ' + action.status.name);
+  return state.cloneAndUpdateValue('universityRoomStatus', action.status);
 }

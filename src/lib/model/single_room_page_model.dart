@@ -1,3 +1,4 @@
+import 'package:flutter/scheduler.dart';
 import 'package:logger/logger.dart';
 import 'package:tuple/tuple.dart';
 import 'package:uni/model/app_state.dart';
@@ -33,7 +34,7 @@ class _SingleRoomPageModelState extends SecondaryPageViewState with SingleTicker
   @override
   Widget getBody(BuildContext context) {
       return StoreConnector<AppState, Map<String, dynamic>>(
-        converter: (store) =>  {
+        converter: (store) => {
           'room': store.state.content['universityRoom'],
           'status': store.state.content['universityRoomStatus']
         },
@@ -47,11 +48,6 @@ class _SingleRoomPageModelState extends SecondaryPageViewState with SingleTicker
     super.initState();
     tabController = TabController(vsync: this, length: 2);
     // tabController.animateTo((tabController.index + offset));
-
-    final widget = this.widget as SingleRoomPageModel;
-
-    final store = StoreProvider.of<AppState>(context);
-    store.dispatch(loadRoomUrls(widget.room, widget.roomId));
   }
 
   @override
