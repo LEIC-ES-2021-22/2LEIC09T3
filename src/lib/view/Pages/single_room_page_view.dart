@@ -87,7 +87,7 @@ class SingleRoomPageView extends StatelessWidget {
               imageUrl: universityRoom.urlToFloorImage,
           ),)
         : Container(
-            key: ValueKey('room-map')
+            key: ValueKey('room-map'),
             child: CachedNetworkImage(
               imageUrl: universityRoom.urlToClassroomImage,
           ),);
