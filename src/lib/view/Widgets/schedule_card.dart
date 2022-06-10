@@ -97,6 +97,7 @@ class ScheduleCard extends GenericCard {
         child: ScheduleSlot(
             subject: lecture.subject,
             rooms: lecture.room,
+            roomId: lecture.roomId,
             begin: lecture.startTime,
             end: lecture.endTime,
             teacher: lecture.teacher,

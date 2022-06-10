@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:uni/model/app_state.dart';
 import 'package:uni/model/entities/university_room.dart';
+import 'package:uni/redux/action_creators.dart';
 import 'package:uni/view/Widgets/row_container.dart';
 import 'package:uni/view/Pages/single_room_page_view.dart';
 import 'package:uni/model/single_room_page_model.dart';
@@ -7,6 +10,7 @@ import 'package:uni/model/single_room_page_model.dart';
 class ScheduleSlot extends StatelessWidget {
   final String subject;
   final String rooms;
+  final String roomId;
   final String begin;
   final String end;
   final String teacher;
@@ -15,18 +19,19 @@ class ScheduleSlot extends StatelessWidget {
   final TabController tabController;
   final lectureIndex;
 
-  ScheduleSlot(
-      {Key key,
-      @required this.subject,
-      @required this.typeClass,
-      @required this.rooms,
-      @required this.begin,
-      @required this.end,
-      this.teacher,
-      this.classNumber,
-      this.tabController,
-      this.lectureIndex})
-      : super(key: key);
+  ScheduleSlot({
+    Key key,
+    @required this.subject,
+    @required this.typeClass,
+    @required this.rooms,
+    @required this.roomId,
+    @required this.begin,
+    @required this.end,
+    this.teacher,
+    this.classNumber,
+    this.tabController,
+    this.lectureIndex
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,20 +80,30 @@ class ScheduleSlot extends StatelessWidget {
         Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4),
         TextAlign.center);
     final roomTextField = GestureDetector(
-        onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SingleRoomPageModel(
-                      universityRoom: UniversityRoom(123, this.rooms, 'pog'),
-                    ))),
-        child: createTextFieldWithKey(
-            ('lecture-' + this.lectureIndex.toString() + '-room'),
+      onTap: () {
+        
+        final store = StoreProvider.of<AppState>(context);
+        final data = {
+            'room': store.state.content['universityRoom'],
+            'status': store.state.content['universityRoomStatus']
+          };
+        if (data['status'] != RequestStatus.successful || data['room'].roomId != roomId) {
+          store.dispatch(loadRoomUrls(rooms, roomId));
+        }
+      
+        Navigator.push(context,
+          MaterialPageRoute(builder: (context) => SingleRoomPageModel( 
             this.rooms,
-            Theme.of(context)
-                .textTheme
-                .headline4
-                .apply(fontSizeDelta: -4, color: Theme.of(context).accentColor),
-            TextAlign.right));
+            this.roomId
+          )) 
+        );
+      },
+      child: createTextFieldWithKey(
+        ('lecture-' + this.lectureIndex.toString() + '-room'),
+        this.rooms,
+        Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4, color: Theme.of(context).accentColor),
+        TextAlign.right)
+    );
     return [
       createScheduleSlotTime(context),
       Column(

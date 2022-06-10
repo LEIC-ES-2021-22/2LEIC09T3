@@ -45,6 +45,8 @@ class AppState {
       'notifications': <UniNotification>[],
       'bookings': <RoomBooking>[],
       'bookingsStatus' : RequestStatus.none,
+      'universityRoom': null,
+      'universityRoomStatus': RequestStatus.none,
       'printings': <Printing>[],
       'printingJobs': <PrintingJob>[],
     };

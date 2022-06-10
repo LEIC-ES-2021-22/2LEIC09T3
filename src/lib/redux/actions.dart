@@ -9,6 +9,7 @@ import 'package:uni/model/entities/profile.dart';
 import 'package:uni/model/entities/restaurant.dart';
 import 'package:uni/model/entities/session.dart';
 import 'package:uni/model/entities/trip.dart';
+import 'package:uni/model/entities/university_room.dart';
 import 'package:uni/model/entities/virtual_card.dart';
 import 'package:uni/model/entities/uni_notification.dart';
 import 'package:uni/model/entities/room_booking.dart';
@@ -204,6 +205,17 @@ class SetBookingsAction {
   List<RoomBooking> bookings;
   SetBookingsAction(this.bookings);
 }
+
+class SetUniversityRoomAction {
+  UniversityRoom room;
+  SetUniversityRoomAction(this.room);
+}
+
+class SetUniversityRoomStatusAction {
+  RequestStatus status;
+  SetUniversityRoomStatusAction(this.status);
+}
+
 
 class SetPrintingsAction {
   List<Printing> printings;

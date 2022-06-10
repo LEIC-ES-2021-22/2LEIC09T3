@@ -10,5 +10,5 @@ Feature: Use the uni app to open a map that indicates the location of the Studen
         Given the user is logged in to uni
         Given I open the drawer
         And the user is on the room page
-        When the user swipes to the right
+        When the user clicks on the room tab
         Then a screen for seeing that classrooms zoomed location should be shown to the user
