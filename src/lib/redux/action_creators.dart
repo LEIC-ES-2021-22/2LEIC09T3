@@ -879,7 +879,7 @@ ThunkAction<AppState> loadRoomUrls(String room, String roomId) {
     } else {
       final link2 = html.querySelector('a[title="Piso acima"]');
       if (link2 != null) {
-        buildingUrl = link1.attributes['href'];
+        buildingUrl = link2.attributes['href'];
       } else {
         store.dispatch(SetUniversityRoomStatusAction(RequestStatus.failed));
         return;
@@ -897,8 +897,8 @@ ThunkAction<AppState> loadRoomUrls(String room, String roomId) {
     store.dispatch(SetUniversityRoomAction(UniversityRoom(int.parse(roomId), buildingName, room, roomImage, buildingImage)));
     store.dispatch(SetUniversityRoomStatusAction(RequestStatus.successful));
     } catch (_) {
-      store.dispatch(SetUniversityRoomAction(null));
       store.dispatch(SetUniversityRoomStatusAction(RequestStatus.failed));
+      store.dispatch(SetUniversityRoomAction(null));
     }
   };
 }

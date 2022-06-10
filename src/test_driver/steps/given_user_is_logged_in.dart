@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:flutter_gherkin/flutter_gherkin.dart';
 import 'package:gherkin/gherkin.dart';
@@ -35,6 +37,8 @@ StepDefinitionGeneric GivenUserIsLoggedInStep(String username, String password) 
               find.byValueKey('login_button')
             );
           }
+
+          sleep(Duration(seconds: 5));
     }, configuration: StepDefinitionConfiguration()..timeout = const Duration(days: 1)
   );
 }

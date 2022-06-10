@@ -48,46 +48,36 @@ class SingleRoomPageView extends StatelessWidget {
   // Returns a list of widgets empty with tabs for each day map
   List<Widget> createTabs(queryData, BuildContext context) {
     final List<Widget> tabs = <Widget>[];
-    for (var i = 0; i < 2; i++) {
-      if (i == 0) {
-        tabs.add(Container(
-          color: Theme.of(context).backgroundColor,
-          width: queryData.size.width * 1 / 2,
-          child: Tab(key: Key('floor-page'), text: universityRoom.buildingName), // alterar
-        ));
-      } else {
-        tabs.add(Container(
-          color: Theme.of(context).backgroundColor,
-          width: queryData.size.width * 1 / 2,
-          child:
-              Tab(key: Key('floor-page'), text: 'Sala ' + universityRoom.name),
-        ));
-      }
-    }
+    tabs.add(Container(
+      color: Theme.of(context).backgroundColor,
+      width: queryData.size.width * 1 / 2,
+      child: Tab(key: Key('floor-page'), text: universityRoom.buildingName), // alterar
+    ));
+    tabs.add(Container(
+      color: Theme.of(context).backgroundColor,
+      width: queryData.size.width * 1 / 2,
+      child:
+          Tab(key: Key('room-page'), text: 'Sala ' + universityRoom.name),
+    ));
     return tabs;
   }
 
   List<Widget> createMaps(context) {
     final List<Widget> tabBarViewContent = <Widget>[];
-    for (int i = 0; i < 2; i++) {
-      if (i == 0) {
-        tabBarViewContent.add(printMap(context, false));
-      } else {
-        tabBarViewContent.add(printMap(context, true));
-      }
-    }
+    tabBarViewContent.add(printMap(context, false));
+    tabBarViewContent.add(printMap(context, true));
     return tabBarViewContent;
   }
 
   Widget printMap(context, bool isClassroom) {
     return isClassroom
         ? Container(
-            key: ValueKey('block-map'),
+            key: ValueKey('room-map'),
             child: CachedNetworkImage(
               imageUrl: universityRoom.urlToFloorImage,
           ),)
         : Container(
-            key: ValueKey('room-map'),
+            key: ValueKey('block-map'),
             child: CachedNetworkImage(
               imageUrl: universityRoom.urlToClassroomImage,
           ),);

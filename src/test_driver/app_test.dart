@@ -18,7 +18,7 @@ import 'steps/given_there_are_unread_notifications.dart';
 import 'steps/given_user_is_logged_in.dart';
 import 'steps/when_the_student_taps_room_name.dart';
 import 'steps/then_a_screen_for_classroom_location_is_shown.dart';
-import 'steps/when_the_user_swipes_to_the_right.dart';
+import 'steps/when_the_user_clicks_on_the_room_tab.dart';
 import 'steps/then_a_screen_for_seeing_classroom_zoomed_is_shown.dart';
 import 'steps/the_user_is_on_the_room_page.dart';
 
@@ -57,7 +57,7 @@ Future<void> main() {
       WhenUserTapsRoomName(),
       ThenTheClassroomsLocationIsShown(),
       AndUserInOnRoomPage(),
-      WhenTheUserSwipesToTheRight(),
+      WhenTheUserClicksOnTheRoomTab(),
       ThenTheClassroomsZoomedLocationIsShown()
     ]
     ..customStepParameterDefinitions = []

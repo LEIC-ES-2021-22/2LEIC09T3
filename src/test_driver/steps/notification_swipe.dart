@@ -21,6 +21,8 @@ StepDefinitionGeneric SwipeAndTapNotification() {
           -500, 0, const Duration(seconds: 1), timeout: const Duration(seconds: 10)
         );
 
+        sleep(Duration(seconds: 5));
+
         await FlutterDriverUtils.tap(
           context.world.driver, 
           find.byValueKey('notifications_delete'),
