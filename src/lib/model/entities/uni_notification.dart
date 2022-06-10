@@ -5,28 +5,11 @@
 /// - The UniNotification's `day`, `month` and `year`
 class UniNotification {
 
-  static final _months = [
-    'jan',
-    'fev',
-    'mar',
-    'abr',
-    'mai',
-    'jun',
-    'jul',
-    'ago',
-    'set',
-    'out',
-    'nov',
-    'dez'
-  ];
-
   int sigarraId;
   String title;
   String content;
   bool read;
   DateTime date;
-
-  String get readableDate => '${date.day} ${_months[date.month - 1]} ${date.year}';
 
   UniNotification(this.sigarraId, this.title, this.content,
       this.read, this.date);

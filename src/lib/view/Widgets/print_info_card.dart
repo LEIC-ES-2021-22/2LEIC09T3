@@ -3,6 +3,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:uni/model/app_state.dart';
 import 'generic_card.dart';
 
+import '../../utils/constants.dart' as Constants;
+
 class PrintInfoCard extends GenericCard {
   PrintInfoCard({Key key}) : super(key: key);
 
@@ -51,5 +53,5 @@ class PrintInfoCard extends GenericCard {
   String getTitle() => 'Impressões';
 
   @override
-  onClick(BuildContext context) {}
+  onClick(BuildContext context) => Navigator.pushNamed(context, '/' + Constants.navPrinting);
 }

@@ -64,7 +64,9 @@ Future loadRemoteUserInfoToState(Store<AppState> store) async {
       restaurants = Completer(),
       notifications = Completer(),
       bookings = Completer(),
-      virtualCard = Completer();
+      virtualCard = Completer(),
+      printingJobs = Completer(),
+      printings = Completer();
 
   store.dispatch(getUserInfo(userInfo));
   store.dispatch(getUserPrintBalance(printBalance));
@@ -81,6 +83,8 @@ Future loadRemoteUserInfoToState(Store<AppState> store) async {
     store.dispatch(getUserNotifications(notifications, userPersistentInfo));
     store.dispatch(getUserBookings(bookings, userPersistentInfo));
     store.dispatch(getUserVirtualCard(virtualCard, userPersistentInfo));
+    store.dispatch(getUserPrintingJobs(printingJobs, userPersistentInfo));
+    store.dispatch(scheduleUserPrintings(printings, userPersistentInfo));
   });
 
   final allRequests = Future.wait([
@@ -94,7 +98,8 @@ Future loadRemoteUserInfoToState(Store<AppState> store) async {
     restaurants.future,
     notifications.future,
     bookings.future,
-    virtualCard.future
+    virtualCard.future,
+    printingJobs.future
   ]);
   allRequests.then((futures) async {
     store.dispatch(setLastUserInfoUpdateTimestamp(lastUpdate));
@@ -127,6 +132,8 @@ void loadLocalUserInfoToState(store) async {
     store.dispatch(updateStateBasedOnLocalNotifications());
     store.dispatch(updateStateBasedOnLocalBookings());
     store.dispatch(updateStateBasedOnLocalVirtualCard());
+    store.dispatch(updateStateBasedOnLocalPrintings());
+    store.dispatch(updateStateBasedOnLocalPrintingJobs());
     store.dispatch(SaveProfileStatusAction(RequestStatus.successful));
     store.dispatch(SetPrintBalanceStatusAction(RequestStatus.successful));
     store.dispatch(SetFeesStatusAction(RequestStatus.successful));

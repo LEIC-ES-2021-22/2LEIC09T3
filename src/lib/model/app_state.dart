@@ -1,5 +1,7 @@
 // enum should be placed somewhere else?
 import 'package:uni/model/entities/bus_stop.dart';
+import 'package:uni/model/entities/printing.dart';
+import 'package:uni/model/entities/printing_job.dart';
 import 'package:uni/model/entities/room_booking.dart';
 import 'package:uni/model/entities/session.dart';
 import 'package:uni/model/entities/trip.dart';
@@ -45,6 +47,8 @@ class AppState {
       'bookingsStatus' : RequestStatus.none,
       'universityRoom': null,
       'universityRoomStatus': RequestStatus.none,
+      'printings': <Printing>[],
+      'printingJobs': <PrintingJob>[],
     };
   }
 

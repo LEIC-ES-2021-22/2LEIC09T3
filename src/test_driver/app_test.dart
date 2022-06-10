@@ -16,10 +16,16 @@ import 'steps/then_the_icon_changes.dart';
 import 'steps/when_the_user_taps_notification_button.dart';
 import 'steps/given_there_are_unread_notifications.dart';
 import 'steps/given_user_is_logged_in.dart';
+import 'steps/when_the_student_taps_room_name.dart';
+import 'steps/then_a_screen_for_classroom_location_is_shown.dart';
+import 'steps/when_the_user_swipes_to_the_right.dart';
+import 'steps/then_a_screen_for_seeing_classroom_zoomed_is_shown.dart';
+import 'steps/the_user_is_on_the_room_page.dart';
 
 Future<void> main() {
-
-  print('Please provide your UP username: ', );
+  print(
+    'Please provide your UP username: ',
+  );
   final username = stdin.readLineSync(encoding: utf8);
 
   print('Please provide your UP password: ');
@@ -35,17 +41,25 @@ Future<void> main() {
       TestRunSummaryReporter(),
       JsonReporter(path: './report.json')
     ]
-    ..stepDefinitions = [GivenUserIsLoggedInStep(username, password), 
-                         GivenUserHasUnreadNotifications(), 
-                         ThenTheIconIsDifferentStep(),
-                         WhenUserTapsNotifButton(),
-                         ThenNotifScreenIsShown(),
-                         UserIsOnNotificationsScreen(),
-                         ThereAreNotifications(),
-                         SwipeAndTapNotification(),
-                         TheNotificationIsDeleted(),
-                         TapsOnUnread(),
-                         NoUnreadNotifications()]
+    ..stepDefinitions = [
+      GivenUserIsLoggedInStep(username, password),
+      GivenUserHasUnreadNotifications(),
+      ThenTheIconIsDifferentStep(),
+      WhenUserTapsNotifButton(),
+      ThenNotifScreenIsShown(),
+      UserIsOnNotificationsScreen(),
+      ThereAreNotifications(),
+      SwipeAndTapNotification(),
+      TheNotificationIsDeleted(),
+      TapsOnUnread(),
+      NoUnreadNotifications(),
+      GivenOpenDrawer(),
+      WhenUserTapsRoomName(),
+      ThenTheClassroomsLocationIsShown(),
+      AndUserInOnRoomPage(),
+      WhenTheUserSwipesToTheRight(),
+      ThenTheClassroomsZoomedLocationIsShown()
+    ]
     ..customStepParameterDefinitions = []
     ..restartAppBetweenScenarios = true
     ..targetAppPath = 'test_driver/app.dart';

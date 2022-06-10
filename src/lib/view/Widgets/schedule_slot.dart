@@ -17,6 +17,7 @@ class ScheduleSlot extends StatelessWidget {
   final String typeClass;
   final String classNumber;
   final TabController tabController;
+  final lectureIndex;
 
   ScheduleSlot({
     Key key,
@@ -28,7 +29,8 @@ class ScheduleSlot extends StatelessWidget {
     @required this.end,
     this.teacher,
     this.classNumber,
-    this.tabController
+    this.tabController,
+    this.lectureIndex
   }) : super(key: key);
 
   @override
@@ -42,7 +44,7 @@ class ScheduleSlot extends StatelessWidget {
   }
 
   Widget createScheduleSlotRow(context) {
-    return  Container(
+    return Container(
         key: Key('schedule-slot-time-${this.begin}-${this.end}'),
         margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
         child: Row(
@@ -54,7 +56,7 @@ class ScheduleSlot extends StatelessWidget {
   }
 
   Widget createScheduleSlotTime(context) {
-    return  Column(
+    return Column(
       key: Key('schedule-slot-time-${this.begin}-${this.end}'),
       children: <Widget>[
         createScheduleTime(this.begin, context),
@@ -96,7 +98,8 @@ class ScheduleSlot extends StatelessWidget {
           )) 
         );
       },
-      child: createTextField(
+      child: createTextFieldWithKey(
+        ('lecture-' + this.lectureIndex.toString() + '-room'),
         this.rooms,
         Theme.of(context).textTheme.headline4.apply(fontSizeDelta: -4, color: Theme.of(context).accentColor),
         TextAlign.right)
@@ -145,6 +148,11 @@ class ScheduleSlot extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       style: style,
     );
+  }
+
+  Widget createTextFieldWithKey(String keyName, text, style, alignment) {
+    return Text(text,
+        overflow: TextOverflow.ellipsis, style: style, key: ValueKey(keyName));
   }
 
   Widget createScheduleSlotPrimInfoColumn(elements) {

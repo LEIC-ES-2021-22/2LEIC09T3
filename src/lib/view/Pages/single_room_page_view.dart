@@ -27,7 +27,9 @@ class SingleRoomPageView extends StatelessWidget {
         shrinkWrap: true,
         children: <Widget>[
           PageTitle(name: 'Mapa'),
-          ...(status == RequestStatus.successful ? [TabBar(
+          ...(status == RequestStatus.successful ? [
+          TabBar(
+            key: ValueKey('room-page-slidable'),
             controller: tabController,
             isScrollable: true,
             tabs: createTabs(queryData, context),
@@ -80,10 +82,12 @@ class SingleRoomPageView extends StatelessWidget {
   Widget printMap(context, bool isClassroom) {
     return isClassroom
         ? Container(
+            key: ValueKey('block-map'),
             child: CachedNetworkImage(
               imageUrl: universityRoom.urlToFloorImage,
           ),)
         : Container(
+            key: ValueKey('room-map')
             child: CachedNetworkImage(
               imageUrl: universityRoom.urlToClassroomImage,
           ),);
