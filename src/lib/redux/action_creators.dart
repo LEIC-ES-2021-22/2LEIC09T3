@@ -25,6 +25,7 @@ import 'package:uni/controller/local_storage/app_room_booking_database.dart';
 import 'package:uni/controller/local_storage/app_user_database.dart';
 import 'package:uni/controller/local_storage/app_restaurant_database.dart';
 import 'package:uni/controller/local_storage/app_virtual_card_database.dart';
+import 'package:uni/controller/mock_apis/printing_mock_api.dart';
 import 'package:uni/controller/networking/network_router.dart'
     show NetworkRouter;
 import 'package:uni/controller/parsers/parser_courses.dart';
@@ -266,12 +267,8 @@ Future<VirtualCard> extractCard(Store<AppState> store) async {
 //TODO: This function is to be implemented  by the msc students
 // So we are just retrieving a json string
 Future<List<PrintingJob>> extractPrintingJobs(Store<AppState> store) async {
-  final jsonPrintingJobs = jsonEncode([
-    {'state': 'retained', 'createdAt': '2022-06-09 21:52:23', 'printer': 'print\\WP-GERAL-P-A4', 'pages': 21, 'price': 0.23, 'documentName': 'Resumos_ESOF.pdf'},
-    {'state': 'cancelled', 'createdAt': '2022-06-06 21:52:23', 'printer': 'print\\WP-GERAL-C-A3', 'pages': 21, 'price': 0.84, 'documentName': 'Resumos_ESOF.pdf'},
-    {'state': 'retained', 'createdAt': '2022-06-10 10:56:32', 'printer': 'print\\WP-GERAL-P-A4', 'pages': 5, 'price': 0.12, 'documentName': 'Guiao_Apresentacao_Uni.pdf'},
-    {'state': 'retained', 'createdAt': '2022-06-03 12:41:12', 'printer': 'print\\WP-GERAL-P-A3', 'pages': 1, 'price': 0.08, 'documentName': 'Poster_Projeto_UP.png'},
-  ]);
+  final api = PrintingMockApi();
+  final jsonPrintingJobs = await api.getPrintingJobs(); 
 
   return parsePrintingJobs(jsonPrintingJobs);
 }
@@ -402,7 +399,7 @@ ThunkAction<AppState> getUserPrintingJobs(
 
       store.dispatch(SetPrintingJobsAction(jobs));
     } catch (e) {
-      Logger().e('Failed to get Printing Jobs');
+      Logger().e('Failed to get Printing Jobs', e);
     }
 
     action.complete();
@@ -421,13 +418,13 @@ ThunkAction<AppState> scheduleUserPrintings(
       };
 
       await db.deletePrintings();
-      printings.forEach((element) {
-        store.dispatch(scheduleNewPrinting(element));
-      });
+      for (final printing in printings) {
+        await scheduleNewPrinting(printing, updateStateWhenFailed: false)(store);
+      }
 
       store.dispatch(SetPrintingsAction(await db.printings()));
     } catch (e) {
-      Logger().e('Failed to get Printings');
+      Logger().e('Failed to get Printings', e);
     }
 
     action.complete();
@@ -864,19 +861,31 @@ ThunkAction<AppState> deletePrinting(Printing printing) {
   return (store) {
     final List<Printing> currentPrintings = store.state.content['printings'];
     final newPrintings = currentPrintings.where((element) => element != printing).toList();
+
+    final db = AppPrintingDatabase();
+    db.saveNewPrintings(newPrintings);
+
     store.dispatch(SetPrintingsAction(newPrintings));
   };
 }
 
 ThunkAction<AppState> deletePrintingJob(PrintingJob job) {
-  return (store) {
-    final List<PrintingJob> currentJobs = store.state.content['printingJobs'];
-    final newJobs = currentJobs.where((element) => element != job).toList();
+  return (store) async {
+    final api = PrintingMockApi();
+    if (!await api.deletePrintingJob(job)) {
+      return;
+    }
+
+    final newJobs = await extractPrintingJobs(store);
+
+    final db = AppPrintingJobDatabase();
+    db.saveNewPrintingJobs(newJobs);
+
     store.dispatch(SetPrintingJobsAction(newJobs));
   };
 }
 
-ThunkAction<AppState> scheduleNewPrinting(Printing printing) {
+ThunkAction<AppState> scheduleNewPrinting(Printing printing, { bool updateStateWhenFailed = true}) {
   return (store) async {
     try {
       final result = await InternetAddress.lookup('print.up.pt');
@@ -886,27 +895,24 @@ ThunkAction<AppState> scheduleNewPrinting(Printing printing) {
         
         // send file to print.up.pt
 
-        final json = jsonEncode([{
-          'state': 'retained',
-          'createdAt': DateTime.now().toString(),
-          'printer': 'print\\WP-GERAL-${printing.color == PrintingColor.color ? 'C' : 'P'}-${printing.pageSize.name.toUpperCase()}',
-          'pages': printing.numCopies,
-          'price': (Random().nextDouble() * 50 + 10).roundToDouble() / 100,
-          'docName': printing.name
-        }]);
+        final api = PrintingMockApi();
+        final jobs = await parsePrintingJobs(await api.schedulePrintingJob(printing, bytes));
 
-        final jobs = await parsePrintingJobs(json);
         final db = AppPrintingJobDatabase();
         await db.insertPrintingJobs(jobs);
 
-        store.dispatch(SetPrintingJobsAction([...store.state.content['printingJobs'], ...jobs]));
-        return;        
+        store.dispatch(SetPrintingJobsAction(await db.printingJobs()));
+        return true;        
       }
     } catch (_) {}
 
     final db = AppPrintingDatabase();
     await db.insertPrintings([printing]);
 
-    store.dispatch(SetPrintingsAction([...store.state.content['printings'], printing]));
+    if (updateStateWhenFailed) {
+      store.dispatch(SetPrintingsAction([...store.state.content['printings'], printing]));
+    }
+
+    return false;
   };
 }

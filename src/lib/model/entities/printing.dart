@@ -90,7 +90,7 @@ class Printing {
     return {
       'name': name,
       'path': path,
-      'size': pageSize.index,
+      'pageSize': pageSize.index,
       'color': color.index,
       'numCopies': numCopies,
     };
