@@ -4,6 +4,7 @@
 
 - [v1](#end-of-v1)
 - [v2](#end-of-v2)
+- [v3](#end-of-v3)
 
 ## End of v1
 
@@ -47,3 +48,24 @@
 #### What would we do differently?
 
 - Better understanding of the effort and time needed to complete the expected assignments 
+
+# 
+
+## End of v3
+
+**Release:** https://github.com/LEIC-ES-2021-22/2LEIC09T3/releases/tag/v3
+
+<p align="center" justify="center">
+    <img src="images/v3/project-board.png" width="100%" />
+</p>
+
+### Retrospective
+
+#### What did we do well?
+
+- Good coordination between team members and a balanced workload
+- We managed to implement all features planned for the project and iteration
+
+#### What would we do differently?
+
+- Better time management by distributing the implementation of features across the entire iteration
