@@ -22,11 +22,12 @@ Future<List<Lecture>> parseSchedule(http.Response response) async {
     final String typeClass = lecture['tipo'];
     final int blocks = (lecture['aula_duracao'] * 2).round();
     final String room = lecture['sala_sigla'].replaceAll(RegExp('\\+'), '\n');
+    final String roomId = lecture['salas'][0]['espaco_id'];
     final String teacher = lecture['doc_sigla'];
     final String classNumber = lecture['turma_sigla'];
 
     lectures.add(Lecture.fromApi(
-        subject, typeClass, day, secBegin, blocks, room, teacher, classNumber));
+        subject, typeClass, day, secBegin, blocks, room, roomId, teacher, classNumber));
   }
 
   final lecturesList = lectures.toList();

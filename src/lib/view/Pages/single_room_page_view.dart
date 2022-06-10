@@ -10,8 +10,9 @@ import 'package:uni/model/entities/university_room.dart';
 /// Manages the 'classroom map' sections of the app
 class SingleRoomPageView extends StatelessWidget {
   SingleRoomPageView(
-      {Key key, @required this.tabController, @required this.universityRoom});
+      {Key key, @required this.tabController, @required this.universityRoom, @required this.status });
 
+  final RequestStatus status;
   final UniversityRoom universityRoom;
   final TabController tabController;
 
@@ -42,13 +43,17 @@ class SingleRoomPageView extends StatelessWidget {
 
   // Returns a list of widgets empty with tabs for each day map
   List<Widget> createTabs(queryData, BuildContext context) {
+    if (status != RequestStatus.successful) {
+      return [];
+    }
+
     final List<Widget> tabs = <Widget>[];
     for (var i = 0; i < 2; i++) {
       if (i == 0) {
         tabs.add(Container(
           color: Theme.of(context).backgroundColor,
           width: queryData.size.width * 1 / 2,
-          child: Tab(key: Key('floor-page'), text: 'Aulas B-I'), // alterar
+          child: Tab(key: Key('floor-page'), text: universityRoom.buildingName), // alterar
         ));
       } else {
         tabs.add(Container(

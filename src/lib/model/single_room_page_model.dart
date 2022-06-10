@@ -5,36 +5,41 @@ import 'package:uni/model/entities/lecture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:uni/model/entities/university_room.dart';
+import 'package:uni/redux/action_creators.dart';
 import 'package:uni/view/Pages/schedule_page_view.dart';
 import 'package:uni/view/Pages/secondary_page_view.dart';
 
 import '../view/Pages/single_room_page_view.dart';
 
 class SingleRoomPageModel extends StatefulWidget {
-  final UniversityRoom universityRoom;
 
-  const SingleRoomPageModel({
+  final String room;
+  final String roomId;
+
+  SingleRoomPageModel(String this.room, String this.roomId, {
     Key key,
-    @required this.universityRoom,
   });
   
   @override 
-  _SingleRoomPageModelState createState() => _SingleRoomPageModelState(universityRoom);
+  _SingleRoomPageModelState createState() => _SingleRoomPageModelState();
 }
 
 class _SingleRoomPageModelState extends SecondaryPageViewState with SingleTickerProviderStateMixin {
-  _SingleRoomPageModelState(UniversityRoom universityRoom, {
+  _SingleRoomPageModelState({
     Key key,
   });
 
-  UniversityRoom universityRoom = UniversityRoom(123, 'B001', 'https://sigarra.up.pt/feup/pt/instal_geral2.get_mapa?pv_id=76365', 'https://sigarra.up.pt/feup/pt/instal_geral2.get_mapa?pv_id=76365');
   TabController tabController; 
   @override
   Widget getBody(BuildContext context) {
-      return SingleRoomPageView(
-      universityRoom: universityRoom,
-      tabController: tabController,
-    );
+      return StoreConnector<AppState, Map<String, dynamic>>(
+        converter: (store) =>  {
+          'room': store.state.content['universityRoom'],
+          'status': store.state.content['universityRoomStatus']
+        },
+        builder: (context, data) {
+          return SingleRoomPageView(tabController: tabController, universityRoom: data['room'], status: data['status']);
+        });
   }
 
   @override
@@ -42,6 +47,11 @@ class _SingleRoomPageModelState extends SecondaryPageViewState with SingleTicker
     super.initState();
     tabController = TabController(vsync: this, length: 2);
     // tabController.animateTo((tabController.index + offset));
+
+    final widget = this.widget as SingleRoomPageModel;
+
+    final store = StoreProvider.of<AppState>(context);
+    store.dispatch(loadRoomUrls(widget.room, widget.roomId));
   }
 
   @override

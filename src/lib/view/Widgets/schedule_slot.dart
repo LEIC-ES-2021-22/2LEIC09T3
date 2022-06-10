@@ -7,6 +7,7 @@ import 'package:uni/model/single_room_page_model.dart';
 class ScheduleSlot extends StatelessWidget {
   final String subject;
   final String rooms;
+  final String roomId;
   final String begin;
   final String end;
   final String teacher;
@@ -19,6 +20,7 @@ class ScheduleSlot extends StatelessWidget {
     @required this.subject,
     @required this.typeClass,
     @required this.rooms,
+    @required this.roomId,
     @required this.begin,
     @required this.end,
     this.teacher,
@@ -75,8 +77,8 @@ class ScheduleSlot extends StatelessWidget {
     final roomTextField = GestureDetector(
       onTap: () => Navigator.push(context,
         MaterialPageRoute(builder: (context) => SingleRoomPageModel( 
-          // this.rooms,
-          universityRoom: UniversityRoom(123, this.rooms, 'pog', 'pog'),
+          this.rooms,
+          this.roomId
         )) 
       ),
       child: createTextField(

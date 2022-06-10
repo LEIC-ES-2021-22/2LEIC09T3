@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
+import 'package:html/parser.dart';
 import 'package:logger/logger.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -44,11 +45,12 @@ import 'package:uni/model/entities/session.dart';
 import 'package:uni/model/entities/trip.dart';
 import 'package:uni/model/entities/uni_notification.dart';
 import 'package:uni/model/entities/room_booking.dart';
+import 'package:uni/model/entities/university_room.dart';
 import 'package:uni/model/entities/virtual_card.dart';
 import 'package:uni/model/notifications_page_model.dart';
 import 'package:uni/redux/actions.dart';
 import 'package:uni/redux/reducers.dart';
-
+import 'package:http/http.dart' as http;
 import '../model/entities/bus_stop.dart';
 
 ThunkAction<AppState> reLogin(username, password, faculty, {Completer action}) {
@@ -773,5 +775,49 @@ ThunkAction<AppState> toggleNotificationReadStatus(int index) {
     db.saveNewNotifications(newNotifications);
 
     store.dispatch(SetNotificationsAction(newNotifications));
+  };
+}
+
+ThunkAction<AppState> loadRoomUrls(String room, String roomId) {
+  return (store) async {
+    try {
+    store.dispatch(SetUniversityRoomStatusAction(RequestStatus.busy));
+    store.dispatch(SetUniversityRoomAction(null));
+
+    final roomUrl = 'https://sigarra.up.pt/feup/pt/instal_geral.espaco_view?pv_id=$roomId';
+
+    final res = await http.get(Uri.parse(roomUrl));
+    final html = parse(res.body);
+
+    final roomImage = res.request.url.resolve(html.querySelector('.planta input[type="image"]').attributes['src']).toString();
+
+    String buildingUrl;
+    final link1 = html.querySelector('a[title="Piso abaixo"]');
+    if (link1 != null) {
+      buildingUrl = link1.attributes['href'];
+    } else {
+      final link2 = html.querySelector('a[title="Piso acima"]');
+      if (link2 != null) {
+        buildingUrl = link1.attributes['href'];
+      } else {
+        store.dispatch(SetUniversityRoomStatusAction(RequestStatus.failed));
+        return;
+      }
+    }
+
+    buildingUrl = buildingUrl.substring(0, buildingUrl.length - 1);
+    final buildingRes = await http.get(Uri.parse(buildingUrl));
+    final buildingHmtl = parse(buildingRes.body);
+    final buildingName = html.querySelector('h1:not([id])').text;
+
+    final buildingImage = buildingRes.request.url.resolve(buildingHmtl.querySelector('.planta img').attributes['src']).toString();
+
+
+    store.dispatch(SetUniversityRoomAction(UniversityRoom(int.parse(roomId), buildingName, room, roomImage, buildingImage)));
+    store.dispatch(SetUniversityRoomStatusAction(RequestStatus.successful));
+    } catch (_) {
+      store.dispatch(SetUniversityRoomAction(null));
+      store.dispatch(SetUniversityRoomStatusAction(RequestStatus.failed));
+    }
   };
 }

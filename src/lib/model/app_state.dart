@@ -42,7 +42,9 @@ class AppState {
       'virtualCardStatus': RequestStatus.busy,
       'notifications': <UniNotification>[],
       'bookings': <RoomBooking>[],
-      'bookingsStatus' : RequestStatus.none
+      'bookingsStatus' : RequestStatus.none,
+      'universityRoom': null,
+      'universityRoomStatus': RequestStatus.none,
     };
   }
 

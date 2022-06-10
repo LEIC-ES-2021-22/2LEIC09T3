@@ -37,6 +37,7 @@ Future<List<Lecture>> getScheduleFromHtml(http.Response response) async {
           final Element rowSmall =
               children[i].querySelector('table > tbody > tr');
           final String room = rowSmall.querySelector('td > a').text;
+          final String roomId = rowSmall.querySelector('td > a').attributes['href'].split('=')[1];
           final String teacher = rowSmall.querySelector('td.textod a').text;
 
           final String typeClass = clsName;
@@ -46,7 +47,7 @@ Future<List<Lecture>> getScheduleFromHtml(http.Response response) async {
           semana[day] += blocks;
 
           final Lecture lect = Lecture.fromHtml(subject, typeClass, day,
-              startTime, blocks, room, teacher, classNumber);
+              startTime, blocks, room, roomId, teacher, classNumber);
           lecturesList.add(lect);
         }
         day++;

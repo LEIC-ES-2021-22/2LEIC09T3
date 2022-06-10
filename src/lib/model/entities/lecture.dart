@@ -17,6 +17,7 @@ class Lecture {
   String endTime;
   String typeClass;
   String room;
+  String roomId;
   String teacher;
   String classNumber;
   int day;
@@ -30,6 +31,7 @@ class Lecture {
       int day,
       int blocks,
       String room,
+      this.roomId,
       String teacher,
       String classNumber,
       int startTimeHours,
@@ -58,6 +60,7 @@ class Lecture {
       int startTimeSeconds,
       int blocks,
       String room,
+      String roomId,
       String teacher,
       String classNumber) {
     final startTimeHours = (startTimeSeconds ~/ 3600);
@@ -71,6 +74,7 @@ class Lecture {
         day,
         blocks,
         room,
+        roomId,
         teacher,
         classNumber,
         startTimeHours,
@@ -88,6 +92,7 @@ class Lecture {
       String startTime,
       int blocks,
       String room,
+      String roomId,
       String teacher,
       String classNumber) {
     final startTimeHours = int.parse(startTime.substring(0, 2));
@@ -95,7 +100,7 @@ class Lecture {
     final endTimeHours =
         (startTimeMinutes + (blocks * 30)) ~/ 60 + startTimeHours;
     final endTimeMinutes = (startTimeMinutes + (blocks * 30)) % 60;
-    return Lecture(subject, typeClass, day, blocks, room, teacher, classNumber,
+    return Lecture(subject, typeClass, day, blocks, room, roomId, teacher, classNumber,
         startTimeHours, startTimeMinutes, endTimeHours, endTimeMinutes);
   }
 
@@ -108,6 +113,7 @@ class Lecture {
         lec.startTimeSeconds,
         lec.blocks,
         lec.room,
+        lec.roomId,
         lec.teacher,
         lec.classNumber);
   }
@@ -116,7 +122,7 @@ class Lecture {
   /// Clones a lecture from the html.
   static Lecture cloneHtml(Lecture lec) {
     return Lecture.fromHtml(lec.subject, lec.typeClass, lec.day, lec.startTime,
-        lec.blocks, lec.room, lec.teacher, lec.classNumber);
+        lec.blocks, lec.room, lec.roomId, lec.teacher, lec.classNumber);
   }
 
 
@@ -129,6 +135,7 @@ class Lecture {
       'startTime': startTime,
       'blocks': blocks,
       'room': room,
+      'roomId': roomId,
       'teacher': teacher,
       'classNumber': classNumber,
     };
@@ -169,6 +176,7 @@ class Lecture {
       this.endTime == o.endTime &&
       this.typeClass == o.typeClass &&
       this.room == o.room &&
+      this.roomId == o.roomId &&
       this.teacher == o.teacher &&
       this.day == o.day &&
       this.blocks == o.blocks &&
